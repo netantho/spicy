@@ -6,40 +6,23 @@
 
 #include <hilti/ast/type.h>
 
-namespace hilti {
-namespace type {
+namespace hilti::type {
 
 /** AST node for an unknown place-holder type. */
-class Unknown : public TypeBase, public type::trait::isAllocable, public util::type_erasure::trait::Singleton {
+class Unknown : public UnqualifiedType {
 public:
-    bool operator==(const Unknown& /* other */) const { return true; }
+    std::string_view typeClass() const final { return "unknown"; }
 
-    /** Implements the `Type` interface. */
-    auto isEqual(const Type& other) const { return node::isEqual(this, other); }
-    /** Implements the `Type` interface. */
-    auto _isResolved(ResolvedState* rstate) const { return true; } // sic!
+    static auto create(ASTContext* ctx, Meta meta = {}) {
+        return NodeDerivedPtr<Unknown>(new Unknown(ctx, std::move(meta)));
+    }
 
-    /** Implements the `Node` interface. */
-    auto properties() const { return node::Properties{}; }
+    bool isAllocable() const final { return true; } // TODO: Remove, right?
 
-    /**
-     * Wrapper around constructor so that we can make it private. Don't use
-     * this, use the singleton `type::unknown` instead.
-     */
-    static Unknown create(Meta m = Meta()) { return Unknown(std::move(m)); }
+protected:
+    Unknown(ASTContext* ctx, Meta meta) : UnqualifiedType(ctx, {type::NeverMatch()}, std::move(meta)) {}
 
-private:
-    Unknown(Meta m = Meta()) : TypeBase(std::move(m)) {}
+    HILTI_NODE(Unknown)
 };
 
-/** Singleton. */
-static const Type unknown = Unknown::create(Location("<singleton>"));
-
-} // namespace type
-
-inline const Node& to_node(const type::Unknown& /* t */) {
-    static Node unknown = Type(type::unknown);
-    return unknown;
-}
-
-} // namespace hilti
+} // namespace hilti::type

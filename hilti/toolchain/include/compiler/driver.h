@@ -5,11 +5,13 @@
 
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <set>
 #include <string>
 #include <string_view>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -56,7 +58,6 @@ struct Options {
     bool report_resource_usage = false; /**< print summary of runtime resource usage at termination */
     bool report_times = false;          /**< Report break-down of driver's execution time. */
     bool dump_code = false;             /**< Record all final HILTI and C++ code to disk for debugging. */
-    bool global_optimizations = true;   /**< whether to run global HILTI optimizations on the generated code. */
     bool enable_profiling = false;      /**< Insert profiling instrumentation into generated C++ code */
     std::vector<hilti::rt::filesystem::path>
         inputs; /**< files to compile; these will be automatically pulled in by ``Driver::run()`` */
@@ -119,17 +120,12 @@ public:
     Result<Nothing> parseOptions(int argc, char** argv);
 
     /**
-     * Schedules a unit for compilation. The driver will compile the unit once
-     * `compile()` is called. If a module of the same ID or path has been added
-     * previously, this will have no further effect.
+     * Registers a unit with the driver for compilation. If a unit with the
+     * same UID is already known, this is a no-op.
      *
-     * The `hookAddInput()` and `hookNewASTPreCompilation()` hooks will be
-     * called immediately for the new module.
-     *
-     * @param u unit to schedule for compilation
-     * @return set if successful; otherwise the result provides an error message
+     * @param unit unit to register
      */
-    Result<Nothing> addInput(const std::shared_ptr<Unit>& u);
+    void registerUnit(const std::shared_ptr<Unit>& unit) { _addUnit(unit); }
 
     /**
      * Schedules a source file for compilation. The file will be parsed
@@ -146,10 +142,7 @@ public:
     Result<Nothing> addInput(const hilti::rt::filesystem::path& path);
 
     /** Returns true if at least one input file has been added. */
-    bool hasInputs() const {
-        return ! (_pending_units.empty() && _processed_units.empty() && _processed_paths.empty() &&
-                  _libraries.empty() && _external_cxxs.empty());
-    }
+    bool hasInputs() const { return ! (_units.empty() && _libraries.empty() && _external_cxxs.empty()); }
 
     /** Returns the driver options currently in effect. */
     const auto& driverOptions() const { return _driver_options; }
@@ -235,6 +228,8 @@ public:
     Result<Nothing> run();
 
 protected:
+    friend class ASTContext;
+
     /**
      * Prints a usage message to stderr. The message summarizes the options
      * understood by `parseOptions()`.
@@ -478,19 +473,17 @@ private:
     driver::Options _driver_options;
     hilti::Options _compiler_options;
 
-    std::vector<std::shared_ptr<Unit>> _pending_units;
-    std::set<ID> _processed_units;
-    std::set<hilti::rt::filesystem::path> _processed_paths;
-
     std::shared_ptr<Context> _ctx;                      // driver's compiler context
     std::unique_ptr<hilti::JIT> _jit;                   // driver's JIT instance
     std::shared_ptr<const hilti::rt::Library> _library; // Compiled code
 
+    std::map<module::UID, std::shared_ptr<Unit>> _units;
     std::vector<CxxCode> _generated_cxxs;
     std::unordered_map<std::string, Library> _libraries;
     std::vector<hilti::rt::filesystem::path> _external_cxxs;
     std::vector<linker::MetaData> _mds;
-    std::vector<std::shared_ptr<Unit>> _hlts;
+
+    std::unordered_set<std::string> _processed_paths;
 
     bool _runtime_initialized = false; // true once initRuntime() has succeeded
     std::set<std::string> _tmp_files;  // all tmp files created, so that we can clean them up.

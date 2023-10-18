@@ -2,75 +2,66 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
+#include <hilti/ast/declaration.h>
 #include <hilti/ast/declarations/type.h>
-#include <hilti/ast/function.h>
-#include <hilti/ast/id.h>
-#include <hilti/ast/statement.h>
+#include <hilti/ast/detail/operator-registry.h>
+#include <hilti/ast/node-range.h>
+#include <hilti/ast/operator.h>
 #include <hilti/ast/types/struct.h>
+#include <hilti/ast/types/type.h>
 
 namespace hilti::declaration {
 
-/** AST node for a declaration of an function. */
-class Function : public DeclarationBase {
+/** AST node for a function declaration. */
+class Function : public Declaration {
 public:
-    Function(::hilti::Function function, Linkage linkage = Linkage::Private, Meta m = Meta())
-        : DeclarationBase(nodes(std::move(function)), std::move(m)), _linkage(linkage) {}
+    ~Function() override {}
 
-    const ::hilti::Function& function() const { return child<::hilti::Function>(0); }
+    auto function() const { return child<::hilti::Function>(0); }
 
-    /**
-     * Returns the parent declaration associated with the function, if any. For
-     * methods, this will the declaration of the corresponding struct type.
-     */
-    hilti::optional_ref<const Declaration> parent() const {
-        if ( _parent )
-            return _parent->as<Declaration>();
-        else
-            return {};
+    /** Returns an operator corresponding to a call to the function that the declaration corresponds to. */
+    const auto& operator_() const { return _operator; }
+
+    auto linkedType() const { return _linked_type.lock(); }
+    auto linkedPrototype() const { return _linked_prototype.lock(); }
+
+    void setOperator(const Operator* op) { _operator = op; }
+
+    void setLinkedType(const NodeDerivedPtr<declaration::Type>& decl) {
+        assert(decl->type()->type()->isA<type::Struct>());
+        _linked_type = decl;
     }
 
-    /**
-     * If the parent declaration associated with the function refers to a valid
-     * struct type, returns that type.
-     */
-    hilti::optional_ref<const type::Struct> parentStructType() const {
-        if ( ! _parent )
-            return {};
-
-        return _parent->as<declaration::Type>().type().tryAs<type::Struct>();
+    void setLinkedPrototype(const DeclarationPtr& decl) {
+        assert(decl->isA<declaration::Field>() || decl->isA<declaration::Function>());
+        _linked_prototype = decl;
     }
 
-    void setFunction(const ::hilti::Function& f) { children()[0] = f; }
-    void setLinkage(Linkage x) { _linkage = x; }
-    void setParentRef(NodeRef p) {
-        assert(p && p->isA<Declaration>());
-        _parent = std::move(p);
+    std::string displayName() const final { return "function"; }
+
+    node::Properties properties() const final;
+
+    static NodeDerivedPtr<Function> create(ASTContext* ctx, const FunctionPtr& function,
+                                           declaration::Linkage linkage = Linkage::Private, const Meta& meta = {}) {
+        return NodeDerivedPtr<Function>(new Function(ctx, {function}, function->id(), linkage, meta));
     }
 
-    bool operator==(const Function& other) const { return id() == other.id() && function() == other.function(); }
+protected:
+    Function(ASTContext* ctx, Nodes children, ID id, declaration::Linkage linkage, Meta meta)
+        : Declaration(ctx, std::move(children), std::move(id), linkage, std::move(meta)) {}
 
-    /** Implements `Declaration` interface. */
-    bool isConstant() const { return true; }
-    /** Implements `Declaration` interface. */
-    const ID& id() const { return function().id(); }
-    /** Implements `Declaration` interface. */
-    Linkage linkage() const { return _linkage; }
-    /** Implements `Declaration` interface. */
-    std::string displayName() const { return "function"; };
-    /** Implements `Declaration` interface. */
-    auto isEqual(const Declaration& other) const { return node::isEqual(this, other); }
-
-    /** Implements `Node` interface. */
-    auto properties() const {
-        return node::Properties{{"linkage", to_string(_linkage)}, {"parent_type", _parent.renderedRid()}};
-    }
+    HILTI_NODE(Function)
 
 private:
-    Linkage _linkage;
-    NodeRef _parent;
+    const Operator* _operator = nullptr;
+
+    std::weak_ptr<declaration::Type> _linked_type;
+    std::weak_ptr<Declaration> _linked_prototype;
 };
 
 } // namespace hilti::declaration

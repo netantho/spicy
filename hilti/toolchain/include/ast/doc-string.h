@@ -5,11 +5,9 @@
 #include <string>
 #include <vector>
 
-namespace hilti {
+#include <hilti/compiler/detail/printer.h>
 
-namespace printer {
-class Stream;
-}
+namespace hilti { // namespace printer
 
 /** Represents an AST node's documentation string. */
 class DocString {
@@ -43,13 +41,16 @@ public:
     /**
      * Renders the comment back into a multi-line string. This is primarily for debugging.
      */
-    void render(std::ostream& out) const;
+    void print(std::ostream& out) const;
 
     /**
      * Renders the comment back into a code representation through our code
      * printer.
      */
-    void render(printer::Stream& out) const;
+    void print(hilti::detail::printer::Stream& out) const;
+
+    /** Returns a string representation of the full documentation string. */
+    std::string render() const;
 
     /** Returns true if any summary or documentation text has been added. */
     explicit operator bool() const { return ! (_summary.empty() && _text.empty()); }

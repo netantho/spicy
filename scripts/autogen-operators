@@ -1,0 +1,78 @@
+#! /usr/bin/env python3
+
+import os
+import os.path
+import sys
+
+if len(sys.argv) < 6 or sys.argv[4] != "--":
+    print("Usage: %s <scope-ns> <autogen-dir-include> <autogen-dir-src> -- <*.cc>" % sys.argv[0], file=sys.stderr)
+    sys.exit(1)
+
+scope = sys.argv[1]
+autogen_h = sys.argv[2]
+os.makedirs(autogen_h, exist_ok=True)
+
+autogen_cc = sys.argv[3]
+os.makedirs(autogen_h, exist_ok=True)
+
+cc = sys.argv[5:]
+
+dispatcher_h = open(os.path.join(autogen_h, "ast-visitor-dispatcher.h"), "w")
+dispatcher_cc = open(os.path.join(autogen_cc, "ast-visitor-dispatcher.cc"), "w")
+forward_h = open(os.path.join(autogen_h, "ast-forward.h"), "w")
+operators_h = open(os.path.join(autogen_h, "ast-operators.h"), "w")
+
+print("""
+#include <hilti/ast/all.h>
+#include <hilti/ast/visitor-dispatcher.h>
+
+using namespace hilti;
+""", file=dispatcher_cc)
+
+print("""
+#pragma once
+
+namespace hilti::operator_ {
+""", file=operators_h)
+
+def output(cls, base, ns, name):
+    print("virtual void operator()(%s::operator_::%s::%s* n) {}" % (scope, ns, name), file=dispatcher_h)
+    print("HILTI_NODE_IMPLEMENTATION_2(operator_::%s::%s, ResolvedOperator, Expression)" % (ns, name), file=dispatcher_cc)
+    print("namespace operator_::%s { class %s; }" % (ns, name), file=forward_h)
+    print("HILTI_NODE_OPERATOR(%s, %s)" % (ns, name), file=operators_h)
+
+### Main.
+
+for file in cc:
+
+    in_class = False
+
+    for line in open(file):
+        line = line.strip()
+
+        if line.find("HILTI_OPERATOR_IMPLEMENTATION") >= 0:
+            continue
+
+        if not in_class:
+
+            if not line.startswith("class"):
+                continue
+
+            m = [i.strip() for i in line.split()]
+
+            [cls, base] = (m[1], m[4])
+            in_class = True
+
+        else:
+            i = line.find("HILTI_OPERATOR")
+            if i >= 0:
+                j = line.find(")", i)
+                assert j > i
+                op = line[i+15:j]
+                m = op.split("::")
+                ns = "::".join(m[:-1])
+                name = m[-1]
+
+                output(cls, base, ns, name)
+
+print("}", file=operators_h)

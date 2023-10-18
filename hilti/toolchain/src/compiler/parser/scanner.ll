@@ -33,7 +33,7 @@ static hilti::Meta toMeta(hilti::detail::parser::location l) {
     return hilti::Meta(hilti::Location(*l.begin.filename, l.begin.line, l.end.line, l.begin.column, l.end.column));
 }
 
-static std::string expandEscapes(Driver* driver, std::string s, hilti::detail::parser::location l) {
+static std::string expandEscapes(detail::parser::Driver* driver, std::string s, hilti::detail::parser::location l) {
     try {
         return hilti::util::expandEscapes(s);
     } catch ( const hilti::rt::Exception& ) {

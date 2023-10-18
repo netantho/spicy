@@ -12,6 +12,7 @@
 #include <hilti/rt/json-fwd.h>
 
 #include <hilti/ast/id.h>
+#include <hilti/ast/type.h>
 #include <hilti/base/id-base.h>
 #include <hilti/base/util.h>
 
@@ -58,9 +59,6 @@ private:
 using Attribute = Element<element::Type::Attribute>; /**< C++ function attribute */
 using Linkage = Element<element::Type::Linkage>;     /**< C++ linkage specification */
 using Type = Element<element::Type::Type>;           /**< C++ type */
-
-/** Captures whether a `cxx::Expression` has LHS or RHS semantics. */
-enum class Side { LHS, RHS };
 
 /**
  * Represents a C++-side expression, stored as a string of the C++ code along

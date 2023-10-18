@@ -2,45 +2,82 @@
 
 #pragma once
 
+#include <list>
 #include <map>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
-#include <hilti/ast/expression.h>
-#include <hilti/ast/expressions/resolved-operator.h>
-#include <hilti/ast/expressions/unresolved-operator.h>
 #include <hilti/ast/operator.h>
-#include <hilti/ast/types/struct.h>
+
+#define HILTI_OPERATOR(cls)                                                                                            \
+    Result<ResolvedOperatorPtr> instantiate(Builder* builder, Expressions operands, const Meta& meta) const final {    \
+        return {operator_::cls::create(builder->context(), this, result(builder, operands, meta), std::move(operands), \
+                                       meta)};                                                                         \
+    }                                                                                                                  \
+                                                                                                                       \
+    std::string name() const final { return #cls; }                                                                    \
+    std::string _typename() const final { return util::typename_(*this); }
+
+#define HILTI_OPERATOR_IMPLEMENTATION(cls)                                                                             \
+    namespace {                                                                                                        \
+    static hilti::operator_::Register<cls> _operator_##cls;                                                            \
+    }
 
 namespace hilti::operator_ {
 
 /** Singleton registering available operators. */
 class Registry {
 public:
-    using OperatorMap = std::map<Kind, std::vector<Operator>>;
+    /**
+     * Returns all available built-on operators of kind function call matching
+     * a given function name.
+     */
+    const auto& byBuiltinFunctionID(const ID& id) { return _operators_by_builtin_function[id]; }
 
-    /** Returns a map of all available operators. */
-    const auto& all() const { return _operators; }
+    /** Returns all available operators of a given kind. */
+    const auto& byKind(Kind kind) { return _operators_by_kind[kind]; }
 
-    /** Returns a map of all available operators. */
-    const auto& allOfKind(Kind kind) const { return _operators.at(kind); }
+    /**
+     * Returns all available operators of kind `member call` matching a given
+     * method ID.
+     */
+    const auto& byMethodID(const ID& id) { return _operators_by_method[id]; }
 
-    /** Registers an Operator as available. */
-    void register_(Kind kind, Operator info) { _operators[kind].push_back(std::move(info)); }
+    /** Returns all available operators of a given operator name. */
+    const auto& byName(const std::string_view& name) { return _operators_by_name[std::string(name)]; }
 
-    void printDebug() {
-#if 0
-        // Can't print this at registratin time as that's happening through
-        // global constructors.
-        for ( auto a : _operators ) {
-            for ( const auto& info : a.second ) {
-                int status;
-                auto n = abi::__cxa_demangle(info.typename_().c_str(), nullptr, nullptr, &status);
-                HILTI_DEBUG(logging::debug::Overloads, hilti::util::fmt("registered %s for operator '%s'", (n ? n : info.typename_().c_str()), to_string(info.kind())));
-            }
-        }
-#endif
-    }
+    std::pair<bool, std::optional<std::vector<const Operator*>>> functionCallCandidates(
+        const expression::UnresolvedOperator* op);
+
+    /**
+     * Registers an operator with the registry. It will not immediately become
+     * available but remain pending until initialized later.
+     */
+    void register_(std::unique_ptr<Operator> op);
+
+    /**
+     * Attempts to initialize all pending operators. Initialization will
+     * succeed for all operators for which argument types can be fully resolved
+     * at this time; these will then be available through the registry going
+     * forward. Any operators that cannot be initialized yet will remain
+     * pending and won't be available for lookup for the time being.
+     *
+     * @param ctx context to use for operator initialization
+     */
+    void initPending(ASTContext* ctx);
+
+    /** Returns true if any registered operators remain uninitialized. */
+    bool havePending() const { return ! _pending.empty(); }
+
+    /**
+     * Aborts with an internal error if any registered built-in operators
+     * remain uninitialized. If this happens after an AST has otherwise be
+     * fully resolved, something's wrong those operator definitions (like an
+     * unknown type).
+     */
+    void debugEnforceBuiltInsAreResolved() const;
 
     /** Returns a singleton instance of the current class.  */
     static auto& singleton() {
@@ -49,15 +86,33 @@ public:
     }
 
 private:
-    OperatorMap _operators;
+    std::list<std::unique_ptr<Operator>> _pending;             // all registered, but not yet initialized operators
+    std::vector<std::unique_ptr<Operator>> _operators;         // all initialized operators
+    std::map<std::string, const Operator*> _operators_by_name; // initialized operators by name
+    std::map<Kind, std::vector<const Operator*>> _operators_by_kind; // initialized operators by kind
+    std::map<ID, std::vector<const Operator*>>
+        _operators_by_builtin_function;                              // initialized operators by builtin function
+    std::map<ID, std::vector<const Operator*>> _operators_by_method; // initialized operators by method
 };
+
+/**
+ * Retrieves an operator by name. Raises an internal error if there's no
+ * operator available under that name.
+ */
+inline auto get(const std::string_view& name) {
+    if ( auto op = Registry::singleton().byName(name) )
+        return op;
+    else
+        logger().internalError(util::fmt("unknown operator '%s'", name));
+}
 
 /** Helper class to register an operator on instantiation. */
+template<typename T>
 class Register {
 public:
-    Register(Kind k, Operator c) { Registry::singleton().register_(k, std::move(c)); }
+    Register() { Registry::singleton().register_(std::make_unique<T>()); }
 };
 
-inline const auto& registry() { return Registry::singleton(); }
+inline auto& registry() { return Registry::singleton(); }
 
 } // namespace hilti::operator_

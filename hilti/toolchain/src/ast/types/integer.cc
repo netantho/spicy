@@ -9,8 +9,10 @@
 using namespace hilti;
 using namespace hilti::type;
 
-std::vector<Node> SignedInteger::typeParameters() const {
-    return {Ctor(ctor::SignedInteger(static_cast<int64_t>(width()), 64))};
+NodeDerivedPtr<SignedInteger> type::SignedInteger::create(ASTContext* ctx, unsigned int width, const Meta& m) {
+    return NodeDerivedPtr<SignedInteger>(new SignedInteger(ctx, {}, width, m));
 }
 
-std::vector<Node> UnsignedInteger::typeParameters() const { return {Ctor(ctor::UnsignedInteger(width(), 64))}; }
+NodeDerivedPtr<UnsignedInteger> type::UnsignedInteger::create(ASTContext* ctx, unsigned int width, const Meta& m) {
+    return NodeDerivedPtr<UnsignedInteger>(new UnsignedInteger(ctx, {}, width, m));
+}

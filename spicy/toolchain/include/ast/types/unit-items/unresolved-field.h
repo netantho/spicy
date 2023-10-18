@@ -91,7 +91,7 @@ public:
     auto condition() const { return children()[5].tryAs<Expression>(); }
     auto arguments() const { return children<Expression>(_args_start, _args_end); }
     auto sinks() const { return children<Expression>(_sinks_start, _sinks_end); }
-    auto hooks() const { return children<Hook>(_sinks_end, -1); }
+    auto hooks() const { return children<Hook>(_sinks_end, {}); }
     auto isSkip() const { return _is_skip; }
     Engine engine() const { return _engine; }
 

@@ -72,7 +72,16 @@ extern void cannot_be_reached() __attribute__((noreturn));
 /** Returns a type's demangled C++ name. */
 template<typename T>
 std::string typename_() {
-    return demangle(typeid(T).name());
+    std::string id = demangle(typeid(T).name());
+    if ( id.find("hilti::") == 0 )
+        id = id.substr(sizeof("hilti::") - 1);
+
+    return id;
+}
+
+template<typename T>
+std::string typename_(const T&) {
+    return typename_<T>();
 }
 
 /** sprintf-style string formatting. */
@@ -297,7 +306,7 @@ extern uint64_t hash(const char* data, size_t len);
  * Returns the valid value range for a signed integer of a given width.
  * Supports only standard widths 8/16/32/64.
  */
-constexpr std::pair<intmax_t, intmax_t> signed_integer_range(int width) {
+constexpr std::pair<intmax_t, intmax_t> signed_integer_range(unsigned int width) {
     switch ( width ) {
         case 8: return std::make_pair(INT8_MIN, INT8_MAX);
         case 16: return std::make_pair(INT16_MIN, INT16_MAX);
@@ -311,7 +320,7 @@ constexpr std::pair<intmax_t, intmax_t> signed_integer_range(int width) {
  * Returns the valid value range for an unsigned integer of a given width.
  * Supports only standard widths 8/16/32/64.
  */
-constexpr std::pair<uintmax_t, uintmax_t> unsigned_integer_range(int width) {
+constexpr std::pair<uintmax_t, uintmax_t> unsigned_integer_range(unsigned int width) {
     switch ( width ) {
         case 8: return std::make_pair(0, UINT8_MAX);
         case 16: return std::make_pair(0, UINT16_MAX);

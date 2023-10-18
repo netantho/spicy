@@ -1,4 +1,5 @@
-# @TEST-EXEC: spicy-build -v -d -S %INPUT type-info.cc && ./a.out
+# @TEST-REQUIRES: which spicy-build
+# @TEST-EXEC: spicy-build -d -S %INPUT type-info.cc && ./a.out
 
 module Test {
 

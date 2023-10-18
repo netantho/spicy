@@ -588,7 +588,7 @@ cxx::Formatter& cxx::operator<<(cxx::Formatter& f, const cxx::Block& x) {
         f << '{' << indent() << eol();
 
     if ( ! braces && ! compact_block )
-        f << indent() << eol();
+        f << indent();
 
     if ( ! x._stmts.empty() || ! x._tmps.empty() ) {
         for ( const auto& t : x._tmps )

@@ -2,6 +2,8 @@
 
 module hilti {
 
+%skip-implementation;
+
 public type BitOrder = enum { LSB0, MSB0 } &cxxname="hilti::rt::integer::BitOrder";
 public type ByteOrder = enum { Little, Big, Network, Host } &cxxname="hilti::rt::ByteOrder";
 public type Side = enum { Left, Right, Both } &cxxname="hilti::rt::bytes::Side";
@@ -14,7 +16,6 @@ public type Captures = vector<bytes>;
 public type Profiler = __library_type("hilti::rt::Profiler");
 
 public type MatchState = struct {
-    method Captures captures(stream data);
 } &cxxname="hilti::rt::regexp::MatchState";
 
 declare public void print(any obj, bool newline = True) &cxxname="hilti::rt::print" &have_prototype;

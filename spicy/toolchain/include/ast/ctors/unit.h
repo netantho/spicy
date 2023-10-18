@@ -31,7 +31,7 @@ public:
         : NodeBase(nodes(std::move(t), std::move(f)), std::move(m)) {}
 
     /** Returns all fields that the constructor initializes. */
-    auto fields() const { return children<unit::Field>(1, -1); }
+    auto fields() const { return children<unit::Field>(1, {}); }
 
     /*** Returns the unit type the constructor is producing. */
     auto utype() const { return child<type::Unit>(0); }

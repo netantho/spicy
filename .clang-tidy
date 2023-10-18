@@ -60,6 +60,7 @@ Checks: '
   -readability-function-cognitive-complexity,
   -readability-function-size,
   -readability-simplify-boolean-expr,
+  -readability-use-anyofallof,
   '
 
 HeaderFilterRegex: '(hilti|spicy)/[a-zA-Z]+/include/([a-zA-Z]+/)*[a-zA-Z]+\.h'

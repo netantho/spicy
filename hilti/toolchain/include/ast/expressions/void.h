@@ -2,33 +2,28 @@
 
 #pragma once
 
+#include <memory>
 #include <utility>
 
 #include <hilti/ast/expression.h>
+#include <hilti/ast/type.h>
 #include <hilti/ast/types/void.h>
 
 namespace hilti::expression {
 
 /** AST node for a void expression. */
-class Void : public NodeBase, public hilti::trait::isExpression {
+class Void : public Expression {
 public:
-    Void(Meta m = Meta()) : NodeBase(nodes(type::void_), std::move(m)) {}
+    QualifiedTypePtr type() const final { return child<QualifiedType>(0); }
 
-    bool operator==(const Void& /* other */) const { return true; }
+    static auto create(ASTContext* ctx, const Meta& meta = {}) {
+        return NodeDerivedPtr<Void>(new Void(ctx, {type::Void::create(ctx, meta)}, meta));
+    }
 
-    /** Implements `Expression` interface. */
-    bool isLhs() const { return false; }
-    /** Implements `Expression` interface. */
-    bool isTemporary() const { return true; }
-    /** Implements `Expression` interface. */
-    const auto& type() const { return child<Type>(0); }
-    /** Implements `Expression` interface. */
-    auto isConstant() const { return true; }
-    /** Implements `Expression` interface. */
-    auto isEqual(const Expression& other) const { return node::isEqual(this, other); }
+protected:
+    Void(ASTContext* ctx, Nodes children, Meta meta) : Expression(ctx, std::move(children), std::move(meta)) {}
 
-    /** Implements `Node` interface. */
-    auto properties() const { return node::Properties{}; }
+    HILTI_NODE(Void)
 };
 
 } // namespace hilti::expression
