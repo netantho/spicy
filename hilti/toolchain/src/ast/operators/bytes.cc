@@ -26,7 +26,7 @@ public:
             .doc = "Returns the character the iterator is pointing to.",
         };
     }
-    HILTI_OPERATOR(bytes::iterator::Deref)
+    HILTI_OPERATOR(hilti, bytes::iterator::Deref)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Deref);
 
@@ -41,7 +41,7 @@ public:
             .doc = "Advances the iterator by one byte, returning the previous position.",
         };
     }
-    HILTI_OPERATOR(bytes::iterator::IncrPostfix)
+    HILTI_OPERATOR(hilti, bytes::iterator::IncrPostfix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPostfix);
 
@@ -56,7 +56,7 @@ public:
             .doc = "Advances the iterator by one byte, returning the new position.",
         };
     }
-    HILTI_OPERATOR(bytes::iterator::IncrPrefix)
+    HILTI_OPERATOR(hilti, bytes::iterator::IncrPrefix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPrefix);
 
@@ -74,7 +74,7 @@ public:
                 "value.",
         };
     }
-    HILTI_OPERATOR(bytes::iterator::Equal)
+    HILTI_OPERATOR(hilti, bytes::iterator::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -93,7 +93,7 @@ public:
                 "value.",
         };
     }
-    HILTI_OPERATOR(bytes::iterator::Unequal)
+    HILTI_OPERATOR(hilti, bytes::iterator::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -111,7 +111,7 @@ public:
                 "value.",
         };
     }
-    HILTI_OPERATOR(bytes::iterator::Lower)
+    HILTI_OPERATOR(hilti, bytes::iterator::Lower)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Lower);
 
@@ -129,7 +129,7 @@ public:
                 "value.",
         };
     }
-    HILTI_OPERATOR(bytes::iterator::LowerEqual)
+    HILTI_OPERATOR(hilti, bytes::iterator::LowerEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(LowerEqual);
 
@@ -147,7 +147,7 @@ public:
                 "value.",
         };
     }
-    HILTI_OPERATOR(bytes::iterator::Greater)
+    HILTI_OPERATOR(hilti, bytes::iterator::Greater)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Greater);
 
@@ -165,7 +165,7 @@ public:
                 "value.",
         };
     }
-    HILTI_OPERATOR(bytes::iterator::GreaterEqual)
+    HILTI_OPERATOR(hilti, bytes::iterator::GreaterEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(GreaterEqual);
 
@@ -186,7 +186,7 @@ public:
                 "instance.",
         };
     }
-    HILTI_OPERATOR(bytes::iterator::Difference)
+    HILTI_OPERATOR(hilti, bytes::iterator::Difference)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Difference);
 
@@ -202,7 +202,7 @@ public:
             .doc = "Returns an iterator which is pointing the given number of bytes beyond the one passed in.",
         };
     }
-    HILTI_OPERATOR(bytes::iterator::Sum)
+    HILTI_OPERATOR(hilti, bytes::iterator::Sum)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Sum)
 
@@ -218,7 +218,7 @@ public:
             .doc = "Advances the iterator by the given number of bytes.",
         };
     }
-    HILTI_OPERATOR(bytes::iterator::SumAssign)
+    HILTI_OPERATOR(hilti, bytes::iterator::SumAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SumAssign)
 
@@ -235,7 +235,7 @@ public:
             .doc = "Returns the number of bytes the value contains.",
         };
     }
-    HILTI_OPERATOR(bytes::Size)
+    HILTI_OPERATOR(hilti, bytes::Size)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Size);
 
@@ -251,7 +251,7 @@ public:
             .doc = "Compares two bytes values lexicographically.",
         };
     }
-    HILTI_OPERATOR(bytes::Equal)
+    HILTI_OPERATOR(hilti, bytes::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -267,7 +267,7 @@ public:
             .doc = "Compares two bytes values lexicographically.",
         };
     }
-    HILTI_OPERATOR(bytes::Unequal)
+    HILTI_OPERATOR(hilti, bytes::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -283,7 +283,7 @@ public:
             .doc = "Compares two bytes values lexicographically.",
         };
     }
-    HILTI_OPERATOR(bytes::Greater)
+    HILTI_OPERATOR(hilti, bytes::Greater)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Greater);
 
@@ -299,7 +299,7 @@ public:
             .doc = "Compares two bytes values lexicographically.",
         };
     }
-    HILTI_OPERATOR(bytes::GreaterEqual)
+    HILTI_OPERATOR(hilti, bytes::GreaterEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(GreaterEqual);
 
@@ -315,7 +315,7 @@ public:
             .doc = "Returns true if the right-hand-side value contains the left-hand-side value as a subsequence.",
         };
     }
-    HILTI_OPERATOR(bytes::In)
+    HILTI_OPERATOR(hilti, bytes::In)
 };
 HILTI_OPERATOR_IMPLEMENTATION(In);
 
@@ -331,7 +331,7 @@ public:
             .doc = "Compares two bytes values lexicographically.",
         };
     }
-    HILTI_OPERATOR(bytes::Lower)
+    HILTI_OPERATOR(hilti, bytes::Lower)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Lower);
 
@@ -347,7 +347,7 @@ public:
             .doc = "Compares two bytes values lexicographically.",
         };
     }
-    HILTI_OPERATOR(bytes::LowerEqual)
+    HILTI_OPERATOR(hilti, bytes::LowerEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(LowerEqual);
 
@@ -363,7 +363,7 @@ public:
             .doc = "Returns the concatenation of two bytes values.",
         };
     }
-    HILTI_OPERATOR(bytes::Sum)
+    HILTI_OPERATOR(hilti, bytes::Sum)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Sum);
 
@@ -379,7 +379,7 @@ public:
             .doc = "Appends one bytes value to another.",
         };
     }
-    HILTI_OPERATOR(bytes::SumAssignBytes)
+    HILTI_OPERATOR(hilti, bytes::SumAssignBytes)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SumAssignBytes);
 
@@ -395,7 +395,7 @@ public:
             .doc = "Appends a view of stream data to a bytes instance.",
         };
     }
-    HILTI_OPERATOR(bytes::SumAssignStreamView)
+    HILTI_OPERATOR(hilti, bytes::SumAssignStreamView)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SumAssignStreamView);
 
@@ -411,7 +411,7 @@ public:
             .doc = "Appends a single byte to the data.",
         };
     }
-    HILTI_OPERATOR(bytes::SumAssignUInt8)
+    HILTI_OPERATOR(hilti, bytes::SumAssignUInt8)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SumAssignUInt8);
 
@@ -440,7 +440,7 @@ as it's more efficient.
 )"};
     }
 
-    HILTI_OPERATOR(bytes::Find);
+    HILTI_OPERATOR(hilti, bytes::Find);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Find);
 
@@ -474,7 +474,7 @@ strategy.
         };
     }
 
-    HILTI_OPERATOR(bytes::LowerCase);
+    HILTI_OPERATOR(hilti, bytes::LowerCase);
 };
 HILTI_OPERATOR_IMPLEMENTATION(LowerCase);
 
@@ -508,7 +508,7 @@ strategy.
         };
     }
 
-    HILTI_OPERATOR(bytes::UpperCase);
+    HILTI_OPERATOR(hilti, bytes::UpperCase);
 };
 HILTI_OPERATOR_IMPLEMENTATION(UpperCase);
 
@@ -532,7 +532,7 @@ Returns an iterator representing the offset *i* inside the bytes value.
         };
     }
 
-    HILTI_OPERATOR(bytes::At);
+    HILTI_OPERATOR(hilti, bytes::At);
 };
 HILTI_OPERATOR_IMPLEMENTATION(At);
 
@@ -561,7 +561,7 @@ sequences of white spaces.
         };
     }
 
-    HILTI_OPERATOR(bytes::Split);
+    HILTI_OPERATOR(hilti, bytes::Split);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Split);
 
@@ -591,7 +591,7 @@ take place at the first sequence of white spaces.
         };
     }
 
-    HILTI_OPERATOR(bytes::Split1);
+    HILTI_OPERATOR(hilti, bytes::Split1);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Split1);
 
@@ -615,7 +615,7 @@ Returns true if the bytes value starts with *b*.
         };
     }
 
-    HILTI_OPERATOR(bytes::StartsWith);
+    HILTI_OPERATOR(hilti, bytes::StartsWith);
 };
 HILTI_OPERATOR_IMPLEMENTATION(StartsWith);
 
@@ -649,7 +649,7 @@ default if not given.
         };
     }
 
-    HILTI_OPERATOR(bytes::Strip);
+    HILTI_OPERATOR(hilti, bytes::Strip);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Strip);
 
@@ -678,7 +678,7 @@ Returns the subsequence from *begin* to (but not including) *end*.
         };
     }
 
-    HILTI_OPERATOR(bytes::SubIterators);
+    HILTI_OPERATOR(hilti, bytes::SubIterators);
 };
 HILTI_OPERATOR_IMPLEMENTATION(SubIterators);
 
@@ -702,7 +702,7 @@ Returns the subsequence from the value's beginning to (but not including) *end*.
         };
     }
 
-    HILTI_OPERATOR(bytes::SubIterator);
+    HILTI_OPERATOR(hilti, bytes::SubIterator);
 };
 HILTI_OPERATOR_IMPLEMENTATION(SubIterator);
 
@@ -731,7 +731,7 @@ Returns the subsequence from offset *begin* to (but not including) offset *end*.
         };
     }
 
-    HILTI_OPERATOR(bytes::SubOffsets);
+    HILTI_OPERATOR(hilti, bytes::SubOffsets);
 };
 HILTI_OPERATOR_IMPLEMENTATION(SubOffsets);
 
@@ -758,7 +758,7 @@ which this method is invoked as a member.
         };
     }
 
-    HILTI_OPERATOR(bytes::Join);
+    HILTI_OPERATOR(hilti, bytes::Join);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Join);
 
@@ -786,7 +786,7 @@ If *base* is not given, the default is 10.
         };
     }
 
-    HILTI_OPERATOR(bytes::ToIntAscii);
+    HILTI_OPERATOR(hilti, bytes::ToIntAscii);
 };
 HILTI_OPERATOR_IMPLEMENTATION(ToIntAscii);
 
@@ -814,7 +814,7 @@ into an unsigned integer, using a base of *base*. *base* must be between 2 and
         };
     }
 
-    HILTI_OPERATOR(bytes::ToUIntAscii);
+    HILTI_OPERATOR(hilti, bytes::ToUIntAscii);
 };
 HILTI_OPERATOR_IMPLEMENTATION(ToUIntAscii);
 
@@ -840,7 +840,7 @@ byte order, and converts it into signed integer.
         };
     }
 
-    HILTI_OPERATOR(bytes::ToIntBinary);
+    HILTI_OPERATOR(hilti, bytes::ToIntBinary);
 };
 HILTI_OPERATOR_IMPLEMENTATION(ToIntBinary);
 
@@ -866,7 +866,7 @@ byte order, and converts it into an unsigned integer.
         };
     }
 
-    HILTI_OPERATOR(bytes::ToUIntBinary);
+    HILTI_OPERATOR(hilti, bytes::ToUIntBinary);
 };
 HILTI_OPERATOR_IMPLEMENTATION(ToUIntBinary);
 
@@ -894,7 +894,7 @@ base of *base*. If *base* is not given, the default is 10.
         };
     }
 
-    HILTI_OPERATOR(bytes::ToTimeAscii);
+    HILTI_OPERATOR(hilti, bytes::ToTimeAscii);
 };
 HILTI_OPERATOR_IMPLEMENTATION(ToTimeAscii);
 
@@ -921,7 +921,7 @@ into a time value.
         };
     }
 
-    HILTI_OPERATOR(bytes::ToTimeBinary);
+    HILTI_OPERATOR(hilti, bytes::ToTimeBinary);
 };
 HILTI_OPERATOR_IMPLEMENTATION(ToTimeBinary);
 
@@ -956,7 +956,7 @@ according to the *errors* strategy.
         };
     }
 
-    HILTI_OPERATOR(bytes::Decode);
+    HILTI_OPERATOR(hilti, bytes::Decode);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Decode);
 
@@ -989,7 +989,7 @@ expression is considered anchored to the beginning of the data.
         };
     }
 
-    HILTI_OPERATOR(bytes::Match);
+    HILTI_OPERATOR(hilti, bytes::Match);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Match);
 

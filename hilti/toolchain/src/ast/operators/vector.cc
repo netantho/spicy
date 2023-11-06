@@ -30,7 +30,7 @@ public:
         return operands[0]->type()->type()->dereferencedType();
     }
 
-    HILTI_OPERATOR(vector::iterator::Deref)
+    HILTI_OPERATOR(hilti, vector::iterator::Deref)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Deref);
 
@@ -50,7 +50,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(vector::iterator::IncrPostfix)
+    HILTI_OPERATOR(hilti, vector::iterator::IncrPostfix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPostfix);
 
@@ -70,7 +70,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(vector::iterator::IncrPrefix)
+    HILTI_OPERATOR(hilti, vector::iterator::IncrPrefix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPrefix);
 
@@ -92,7 +92,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(vector::iterator::Equal)
+    HILTI_OPERATOR(hilti, vector::iterator::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -115,7 +115,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(vector::iterator::Unequal)
+    HILTI_OPERATOR(hilti, vector::iterator::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -133,7 +133,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(vector::Size)
+    HILTI_OPERATOR(hilti, vector::Size)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Size);
 
@@ -155,7 +155,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(vector::Equal)
+    HILTI_OPERATOR(hilti, vector::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -177,7 +177,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(vector::Unequal)
+    HILTI_OPERATOR(hilti, vector::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -199,7 +199,7 @@ public:
         return operands[0]->type()->type()->as<type::Vector>()->elementType();
     }
 
-    HILTI_OPERATOR(vector::IndexConst)
+    HILTI_OPERATOR(hilti, vector::IndexConst)
 };
 
 HILTI_OPERATOR_IMPLEMENTATION(IndexConst);
@@ -220,7 +220,7 @@ public:
         return operands[0]->type()->type()->as<type::Vector>()->elementType()->recreateAsLhs(builder->context());
     }
 
-    HILTI_OPERATOR(vector::IndexNonConst)
+    HILTI_OPERATOR(hilti, vector::IndexNonConst)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IndexNonConst);
 
@@ -246,7 +246,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(vector::Sum)
+    HILTI_OPERATOR(hilti, vector::Sum)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Sum)
 
@@ -272,7 +272,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(vector::SumAssign)
+    HILTI_OPERATOR(hilti, vector::SumAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SumAssign)
 
@@ -304,7 +304,7 @@ to carry out the assignment.
         };
     }
 
-    HILTI_OPERATOR(vector::Assign);
+    HILTI_OPERATOR(hilti, vector::Assign);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Assign);
 
@@ -328,7 +328,7 @@ Appends *x* to the end of the vector.
         };
     }
 
-    HILTI_OPERATOR(vector::PushBack);
+    HILTI_OPERATOR(hilti, vector::PushBack);
 };
 HILTI_OPERATOR_IMPLEMENTATION(PushBack);
 
@@ -347,7 +347,7 @@ Removes the last element from the vector, which must be non-empty.
         };
     }
 
-    HILTI_OPERATOR(vector::PopBack);
+    HILTI_OPERATOR(hilti, vector::PopBack);
 };
 HILTI_OPERATOR_IMPLEMENTATION(PopBack);
 
@@ -371,7 +371,7 @@ empty.
         return operands[0]->type()->type()->as<type::Vector>()->elementType();
     }
 
-    HILTI_OPERATOR(vector::Front);
+    HILTI_OPERATOR(hilti, vector::Front);
 };
 
 class Back : public BuiltInMemberCall {
@@ -394,7 +394,7 @@ empty.
         return operands[0]->type()->type()->as<type::Vector>()->elementType();
     }
 
-    HILTI_OPERATOR(vector::Back);
+    HILTI_OPERATOR(hilti, vector::Back);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Back);
 
@@ -420,7 +420,7 @@ needed.
         };
     }
 
-    HILTI_OPERATOR(vector::Reserve);
+    HILTI_OPERATOR(hilti, vector::Reserve);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Reserve);
 
@@ -446,7 +446,7 @@ than the current size, the excessive elements are removed.
         };
     }
 
-    HILTI_OPERATOR(vector::Resize);
+    HILTI_OPERATOR(hilti, vector::Resize);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Resize);
 
@@ -474,7 +474,7 @@ Returns an iterator referring to the element at vector index *i*.
         return operands[0]->type()->type()->as<type::Vector>()->iteratorType();
     }
 
-    HILTI_OPERATOR(vector::At);
+    HILTI_OPERATOR(hilti, vector::At);
 };
 HILTI_OPERATOR_IMPLEMENTATION(At);
 
@@ -508,7 +508,7 @@ to (but not including) index *end*.
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(vector::SubRange);
+    HILTI_OPERATOR(hilti, vector::SubRange);
 };
 HILTI_OPERATOR_IMPLEMENTATION(SubRange);
 
@@ -537,7 +537,7 @@ to (but not including) index *end*.
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(vector::SubEnd);
+    HILTI_OPERATOR(hilti, vector::SubEnd);
 };
 HILTI_OPERATOR_IMPLEMENTATION(SubEnd);
 

@@ -48,7 +48,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(union_::Equal)
+    HILTI_OPERATOR(hilti, union_::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -70,7 +70,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(union_::Unequal)
+    HILTI_OPERATOR(hilti, union_::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -97,7 +97,7 @@ this triggers an exception.
 
     void validate(expression::ResolvedOperator* n) const final { _checkName(n); }
 
-    HILTI_OPERATOR(union_::MemberConst)
+    HILTI_OPERATOR(hilti, union_::MemberConst)
 };
 HILTI_OPERATOR_IMPLEMENTATION(MemberConst);
 
@@ -123,7 +123,7 @@ this triggers an exception unless the value is only being assigned to.
 
     void validate(expression::ResolvedOperator* n) const final { _checkName(n); }
 
-    HILTI_OPERATOR(union_::MemberNonConst)
+    HILTI_OPERATOR(hilti, union_::MemberNonConst)
 };
 HILTI_OPERATOR_IMPLEMENTATION(MemberNonConst);
 
@@ -142,7 +142,7 @@ public:
 
     void validate(expression::ResolvedOperator* n) const final { _checkName(n); }
 
-    HILTI_OPERATOR(union_::HasMember)
+    HILTI_OPERATOR(hilti, union_::HasMember)
 };
 HILTI_OPERATOR_IMPLEMENTATION(HasMember);
 

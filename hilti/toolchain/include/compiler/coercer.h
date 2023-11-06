@@ -280,4 +280,16 @@ Result<CtorPtr> coerceCtor(Builder* builder, CtorPtr c, const QualifiedTypePtr& 
 Result<QualifiedTypePtr> coerceType(Builder* builder, const QualifiedTypePtr& src_, const QualifiedTypePtr& dst_,
                                     bitmask<CoercionStyle> style = CoercionStyle::TryAllForAssignment);
 
+
+namespace coercer::detail {
+
+/** Implements the corresponding functionality for the default HILTI compiler plugin. */
+CtorPtr coerceCtor(Builder* builder, const CtorPtr& c, const QualifiedTypePtr& dst, bitmask<CoercionStyle> style);
+
+/** Implements the corresponding functionality for the default HILTI compiler plugin. */
+QualifiedTypePtr coerceType(Builder* builder, const QualifiedTypePtr& t, const QualifiedTypePtr& dst,
+                            bitmask<CoercionStyle> style);
+
+} // namespace coercer::detail
+
 } // namespace hilti

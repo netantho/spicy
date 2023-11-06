@@ -9,7 +9,6 @@
 #include <hilti/ast/types/any.h>
 #include <hilti/ast/types/struct.h>
 #include <hilti/ast/types/unknown.h>
-#include <hilti/global.h>
 
 using namespace hilti;
 using namespace hilti::operator_;
@@ -95,7 +94,7 @@ Clears an optional field.
 
     void validate(expression::ResolvedOperator* n) const final { _checkName(n, true); }
 
-    HILTI_OPERATOR(struct_::Unset)
+    HILTI_OPERATOR(hilti, struct_::Unset)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unset);
 
@@ -122,7 +121,7 @@ triggers an exception.
 
     void validate(expression::ResolvedOperator* n) const final { _checkName(n); }
 
-    HILTI_OPERATOR(struct_::MemberNonConst)
+    HILTI_OPERATOR(hilti, struct_::MemberNonConst)
 };
 HILTI_OPERATOR_IMPLEMENTATION(MemberNonConst);
 
@@ -149,7 +148,7 @@ triggers an exception.
 
     void validate(expression::ResolvedOperator* n) const final { _checkName(n); }
 
-    HILTI_OPERATOR(struct_::MemberConst)
+    HILTI_OPERATOR(hilti, struct_::MemberConst)
 };
 HILTI_OPERATOR_IMPLEMENTATION(MemberConst);
 
@@ -179,7 +178,7 @@ exception differently).
 
     void validate(expression::ResolvedOperator* n) const final { _checkName(n); }
 
-    HILTI_OPERATOR(struct_::TryMember)
+    HILTI_OPERATOR(hilti, struct_::TryMember)
 };
 HILTI_OPERATOR_IMPLEMENTATION(TryMember);
 
@@ -198,7 +197,7 @@ public:
 
     void validate(expression::ResolvedOperator* n) const final { _checkName(n); }
 
-    HILTI_OPERATOR(struct_::HasMember)
+    HILTI_OPERATOR(hilti, struct_::HasMember)
 };
 HILTI_OPERATOR_IMPLEMENTATION(HasMember);
 

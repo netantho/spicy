@@ -44,7 +44,7 @@ protected:
     BitRange(ASTContext* ctx, Nodes children, ID id, const Meta& meta = Meta())
         : Node(ctx, std::move(children), meta), _id(std::move(id)) {}
 
-    HILTI_NODE(BitRange);
+    HILTI_NODE(hilti, BitRange);
 
 private:
     ID _id;
@@ -84,7 +84,7 @@ public:
 protected:
     Bitfield(ASTContext* ctx, Nodes children, Meta meta) : Ctor(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Bitfield)
+    HILTI_NODE(hilti, Bitfield)
 };
 
 } // namespace hilti::ctor

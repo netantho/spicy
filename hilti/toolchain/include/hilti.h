@@ -11,4 +11,3 @@
 #include <hilti/compiler/jit.h>
 #include <hilti/compiler/plugin.h>
 #include <hilti/compiler/unit.h>
-#include <hilti/global.h>

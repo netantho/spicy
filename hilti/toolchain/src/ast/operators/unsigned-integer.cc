@@ -53,7 +53,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(unsigned_integer::DecrPostfix)
+    HILTI_OPERATOR(hilti, unsigned_integer::DecrPostfix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(DecrPostfix);
 
@@ -74,7 +74,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(unsigned_integer::DecrPrefix)
+    HILTI_OPERATOR(hilti, unsigned_integer::DecrPrefix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(DecrPrefix);
 
@@ -95,7 +95,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(unsigned_integer::IncrPostfix)
+    HILTI_OPERATOR(hilti, unsigned_integer::IncrPostfix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPostfix);
 
@@ -116,7 +116,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(unsigned_integer::IncrPrefix)
+    HILTI_OPERATOR(hilti, unsigned_integer::IncrPrefix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPrefix);
 
@@ -139,7 +139,7 @@ public:
                                       true);
     }
 
-    HILTI_OPERATOR(unsigned_integer::SignNeg)
+    HILTI_OPERATOR(hilti, unsigned_integer::SignNeg)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SignNeg);
 
@@ -167,7 +167,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::Difference)
+    HILTI_OPERATOR(hilti, unsigned_integer::Difference)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Difference);
 
@@ -195,7 +195,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::DifferenceAssign)
+    HILTI_OPERATOR(hilti, unsigned_integer::DifferenceAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(DifferenceAssign);
 
@@ -223,7 +223,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::Division)
+    HILTI_OPERATOR(hilti, unsigned_integer::Division)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Division);
 
@@ -251,7 +251,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::DivisionAssign)
+    HILTI_OPERATOR(hilti, unsigned_integer::DivisionAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(DivisionAssign);
 
@@ -275,7 +275,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::Equal)
+    HILTI_OPERATOR(hilti, unsigned_integer::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -299,7 +299,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::Greater)
+    HILTI_OPERATOR(hilti, unsigned_integer::Greater)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Greater);
 
@@ -323,7 +323,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::GreaterEqual)
+    HILTI_OPERATOR(hilti, unsigned_integer::GreaterEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(GreaterEqual);
 
@@ -347,7 +347,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::Lower)
+    HILTI_OPERATOR(hilti, unsigned_integer::Lower)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Lower);
 
@@ -371,7 +371,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::LowerEqual)
+    HILTI_OPERATOR(hilti, unsigned_integer::LowerEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(LowerEqual);
 
@@ -399,7 +399,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::Modulo)
+    HILTI_OPERATOR(hilti, unsigned_integer::Modulo)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Modulo);
 
@@ -427,7 +427,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::Multiple)
+    HILTI_OPERATOR(hilti, unsigned_integer::Multiple)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Multiple);
 
@@ -455,7 +455,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::MultipleAssign)
+    HILTI_OPERATOR(hilti, unsigned_integer::MultipleAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(MultipleAssign);
 
@@ -483,7 +483,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::Power)
+    HILTI_OPERATOR(hilti, unsigned_integer::Power)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Power);
 
@@ -511,7 +511,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::Sum)
+    HILTI_OPERATOR(hilti, unsigned_integer::Sum)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Sum);
 
@@ -539,7 +539,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::SumAssign)
+    HILTI_OPERATOR(hilti, unsigned_integer::SumAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SumAssign);
 
@@ -563,7 +563,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::Unequal)
+    HILTI_OPERATOR(hilti, unsigned_integer::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -583,7 +583,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(unsigned_integer::Negate)
+    HILTI_OPERATOR(hilti, unsigned_integer::Negate)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Negate);
 
@@ -610,7 +610,7 @@ public:
         return builder->qualifiedType(widestTypeUnsigned(builder, operands), true);
     }
 
-    HILTI_OPERATOR(unsigned_integer::BitAnd)
+    HILTI_OPERATOR(hilti, unsigned_integer::BitAnd)
 };
 HILTI_OPERATOR_IMPLEMENTATION(BitAnd);
 
@@ -637,7 +637,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::BitOr)
+    HILTI_OPERATOR(hilti, unsigned_integer::BitOr)
 };
 HILTI_OPERATOR_IMPLEMENTATION(BitOr);
 
@@ -664,7 +664,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(unsigned_integer::BitXor)
+    HILTI_OPERATOR(hilti, unsigned_integer::BitXor)
 };
 HILTI_OPERATOR_IMPLEMENTATION(BitXor);
 
@@ -686,7 +686,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(unsigned_integer::ShiftLeft)
+    HILTI_OPERATOR(hilti, unsigned_integer::ShiftLeft)
 };
 HILTI_OPERATOR_IMPLEMENTATION(ShiftLeft);
 
@@ -708,7 +708,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(unsigned_integer::ShiftRight)
+    HILTI_OPERATOR(hilti, unsigned_integer::ShiftRight)
 };
 HILTI_OPERATOR_IMPLEMENTATION(ShiftRight);
 
@@ -730,7 +730,7 @@ public:
         return operands[1]->type()->type()->as<type::Type_>()->typeValue();
     }
 
-    HILTI_OPERATOR(unsigned_integer::CastToUnsigned)
+    HILTI_OPERATOR(hilti, unsigned_integer::CastToUnsigned)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToUnsigned);
 
@@ -753,7 +753,7 @@ public:
         return operands[1]->type()->type()->as<type::Type_>()->typeValue();
     }
 
-    HILTI_OPERATOR(unsigned_integer::CastToSigned)
+    HILTI_OPERATOR(hilti, unsigned_integer::CastToSigned)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToSigned);
 
@@ -771,7 +771,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(unsigned_integer::CastToReal)
+    HILTI_OPERATOR(hilti, unsigned_integer::CastToReal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToReal);
 
@@ -782,7 +782,8 @@ public:
         return {
             .kind = Kind::Cast,
             .op0 = {parameter::Kind::In, builder->typeUnsignedInteger(type::Wildcard())},
-            .op1 = {parameter::Kind::In, builder->typeType(builder->qualifiedType(builder->typeEnum(type::Wildcard()), true))},
+            .op1 = {parameter::Kind::In,
+                    builder->typeType(builder->qualifiedType(builder->typeEnum(type::Wildcard()), true))},
             .result_doc = "enum<*>",
             .ns = "unsigned_integer",
             .doc =
@@ -795,7 +796,7 @@ public:
         return operands[1]->type()->type()->as<type::Type_>()->typeValue();
     }
 
-    HILTI_OPERATOR(unsigned_integer::CastToEnum)
+    HILTI_OPERATOR(hilti, unsigned_integer::CastToEnum)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToEnum);
 
@@ -812,7 +813,7 @@ public:
             .doc = "Interprets the value as number of seconds.",
         };
     }
-    HILTI_OPERATOR(unsigned_integer::CastToInterval)
+    HILTI_OPERATOR(hilti, unsigned_integer::CastToInterval)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToInterval);
 
@@ -829,7 +830,7 @@ public:
             .doc = "Interprets the value as number of seconds.",
         };
     }
-    HILTI_OPERATOR(unsigned_integer::CastToTime)
+    HILTI_OPERATOR(hilti, unsigned_integer::CastToTime)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToTime);
 
@@ -846,7 +847,7 @@ public:
             .doc = "Converts the value to a boolean by comparing against zero",
         };
     }
-    HILTI_OPERATOR(unsigned_integer::CastToBool)
+    HILTI_OPERATOR(hilti, unsigned_integer::CastToBool)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToBool);
 
@@ -863,7 +864,7 @@ public:
             .doc = "Creates a 8-bit unsigned integer value.",
         };
     }
-    HILTI_OPERATOR(unsigned_integer::CtorSigned8)
+    HILTI_OPERATOR(hilti, unsigned_integer::CtorSigned8)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorSigned8);
 
@@ -879,7 +880,7 @@ public:
             .doc = "Creates a 16-bit unsigned integer value.",
         };
     }
-    HILTI_OPERATOR(unsigned_integer::CtorSigned16)
+    HILTI_OPERATOR(hilti, unsigned_integer::CtorSigned16)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorSigned16);
 
@@ -895,7 +896,7 @@ public:
             .doc = "Creates a 32-bit unsigned integer value.",
         };
     }
-    HILTI_OPERATOR(unsigned_integer::CtorSigned32)
+    HILTI_OPERATOR(hilti, unsigned_integer::CtorSigned32)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorSigned32);
 
@@ -911,7 +912,7 @@ public:
             .doc = "Creates a 64-bit unsigned integer value.",
         };
     }
-    HILTI_OPERATOR(unsigned_integer::CtorSigned64)
+    HILTI_OPERATOR(hilti, unsigned_integer::CtorSigned64)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorSigned64);
 
@@ -927,7 +928,7 @@ public:
             .doc = "Creates a 8-bit unsigned integer value.",
         };
     }
-    HILTI_OPERATOR(unsigned_integer::CtorUnsigned8)
+    HILTI_OPERATOR(hilti, unsigned_integer::CtorUnsigned8)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorUnsigned8);
 
@@ -943,7 +944,7 @@ public:
             .doc = "Creates a 16-bit unsigned integer value.",
         };
     }
-    HILTI_OPERATOR(unsigned_integer::CtorUnsigned16)
+    HILTI_OPERATOR(hilti, unsigned_integer::CtorUnsigned16)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorUnsigned16);
 
@@ -959,7 +960,7 @@ public:
             .doc = "Creates a 32-bit unsigned integer value.",
         };
     }
-    HILTI_OPERATOR(unsigned_integer::CtorUnsigned32)
+    HILTI_OPERATOR(hilti, unsigned_integer::CtorUnsigned32)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorUnsigned32);
 
@@ -975,7 +976,7 @@ public:
             .doc = "Creates a 64-bit unsigned integer value.",
         };
     }
-    HILTI_OPERATOR(unsigned_integer::CtorUnsigned64)
+    HILTI_OPERATOR(hilti, unsigned_integer::CtorUnsigned64)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorUnsigned64);
 

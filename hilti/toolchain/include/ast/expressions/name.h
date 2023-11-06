@@ -21,6 +21,7 @@ public:
 
     QualifiedTypePtr type() const final;
 
+    void setID(ID id) { _id = std::move(id); }
     void setResolvedDeclaration(ASTContext* ctx, const DeclarationPtr& d) {
         _declaration = d;
         setChild(ctx, 0, nullptr);
@@ -36,7 +37,7 @@ protected:
     Name(ASTContext* ctx, Nodes children, hilti::ID id, Meta meta)
         : Expression(ctx, std::move(children), std::move(meta)), _id(std::move(id)) {}
 
-    HILTI_NODE(Name)
+    HILTI_NODE(hilti, Name)
 
 private:
     hilti::ID _id;

@@ -78,7 +78,7 @@ protected:
 
     std::string _render() const final;
 
-    HILTI_NODE(Case);
+    HILTI_NODE(hilti, Case);
 
 private:
     int _end_exprs;
@@ -114,6 +114,12 @@ public:
         _preprocessed = true;
     }
 
+
+    void addCase(ASTContext* ctx, const switch_::CasePtr& c) {
+        addChild(ctx, c);
+        _preprocessed = false;
+    }
+
     static auto create(ASTContext* ctx, DeclarationPtr cond, const switch_::Cases& cases, Meta meta = {}) {
         return NodeDerivedPtr<Switch>(new Switch(ctx, node::flatten(std::move(cond), cases), std::move(meta)));
     }
@@ -128,7 +134,7 @@ protected:
             logger().internalError("initialization for 'switch' must be a local declaration");
     }
 
-    HILTI_NODE(Switch)
+    HILTI_NODE(hilti, Switch)
 
 private:
     bool _preprocessed = false;

@@ -32,7 +32,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(tuple::Equal)
+    HILTI_OPERATOR(hilti, tuple::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -54,7 +54,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(tuple::Unequal)
+    HILTI_OPERATOR(hilti, tuple::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -101,7 +101,7 @@ public:
         n->addError("tuple index must be an integer constant");
     }
 
-    HILTI_OPERATOR(tuple::Index)
+    HILTI_OPERATOR(hilti, tuple::Index)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Index);
 
@@ -145,7 +145,7 @@ public:
             n->addError("unknown tuple element");
     }
 
-    HILTI_OPERATOR(tuple::Member)
+    HILTI_OPERATOR(hilti, tuple::Member)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Member);
 
@@ -200,7 +200,7 @@ public:
         }
     }
 
-    HILTI_OPERATOR(tuple::CustomAssign)
+    HILTI_OPERATOR(hilti, tuple::CustomAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CustomAssign);
 

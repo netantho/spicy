@@ -33,7 +33,7 @@ public:
         return operands[0]->type()->type()->dereferencedType();
     }
 
-    HILTI_OPERATOR(map::iterator::Deref)
+    HILTI_OPERATOR(hilti, map::iterator::Deref)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Deref);
 
@@ -53,7 +53,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(map::iterator::IncrPostfix)
+    HILTI_OPERATOR(hilti, map::iterator::IncrPostfix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPostfix);
 
@@ -73,7 +73,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(map::iterator::IncrPrefix)
+    HILTI_OPERATOR(hilti, map::iterator::IncrPrefix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPrefix);
 
@@ -95,7 +95,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(map::iterator::Equal)
+    HILTI_OPERATOR(hilti, map::iterator::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -117,7 +117,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(map::iterator::Unequal)
+    HILTI_OPERATOR(hilti, map::iterator::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -135,7 +135,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(map::Size)
+    HILTI_OPERATOR(hilti, map::Size)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Size);
 
@@ -157,7 +157,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(map::Equal)
+    HILTI_OPERATOR(hilti, map::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -179,7 +179,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(map::Unequal)
+    HILTI_OPERATOR(hilti, map::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -198,12 +198,12 @@ public:
 
     std::optional<operator_::Operands> filter(Builder* builder, const Expressions& operands) const final {
         auto op0 = operandForType(builder, parameter::Kind::In,
-                                           operands[1]->type()->type()->as<type::Map>()->keyType()->type());
+                                  operands[1]->type()->type()->as<type::Map>()->keyType()->type());
         auto op1 = operandForExpression(builder, parameter::Kind::In, operands, 1);
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(map::In)
+    HILTI_OPERATOR(hilti, map::In)
 };
 HILTI_OPERATOR_IMPLEMENTATION(In);
 
@@ -223,11 +223,11 @@ public:
     std::optional<operator_::Operands> filter(Builder* builder, const Expressions& operands) const final {
         auto op0 = operandForExpression(builder, parameter::Kind::InOut, operands, 0);
         auto op1 = operandForType(builder, parameter::Kind::In,
-                                           operands[0]->type()->type()->as<type::Map>()->keyType()->type());
+                                  operands[0]->type()->type()->as<type::Map>()->keyType()->type());
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(map::Delete)
+    HILTI_OPERATOR(hilti, map::Delete)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Delete)
 
@@ -250,7 +250,7 @@ public:
     std::optional<operator_::Operands> filter(Builder* builder, const Expressions& operands) const final {
         auto op0 = operandForExpression(builder, parameter::Kind::In, operands, 0);
         auto op1 = operandForType(builder, parameter::Kind::In,
-                                           operands[0]->type()->type()->as<type::Map>()->keyType()->type());
+                                  operands[0]->type()->type()->as<type::Map>()->keyType()->type());
         return {{op0, op1}};
     }
 
@@ -259,7 +259,7 @@ public:
     }
 
 
-    HILTI_OPERATOR(map::IndexConst)
+    HILTI_OPERATOR(hilti, map::IndexConst)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IndexConst);
 
@@ -281,7 +281,7 @@ public:
     std::optional<operator_::Operands> filter(Builder* builder, const Expressions& operands) const final {
         auto op0 = operandForExpression(builder, parameter::Kind::InOut, operands, 0);
         auto op1 = operandForType(builder, parameter::Kind::In,
-                                           operands[0]->type()->type()->as<type::Map>()->keyType()->type());
+                                  operands[0]->type()->type()->as<type::Map>()->keyType()->type());
         return {{op0, op1}};
     }
 
@@ -289,7 +289,7 @@ public:
         return operands[0]->type()->type()->as<type::Map>()->valueType()->recreateAsLhs(builder->context());
     }
 
-    HILTI_OPERATOR(map::IndexNonConst)
+    HILTI_OPERATOR(hilti, map::IndexNonConst)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IndexNonConst);
 
@@ -310,13 +310,13 @@ public:
     std::optional<operator_::Operands> filter(Builder* builder, const Expressions& operands) const final {
         auto op0 = operandForExpression(builder, parameter::Kind::InOut, operands, 0);
         auto op1 = operandForType(builder, parameter::Kind::In,
-                                           operands[0]->type()->type()->as<type::Map>()->keyType()->type());
+                                  operands[0]->type()->type()->as<type::Map>()->keyType()->type());
         auto op2 = operandForType(builder, parameter::Kind::In,
                                   operands[0]->type()->type()->as<type::Map>()->valueType()->type());
         return {{op0, op1, op2}};
     }
 
-    HILTI_OPERATOR(map::IndexAssign)
+    HILTI_OPERATOR(hilti, map::IndexAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IndexAssign);
 
@@ -351,7 +351,7 @@ the default value if provided; otherwise throws a runtime error.
         return operands[0]->type()->type()->as<type::Map>()->valueType()->recreateAsLhs(builder->context());
     }
 
-    HILTI_OPERATOR(map::Get);
+    HILTI_OPERATOR(hilti, map::Get);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Get);
 
@@ -370,7 +370,7 @@ Removes all elements from the map.
         };
     }
 
-    HILTI_OPERATOR(map::Clear);
+    HILTI_OPERATOR(hilti, map::Clear);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Clear);
 

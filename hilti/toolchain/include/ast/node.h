@@ -20,30 +20,38 @@
 #include <hilti/ast/scope.h>
 #include <hilti/ast/visitor-dispatcher.h>
 
-#define HILTI_NODE_BASE(CLASS) void dispatch(visitor::Dispatcher& v) override;
+#define HILTI_NODE_BASE(NS, CLASS) void dispatch(::NS::visitor::Dispatcher& v) override;
 
-#define HILTI_NODE(CLASS)                                                                                              \
-    NodePtr _clone(ASTContext* ctx) const final { return NodeDerivedPtr<CLASS>(new CLASS(*this)); }                    \
-    std::string _typename() const final { return util::typename_(*this); }                                             \
+#define HILTI_NODE(NS, CLASS)                                                                                          \
+    ::hilti::NodePtr _clone(::hilti::ASTContext* ctx) const final {                                                    \
+        return ::hilti::NodeDerivedPtr<CLASS>(new CLASS(*this));                                                       \
+    }                                                                                                                  \
+    std::string _typename() const final { return hilti::util::typename_(*this); }                                      \
     void dispatch(::hilti::visitor::Dispatcher& v) final;                                                              \
-    friend class hilti::builder::NodeBuilder;
+    friend class ::NS::builder::NodeBuilder;
 
-#define HILTI_NODE_IMPLEMENTATION_0(CLASS)                                                                             \
-    void ::hilti::CLASS::dispatch(::hilti::visitor::Dispatcher& v) {                                                   \
-        v(static_cast<Node*>(this));                                                                                   \
+#define HILTI_NODE_IMPLEMENTATION_0(NS, CLASS)                                                                         \
+    void ::NS::CLASS::dispatch(::hilti::visitor::Dispatcher& v_) {                                                     \
+        assert(dynamic_cast<::NS::visitor::Dispatcher*>(&v_));                                                         \
+        auto& v = static_cast<::NS::visitor::Dispatcher&>(v_);                                                         \
+        v(static_cast<::hilti::Node*>(this));                                                                          \
         v(this);                                                                                                       \
     }
 
-#define HILTI_NODE_IMPLEMENTATION_1(CLASS, BASE)                                                                       \
-    void ::hilti::CLASS::dispatch(::hilti::visitor::Dispatcher& v) {                                                   \
-        v(static_cast<Node*>(this));                                                                                   \
+#define HILTI_NODE_IMPLEMENTATION_1(NS, CLASS, BASE)                                                                   \
+    void ::NS::CLASS::dispatch(::hilti::visitor::Dispatcher& v_) {                                                     \
+        assert(dynamic_cast<::NS::visitor::Dispatcher*>(&v_));                                                         \
+        auto& v = static_cast<::NS::visitor::Dispatcher&>(v_);                                                         \
+        v(static_cast<::hilti::Node*>(this));                                                                          \
         v(static_cast<BASE*>(this));                                                                                   \
         v(this);                                                                                                       \
     }
 
-#define HILTI_NODE_IMPLEMENTATION_2(CLASS, BASE1, BASE2)                                                               \
-    void ::hilti::CLASS::dispatch(::hilti::visitor::Dispatcher& v) {                                                   \
-        v(static_cast<Node*>(this));                                                                                   \
+#define HILTI_NODE_IMPLEMENTATION_2(NS, CLASS, BASE1, BASE2)                                                           \
+    void ::NS::CLASS::dispatch(::hilti::visitor::Dispatcher& v_) {                                                     \
+        assert(dynamic_cast<::NS::visitor::Dispatcher*>(&v_));                                                         \
+        auto& v = static_cast<::NS::visitor::Dispatcher&>(v_);                                                         \
+        v(static_cast<::hilti::Node*>(this));                                                                          \
         v(static_cast<BASE1*>(this));                                                                                  \
         v(static_cast<BASE2*>(this));                                                                                  \
         v(this);                                                                                                       \

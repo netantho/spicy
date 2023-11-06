@@ -19,14 +19,18 @@
 #include <hilti/base/logger.h>
 #include <hilti/base/result.h>
 #include <hilti/base/util.h>
+#include <hilti/compiler/coercer.h>
 #include <hilti/compiler/context.h>
-#include <hilti/compiler/detail/coercer.h>
 
 namespace hilti {
 
 class ASTContext;
 class Context;
 class Unit;
+
+namespace type_unifier {
+class Unifier;
+}
 
 /**
  * Compiler plugin that implements AST-to-AST translation through a set of
@@ -78,15 +82,17 @@ struct Plugin {
      */
     Hook<std::vector<hilti::rt::filesystem::path>, Context*> library_paths;
 
+    Hook<bool, type_unifier::Unifier*, NodePtr&> unify_type;
+
     /**
      * Hook called to parse input file that this plugin handles.
      *
-     * @param arg1 AST builder to use during parsing
+     * @param arg1 AST context to use during parsing
      * @param arg2 input stream to parse
      * @param arg3 file associated with the input stream
      * @return module AST if parsing succeeded
      */
-    Hook<Result<ModulePtr>, Builder*, std::istream&, hilti::rt::filesystem::path> parse;
+    Hook<Result<ModulePtr>, ASTContext*, std::istream&, hilti::rt::filesystem::path> parse;
 
     /**
      * Hook called to perform coercion of a `Ctor` into another of a given target type.
@@ -94,13 +100,13 @@ struct Plugin {
      * If the plugin knows how to handle the coercion, the hook returns a new
      * `Ctor` that's now of the target type.
      *
-     * @param arg1 builder to use
+     * @param arg1 context to use
      * @param arg2 ctor that needs coercion
      * @param arg3 target type for ctor
      * @param arg4 coercion style to use
      * @return new ctor if plugin performed coercion, or nullptr otherwise
      */
-    Hook<CtorPtr, Builder*, const CtorPtr&, const QualifiedTypePtr&, bitmask<CoercionStyle>> coerce_ctor;
+    Hook<CtorPtr, ASTContext*, const CtorPtr&, const QualifiedTypePtr&, bitmask<CoercionStyle>> coerce_ctor;
 
     /**
      * Hook called to approved coercion of an expression into a different
@@ -111,51 +117,51 @@ struct Plugin {
      * `apply_coercions` hook that will later be called to perform the actual
      * coercion during code generation.
      *
-     * @param arg1 builder to use
+     * @param arg1 context to use
      * @param arg2 type that needs coercion
      * @param arg3 target type for coercion
      * @param arg4 coercion style to use
      * @return new type if plugin can handle this coercion
      */
-    Hook<QualifiedTypePtr, Builder*, const QualifiedTypePtr&, const QualifiedTypePtr&, bitmask<CoercionStyle>>
+    Hook<QualifiedTypePtr, ASTContext*, const QualifiedTypePtr&, const QualifiedTypePtr&, bitmask<CoercionStyle>>
         coerce_type;
 
     /**
      * Hook called to build the scopes in a module's AST.
      *
-     * @param arg1 builder to use
+     * @param arg1 context to use
      * @param arg2 root node of AST; the hook may modify the AST
      * @return true if the hook modified the AST in a substantial way
      */
-    Hook<bool, Builder*, const ASTRootPtr&> ast_build_scopes;
+    Hook<bool, ASTContext*, const ASTRootPtr&> ast_build_scopes;
 
     /**
      * Hook called to resolve unknown types and other entities.
      *
-     * @param arg1 builder to use
+     * @param arg1 context to use
      * @param arg2 root node of AST; the hook may modify the AST
      * @return true if the hook modified the AST in a substantial way
      */
-    Hook<bool, Builder*, const ASTRootPtr&> ast_resolve;
+    Hook<bool, ASTContext*, const ASTRootPtr&> ast_resolve;
 
     /**
      * Hook called to validate correctness of an AST before resolving starts
      * (to the degree it can at that time). Any errors must be reported by
      * setting the nodes' error information.
      *
-     * @param arg1 builder to use
+     * @param arg1 context to use
      * @param arg2 root node of AST; the hook may not modify the AST
      */
-    Hook<bool, Builder*, const ASTRootPtr&> ast_validate_pre;
+    Hook<bool, ASTContext*, const ASTRootPtr&> ast_validate_pre;
 
     /**
      * Hook called to validate correctness of an AST once fully resolved. Any
      * errors must be reported by setting the nodes' error information.
      *
-     * @param arg1 builder to use
+     * @param arg1 context to use
      * @param arg2 root node of AST; the hook may not modify the AST
      */
-    Hook<bool, Builder*, const ASTRootPtr&> ast_validate_post;
+    Hook<bool, ASTContext*, const ASTRootPtr&> ast_validate_post;
 
     /**
      * Hook called to print an AST back as source code. The hook gets to choose
@@ -172,11 +178,11 @@ struct Plugin {
      * Hook called to replace AST nodes of one language (plugin) with nodes
      * of another coming further down in the pipeline.
      *
-     * @param arg1 builder to use
+     * @param arg1 context to use
      * @param arg2 root node of AST; the hook may modify the AST
      * @return true if the hook modified the AST in a substantial way
      */
-    Hook<bool, Builder*, const ASTRootPtr&> ast_transform;
+    Hook<bool, ASTContext*, const ASTRootPtr&> ast_transform;
 };
 
 class PluginRegistry;

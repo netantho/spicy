@@ -38,7 +38,6 @@
 #include <hilti/compiler/detail/resolver.h>
 #include <hilti/compiler/driver.h>
 #include <hilti/compiler/unit.h>
-#include <hilti/global.h>
 
 using namespace hilti;
 

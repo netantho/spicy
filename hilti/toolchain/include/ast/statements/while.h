@@ -41,7 +41,7 @@ protected:
             logger().internalError("initialization for 'while' must be a local declaration");
     }
 
-    HILTI_NODE(While)
+    HILTI_NODE(hilti, While)
 };
 
 } // namespace hilti::statement

@@ -27,7 +27,7 @@ public:
 protected:
     Assign(ASTContext* ctx, Nodes children, Meta meta) : Expression(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Assign)
+    HILTI_NODE(hilti, Assign)
 };
 
 } // namespace hilti::expression

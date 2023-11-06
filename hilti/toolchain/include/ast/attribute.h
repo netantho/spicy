@@ -66,7 +66,7 @@ public:
      * result's value is false); a failure if a coercion would have been
      * necessary, but failed, or the attribute does not have a expression value.
      */
-    Result<bool> coerceValueTo(const UnqualifiedTypePtr& dst);
+    Result<bool> coerceValueTo(Builder* builder, const QualifiedTypePtr& dst);
 
     node::Properties properties() const final {
         auto p = node::Properties{{"tag", _tag}};
@@ -101,7 +101,7 @@ protected:
 
     std::string _render() const override;
 
-    HILTI_NODE(Attribute);
+    HILTI_NODE(hilti, Attribute);
 
 private:
     std::string _tag;
@@ -172,7 +172,7 @@ protected:
 
     std::string _render() const override;
 
-    HILTI_NODE(AttributeSet);
+    HILTI_NODE(hilti, AttributeSet);
 };
 
 } // namespace hilti

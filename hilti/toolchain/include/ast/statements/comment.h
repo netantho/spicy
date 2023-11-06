@@ -45,7 +45,7 @@ protected:
     Comment(ASTContext* ctx, Nodes children, std::string comment, comment::Separator separator, Meta meta)
         : Statement(ctx, std::move(children), std::move(meta)), _comment(std::move(comment)), _separator(separator) {}
 
-    HILTI_NODE(Comment)
+    HILTI_NODE(hilti, Comment)
 
 private:
     std::string _comment;

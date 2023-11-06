@@ -18,7 +18,7 @@ public:
             .kind = Kind::Call,
             .self = {parameter::Kind::In, builder->typeException(type::Wildcard())},
             .param0 =
-               {
+                {
                     .name = "msg",
                     .type = {parameter::Kind::In, builder->typeString()},
                 },
@@ -34,7 +34,7 @@ Instantiates an instance of the exception type carrying the error message *msg*.
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(exception::Ctor)
+    HILTI_OPERATOR(hilti, exception::Ctor)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Ctor);
 
@@ -53,7 +53,7 @@ Returns the textual message associated with an exception object.
         };
     }
 
-    HILTI_OPERATOR(exception::Description);
+    HILTI_OPERATOR(hilti, exception::Description);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Description);
 

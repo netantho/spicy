@@ -7,6 +7,4 @@ using namespace hilti;
 
 Function::~Function() = default;
 
-std::string Function::_render() const {
-    return "";
-}
+std::string Function::_render() const { return ""; }

@@ -2,12 +2,14 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include <spicy/ast/types/unit.h>
 #include <spicy/compiler/detail/codegen/production.h>
+
 
 namespace spicy::detail::codegen::production {
 
@@ -16,23 +18,29 @@ namespace spicy::detail::codegen::production {
  * type). This can be used to hook into starting/finishing parsing for that
  * other grammar.
  */
-class Enclosure : public ProductionBase, public spicy::trait::isNonTerminal {
+class Enclosure : public Production {
 public:
-    Enclosure(const std::string& symbol, Production child, const Location& l = location::None)
-        : ProductionBase(symbol, l), _child(std::move(child)) {}
+    Enclosure(ASTContext* /* ctx */, const std::string& symbol, std::unique_ptr<Production> child,
+              const Location& l = location::None)
+        : Production(symbol, l), _child(std::move(child)) {}
 
-    const Production& child() const { return _child; }
+    const auto* child() const { return _child.get(); }
 
-    // Production API
-    std::vector<std::vector<Production>> rhss() const { return {{_child}}; };
-    std::optional<spicy::Type> type() const { return _child.type(); }
-    bool nullable() const { return production::nullable(rhss()); }
-    bool eodOk() const { return nullable(); }
-    bool atomic() const { return false; }
-    std::string render() const { return _child.symbol(); }
+    bool isAtomic() const final { return false; };
+    bool isEodOk() const final { return isNullable(); };
+    bool isLiteral() const final { return false; };
+    bool isNullable() const final { return production::isNullable(rhss()); };
+    bool isTerminal() const final { return false; };
 
+    std::vector<std::vector<Production*>> rhss() const final { return {{_child.get()}}; };
+    QualifiedTypePtr type() const final { return _child->type(); };
 
-    Production _child;
+    std::string render() const override { return _child->symbol(); }
+
+    SPICY_PRODUCTION
+
+private:
+    std::unique_ptr<Production> _child;
 };
 
 } // namespace spicy::detail::codegen::production

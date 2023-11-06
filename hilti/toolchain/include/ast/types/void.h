@@ -21,7 +21,7 @@ public:
 protected:
     Void(ASTContext* ctx, Meta meta) : UnqualifiedType(ctx, {"void"}, std::move(meta)) {}
 
-    HILTI_NODE(Void)
+    HILTI_NODE(hilti, Void)
 };
 
 } // namespace hilti::type

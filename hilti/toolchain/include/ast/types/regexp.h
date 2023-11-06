@@ -23,7 +23,7 @@ public:
 protected:
     RegExp(ASTContext* ctx, Meta meta) : UnqualifiedType(ctx, {"regexp"}, std::move(meta)) {}
 
-    HILTI_NODE(RegExp)
+    HILTI_NODE(hilti, RegExp)
 };
 
 } // namespace hilti::type

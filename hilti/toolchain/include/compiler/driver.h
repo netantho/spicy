@@ -127,6 +127,18 @@ public:
      */
     void registerUnit(const std::shared_ptr<Unit>& unit) { _addUnit(unit); }
 
+
+    /**
+     * Looks up a previously registered by its UID.
+     *
+     * @param uid UID to look up
+     * @return pointer to unit, or null if not found
+     */
+    Unit* lookupUnit(const module::UID& uid) const {
+        auto i = _units.find(uid);
+        return i != _units.end() ? i->second.get() : nullptr;
+    }
+
     /**
      * Schedules a source file for compilation. The file will be parsed
      * immediately, and then compiled later when `compile()` is called. If the

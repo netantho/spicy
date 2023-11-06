@@ -60,7 +60,7 @@ protected:
     GlobalVariable(ASTContext* ctx, Nodes children, ID id, declaration::Linkage linkage, Meta meta)
         : Declaration(ctx, std::move(children), std::move(id), linkage, std::move(meta)) {}
 
-    HILTI_NODE(GlobalVariable)
+    HILTI_NODE(hilti, GlobalVariable)
 };
 
 } // namespace hilti::declaration

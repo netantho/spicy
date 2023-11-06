@@ -30,7 +30,7 @@ public:
         return operands[0]->type()->type()->as<type::Optional>()->dereferencedType();
     }
 
-    HILTI_OPERATOR(list::iterator::Deref)
+    HILTI_OPERATOR(hilti, list::iterator::Deref)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Deref);
 
@@ -51,7 +51,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(list::iterator::IncrPostfix)
+    HILTI_OPERATOR(hilti, list::iterator::IncrPostfix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPostfix);
 
@@ -72,7 +72,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(list::iterator::IncrPrefix)
+    HILTI_OPERATOR(hilti, list::iterator::IncrPrefix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPrefix);
 
@@ -94,7 +94,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(list::iterator::Equal)
+    HILTI_OPERATOR(hilti, list::iterator::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -116,7 +116,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(list::iterator::Unequal)
+    HILTI_OPERATOR(hilti, list::iterator::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 } // namespace iterator
@@ -133,7 +133,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(list::Size)
+    HILTI_OPERATOR(hilti, list::Size)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Size);
 
@@ -155,7 +155,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(list::Equal)
+    HILTI_OPERATOR(hilti, list::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -177,7 +177,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(list::Unequal)
+    HILTI_OPERATOR(hilti, list::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 

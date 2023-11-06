@@ -24,7 +24,7 @@ public:
 protected:
     String(ASTContext* ctx, Meta meta) : UnqualifiedType(ctx, {"string"}, std::move(meta)) {}
 
-    HILTI_NODE(String)
+    HILTI_NODE(hilti, String)
 };
 
 } // namespace hilti::type

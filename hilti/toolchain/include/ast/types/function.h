@@ -53,9 +53,6 @@ public:
     auto flavor() const { return _flavor; }
     const auto& functionNameForPrinting() const { return _id; }
 
-    void setResultType(ASTContext* ctx, const QualifiedTypePtr& t) { setChild(ctx, 0, t); }
-    void setFunctionNameForPrinting(ID id) { _id = std::move(id); } // just for operating printing
-
     std::string_view typeClass() const final { return "function"; }
 
     node::Set<type::function::Parameter> parameters() const final {
@@ -67,6 +64,13 @@ public:
     }
 
     bool isResolved() const final;
+
+    void setResultType(ASTContext* ctx, const QualifiedTypePtr& t) { setChild(ctx, 0, t); }
+    void setFunctionNameForPrinting(ID id) { _id = std::move(id); } // just for operating printing
+    void setParameters(ASTContext* ctx, const declaration::Parameters& params) {
+        removeChildren(1, {});
+        addChildren(ctx, params);
+    }
 
     node::Properties properties() const final {
         auto p = node::Properties{{"flavor", to_string(_flavor)}};
@@ -91,7 +95,7 @@ protected:
         : UnqualifiedType(ctx, Wildcard(), {"function(*)"}, std::move(children), std::move(meta)) {}
 
 
-    HILTI_NODE(Function)
+    HILTI_NODE(hilti, Function)
 
 private:
     function::Flavor _flavor;

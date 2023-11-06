@@ -100,7 +100,7 @@ protected:
 
     // TODO: Do we need to implement _qualified() to make fields const/non-const?
 
-    HILTI_NODE(Struct)
+    HILTI_NODE(hilti, Struct)
 
 private:
     void _setSelf(ASTContext* ctx);

@@ -7,7 +7,6 @@
 #include <hilti/ast/expressions/name.h>
 #include <hilti/ast/type.h>
 #include <hilti/ast/visitor.h>
-#include <hilti/global.h>
 
 using namespace hilti;
 

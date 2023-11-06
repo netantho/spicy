@@ -13,14 +13,14 @@ QualifiedTypePtr expression::Name::type() const {
     struct Visitor : hilti::visitor::PreOrder {
         QualifiedTypePtr result = nullptr;
 
-        void operator()(declaration::Constant* c) final { result = c->type(); }
-        void operator()(declaration::Expression* e) final { result = e->expression()->type(); }
-        void operator()(declaration::Field* f) final { result = f->type(); }
-        void operator()(declaration::Function* f) final { result = f->function()->type(); }
-        void operator()(declaration::GlobalVariable* v) final { result = v->type(); }
-        void operator()(declaration::LocalVariable* v) final { result = v->type(); }
-        void operator()(declaration::Parameter* p) final { result = p->type(); }
-        void operator()(declaration::Type* t) final { result = t->type(); }
+        void operator()(declaration::Constant* n) final { result = n->type(); }
+        void operator()(declaration::Expression* n) final { result = n->expression()->type(); }
+        void operator()(declaration::Field* n) final { result = n->type(); }
+        void operator()(declaration::Function* n) final { result = n->function()->type(); }
+        void operator()(declaration::GlobalVariable* n) final { result = n->type(); }
+        void operator()(declaration::LocalVariable* n) final { result = n->type(); }
+        void operator()(declaration::Parameter* n) final { result = n->type(); }
+        void operator()(declaration::Type* n) final { result = n->type(); }
     };
 
     if ( auto decl = resolvedDeclaration() ) {
@@ -36,6 +36,7 @@ QualifiedTypePtr expression::Name::type() const {
 
 node::Properties expression::Name::properties() const {
     auto p = node::Properties{{"id", _id},
-                              {"resolved", (resolvedDeclaration() ? resolvedDeclaration()->canonicalID().str() : std::string("-"))}};
+                              {"resolved", (resolvedDeclaration() ? resolvedDeclaration()->canonicalID().str() :
+                                                                    std::string("-"))}};
     return Expression::properties() + p;
 }

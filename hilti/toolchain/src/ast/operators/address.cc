@@ -22,7 +22,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(address::Equal)
+    HILTI_OPERATOR(hilti, address::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal)
 
@@ -39,7 +39,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(address::Unequal)
+    HILTI_OPERATOR(hilti, address::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal)
 
@@ -58,7 +58,7 @@ Returns the protocol family of the address, which can be IPv4 or IPv6.
         };
     }
 
-    HILTI_OPERATOR(address::Family);
+    HILTI_OPERATOR(hilti, address::Family);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Family)
 

@@ -26,3 +26,5 @@ cat ${cc} | gawk '
 cat ${cc}.yaml
 
 clang-rename --force -input=${cc}.yaml ${cc} >${cc}.new && mv ${cc}.new ${cc}
+
+rm -f ${cc}.yaml

@@ -23,7 +23,7 @@ public:
 protected:
     Error(ASTContext* ctx, Meta meta) : UnqualifiedType(ctx, {"error"}, std::move(meta)) {}
 
-    HILTI_NODE(Error)
+    HILTI_NODE(hilti, Error)
 };
 
 } // namespace hilti::type

@@ -19,7 +19,7 @@ public:
 protected:
     Break(ASTContext* ctx, Nodes children, Meta meta) : Statement(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Break)
+    HILTI_NODE(hilti, Break)
 };
 
 } // namespace hilti::statement

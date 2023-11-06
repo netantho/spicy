@@ -61,16 +61,6 @@ public:
     const auto& uid() const { return _uid; }
 
     /**
-     * Set a file extension associated with the unit's code. By default, the
-     * extension is set when a AST module is being created, for example from
-     * the file it's being parsed from. This method can explicitly override the
-     * extension to have the AST processed by a different plugin.
-     *
-     * @param ext new extension
-     */
-    void setExtension(const hilti::rt::filesystem::path& ext);
-
-    /**
      * Triggers generation of C++ code from the compiled AST.
      *
      * @returns success if no error occurred, and an appropriate error otherwise

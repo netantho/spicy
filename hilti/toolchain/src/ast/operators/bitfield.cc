@@ -54,7 +54,7 @@ right.
 
     void validate(expression::ResolvedOperator* n) const final { _checkName(n); }
 
-    HILTI_OPERATOR(bitfield::Member)
+    HILTI_OPERATOR(hilti, bitfield::Member)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Member);
 
@@ -73,7 +73,7 @@ public:
 
     void validate(expression::ResolvedOperator* n) const final { _checkName(n); }
 
-    HILTI_OPERATOR(bitfield::HasMember)
+    HILTI_OPERATOR(hilti, bitfield::HasMember)
 };
 HILTI_OPERATOR_IMPLEMENTATION(HasMember);
 

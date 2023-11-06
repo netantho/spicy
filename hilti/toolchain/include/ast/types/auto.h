@@ -22,7 +22,7 @@ protected:
     Auto(ASTContext* ctx, const Meta& meta) : UnqualifiedType(ctx, {}, meta) {}
 
 
-    HILTI_NODE(Auto);
+    HILTI_NODE(hilti, Auto);
 };
 
 } // namespace hilti::type

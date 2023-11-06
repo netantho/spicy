@@ -36,7 +36,7 @@ protected:
         : UnqualifiedType(ctx, Wildcard(), {"optional(*)"}, std::move(children), std::move(meta)) {}
 
 
-    HILTI_NODE(Optional)
+    HILTI_NODE(hilti, Optional)
 };
 
 

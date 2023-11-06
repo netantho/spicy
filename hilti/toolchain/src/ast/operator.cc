@@ -1,4 +1,4 @@
-// Copyright (c) 2023 by the Zeek Project. See LICENSE for details.
+// Copyright (c) 2023 /by the Zeek Project. See LICENSE for details.
 
 #include <hilti/ast/builder/builder.h>
 #include <hilti/ast/operator.h>
@@ -206,6 +206,7 @@ bool Operator::init(Builder* builder, const NodePtr& scope_root) {
     _signature = operator_::detail::ProcessedSignature();
     _signature->kind = sig.kind;
     _signature->priority = sig.priority;
+    _signature->doc = sig.doc;
 
     type::operand_list::Operands ops;
 
@@ -221,36 +222,39 @@ bool Operator::init(Builder* builder, const NodePtr& scope_root) {
             assert(sig.self || sig.member);
 
         if ( sig.self )
-            ops.emplace_back(operandForType(builder, sig.self.kind, sig.self.getType()));
+            ops.emplace_back(operandForType(builder, sig.self.kind, sig.self.getType(), sig.self.doc));
 
         if ( sig.member ) {
             assert(! sig.op0);
-            ops.emplace_back(operandForType(builder, parameter::Kind::In, builder->typeMember(ID(*sig.member))));
+            ops.emplace_back(operandForType(builder, parameter::Kind::In, builder->typeMember(ID(*sig.member)), ""));
         }
 
         if ( sig.op1 ) {
             assert(! sig.member);
-            ops.emplace_back(operandForType(builder, sig.op1.kind, sig.op1.getType()));
+            ops.emplace_back(operandForType(builder, sig.op1.kind, sig.op1.getType(), sig.op1.doc));
         }
 
         if ( sig.op2 )
-            ops.emplace_back(operandForType(builder, sig.op2.kind, sig.op2.getType()));
+            ops.emplace_back(operandForType(builder, sig.op2.kind, sig.op2.getType(), sig.op2.doc));
         else {
             type::operand_list::Operands params;
             for ( const auto& p : {sig.param0, sig.param1, sig.param2, sig.param3, sig.param4} ) {
                 if ( p ) {
                     if ( p.default_ )
                         params.emplace_back(builder->typeOperandListOperand(ID(p.name), p.type.kind, p.type.getType(),
-                                                                            p.default_, p.type.getType()->meta()));
+                                                                            p.default_, p.type.doc,
+                                                                            p.type.getType()->meta()));
                     else
                         params.emplace_back(builder->typeOperandListOperand(ID(p.name), p.type.kind, p.type.getType(),
-                                                                            p.optional, p.type.getType()->meta()));
+                                                                            p.optional, p.type.doc,
+                                                                            p.type.getType()->meta()));
                 }
                 else
                     break;
             }
 
-            ops.emplace_back(operandForType(builder, parameter::Kind::In, builder->typeOperandList(std::move(params))));
+            ops.emplace_back(
+                operandForType(builder, parameter::Kind::In, builder->typeOperandList(std::move(params)), ""));
         }
 
         _signature->operands = builder->typeOperandList(std::move(ops));
@@ -259,7 +263,7 @@ bool Operator::init(Builder* builder, const NodePtr& scope_root) {
         if ( sig.op0 ) {
             for ( const auto& op : {sig.op0, sig.op1, sig.op2} ) {
                 if ( op )
-                    ops.emplace_back(operandForType(builder, op.kind, op.getType()));
+                    ops.emplace_back(operandForType(builder, op.kind, op.getType(), op.doc));
                 else
                     break;
             }
@@ -321,8 +325,9 @@ std::string Operator::render() const {
     return x;
 }
 
-NodeDerivedPtr<Operand> Operator::operandForType(Builder* builder, parameter::Kind kind, const UnqualifiedTypePtr& t) {
-    return builder->typeOperandListOperand(kind, t, false, t->meta());
+NodeDerivedPtr<Operand> Operator::operandForType(Builder* builder, parameter::Kind kind, const UnqualifiedTypePtr& t,
+                                                 std::string doc) {
+    return builder->typeOperandListOperand(kind, t, false, doc, t->meta());
 }
 
 std::string BuiltInMemberCall::print() const { return _printOperator(kind(), operands(), meta()); }

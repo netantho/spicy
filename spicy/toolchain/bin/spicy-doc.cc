@@ -11,16 +11,11 @@
 
 using nlohmann::json;
 
-template<typename T>
-static std::string to_string(const T& t) {
-    return std::string(hilti::Node(t));
-}
-
-static std::string formatType(const hilti::Type& t) {
-    if ( auto d = t.tryAs<hilti::type::DocOnly>() )
+static std::string formatType(const hilti::UnqualifiedTypePtr& t) {
+    if ( auto d = t->tryAs<hilti::type::DocOnly>() )
         return d->description();
 
-    return to_string(t);
+    return t->print();
 }
 
 #define KIND_TO_STRING(k)                                                                                              \
@@ -85,33 +80,25 @@ static std::string kindToString(hilti::operator_::Kind kind) {
 static json operandToJSON(const hilti::operator_::Operand& o) {
     json op;
 
-    hilti::Type t;
+    auto t = o.type__();
 
-    if ( auto f = std::get_if<std::function<std::optional<hilti::Type>(const hilti::node::Range<hilti::Expression>&,
-                                                                       const hilti::node::Range<hilti::Expression>&)>>(
-             &o.type) )
-        t = *(*f)(hilti::node::Range<hilti::Expression>{}, hilti::node::Range<hilti::Expression>{});
-    else
-        t = std::get<hilti::Type>(o.type);
+    op["type"] = formatType(t);
+    op["kind"] = to_string(o.kind());
 
-    op["type"] = formatType(hilti::type::nonConstant(t));
-    op["const"] = hilti::type::isConstant(t);
-    op["mutable"] = hilti::type::isMutable(t);
-
-    if ( o.id )
-        op["id"] = std::string(*o.id);
+    if ( o.id() )
+        op["id"] = std::string(o.id());
     else
         op["id"] = nullptr;
 
-    op["optional"] = o.optional;
+    op["optional"] = o.isOptional();
 
-    if ( o.default_ )
-        op["default"] = to_string(*o.default_);
+    if ( o.default_() )
+        op["default"] = o.default_()->print();
     else
         op["default"] = nullptr;
 
-    if ( o.doc )
-        op["doc"] = *o.doc;
+    if ( ! o.doc().empty() )
+        op["doc"] = o.doc();
     else
         op["doc"] = nullptr;
 
@@ -131,59 +118,53 @@ int main(int argc, char** argv) {
         jop["kind"] = kindToString(op.kind());
         jop["doc"] = op.doc();
         jop["namespace"] = namespace_;
-        jop["rtype"] = formatType(op.result(hilti::node::Range<hilti::Expression>()));
+        jop["rtype"] = "TODO"; // formatType(op.result(hilti::Expressions())->type());
         jop["commutative"] = hilti::operator_::isCommutative(op.kind());
         jop["operands"] = json();
 
         if ( op.kind() == hilti::operator_::Kind::Call ) {
             auto operands = op.operands();
             auto callee = operands[0];
-            auto params = std::get<hilti::Type>(operands[1].type).as<hilti::type::OperandList>();
+            auto args = operands[1]->type__()->tryAs<hilti::type::OperandList>()->operands();
 
-            jop["operands"].push_back(operandToJSON(callee));
+            jop["operands"].push_back(operandToJSON(*callee));
 
-            for ( const auto& p : params.operands() )
-                jop["operands"].push_back(operandToJSON(p));
+            for ( const auto& p : args )
+                jop["operands"].push_back(operandToJSON(*p));
         }
         else if ( op.kind() == hilti::operator_::Kind::MemberCall ) {
             auto operands = op.operands();
             auto self = operands[0];
-            auto method = std::get<hilti::Type>(operands[1].type).as<hilti::type::Member>();
+            auto args = operands[2]->type__()->tryAs<hilti::type::OperandList>()->operands();
 
-            if ( ! std::get<hilti::Type>(operands[2].type).isA<hilti::type::OperandList>() )
-                return;
+            jop["self"] = operandToJSON(*self);
+            jop["id"] = operands[1]->print();
 
-            auto params = std::get<hilti::Type>(operands[2].type).as<hilti::type::OperandList>();
-
-            jop["self"] = operandToJSON(self);
-            jop["id"] = method.id();
             jop["args"] = std::list<json>();
-
-            for ( const auto& p : params.operands() )
-                jop["args"].push_back(operandToJSON(p));
+            for ( const auto& p : args )
+                jop["args"].push_back(operandToJSON(*p));
         }
         else {
             jop["operands"] = json();
 
             for ( const auto& x : op.operands() )
-                jop["operands"].push_back(operandToJSON(x));
+                jop["operands"].push_back(operandToJSON(*x));
         }
 
         all_operators.push_back(std::move(jop));
     };
 
     // Iterate through all available operators.
-    auto operators = hilti::operator_::registry().all();
-    for ( const auto& [kind, operators] : operators )
-        for ( const auto& op : operators )
-            add_operator(op.docNamespace(), op);
+    const auto& operators = hilti::operator_::registry().operators();
+    for ( const auto& op : operators )
+        add_operator(op->signature().namespace_, *op);
 
     // Hardcode concrete instances of generic operators. They need to be
     // associated with the corresponding types, but there's no generic way to
     // do that.
     for ( const auto& type_ : std::vector({"bytes", "list", "map", "set", "stream", "vector"}) ) {
-        add_operator(type_, hilti::operator_::generic::Begin::Operator());
-        add_operator(type_, hilti::operator_::generic::End::Operator());
+        add_operator(type_, *hilti::operator_::registry().byName("generic::Begin"));
+        add_operator(type_, *hilti::operator_::registry().byName("generic::End"));
     }
 
     std::cout << all_operators.dump(4) << std::endl;

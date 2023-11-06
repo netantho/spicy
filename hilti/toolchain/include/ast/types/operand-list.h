@@ -23,44 +23,53 @@ public:
     auto kind() const { return _kind; }
     auto isOptional() const { return _optional; }
     auto default_() const { return child<Expression>(1); }
+    auto doc() const { return _doc; }
 
     node::Properties properties() const final {
-        auto p = node::Properties{{"id", _id}, {"optional", _optional}, {"kind", to_string(_kind)}};
+        auto p = node::Properties{{"id", _id}, {"optional", _optional}, {"kind", to_string(_kind)}, {"doc", _doc}};
         return Node::properties() + p;
     }
 
     static auto create(ASTContext* ctx, parameter::Kind kind, const UnqualifiedTypePtr& type, bool optional = false,
-                       Meta meta = {}) {
-        return NodeDerivedPtr<Operand>(new Operand(ctx, {type, nullptr}, {}, kind, optional, std::move(meta)));
-    }
-
-    static auto create(ASTContext* ctx, ID id, parameter::Kind kind, const UnqualifiedTypePtr& type,
-                       bool optional = false, Meta meta = {}) {
+                       std::string doc = "", Meta meta = {}) {
         return NodeDerivedPtr<Operand>(
-            new Operand(ctx, {type, nullptr}, std::move(id), kind, optional, std::move(meta)));
+            new Operand(ctx, {type, nullptr}, {}, kind, optional, std::move(doc), std::move(meta)));
     }
 
     static auto create(ASTContext* ctx, ID id, parameter::Kind kind, const UnqualifiedTypePtr& type,
-                       const ExpressionPtr& default_, const Meta& meta = {}) {
+                       bool optional = false, std::string doc = "", Meta meta = {}) {
         return NodeDerivedPtr<Operand>(
-            new Operand(ctx, {type, default_}, std::move(id), kind, (default_ != nullptr), meta));
+            new Operand(ctx, {type, nullptr}, std::move(id), kind, optional, std::move(doc), std::move(meta)));
     }
 
     static auto create(ASTContext* ctx, ID id, parameter::Kind kind, const UnqualifiedTypePtr& type,
-                       const ExpressionPtr& default_, bool optional, const Meta& meta = {}) {
-        return NodeDerivedPtr<Operand>(new Operand(ctx, {type, default_}, std::move(id), kind, optional, meta));
+                       const ExpressionPtr& default_, std::string doc = "", const Meta& meta = {}) {
+        return NodeDerivedPtr<Operand>(
+            new Operand(ctx, {type, default_}, std::move(id), kind, (default_ != nullptr), std::move(doc), meta));
+    }
+
+    static auto create(ASTContext* ctx, ID id, parameter::Kind kind, const UnqualifiedTypePtr& type,
+                       const ExpressionPtr& default_, bool optional, std::string doc = "", const Meta& meta = {}) {
+        return NodeDerivedPtr<Operand>(
+            new Operand(ctx, {type, default_}, std::move(id), kind, optional, std::move(doc), meta));
     }
 
 protected:
-    Operand(ASTContext* ctx, Nodes children, ID id, parameter::Kind kind, bool optional, Meta meta = {})
-        : Node(ctx, std::move(children), std::move(meta)), _id(std::move(id)), _kind(kind), _optional(optional) {}
+    Operand(ASTContext* ctx, Nodes children, ID id, parameter::Kind kind, bool optional, std::string doc,
+            Meta meta = {})
+        : Node(ctx, std::move(children), std::move(meta)),
+          _id(std::move(id)),
+          _kind(kind),
+          _optional(optional),
+          _doc(std::move(doc)) {}
 
-    HILTI_NODE(Operand);
+    HILTI_NODE(hilti, Operand);
 
 private:
     ID _id;
     parameter::Kind _kind = parameter::Kind::Unknown;
     bool _optional = false;
+    std::string _doc;
 };
 
 using OperandPtr = NodeDerivedPtr<Operand>;
@@ -115,7 +124,7 @@ protected:
     OperandList(ASTContext* ctx, Wildcard _, const Meta& meta)
         : UnqualifiedType(ctx, Wildcard(), {"operand-list(*)"}, meta) {}
 
-    HILTI_NODE(OperandList)
+    HILTI_NODE(hilti, OperandList)
 };
 
 } // namespace hilti::type

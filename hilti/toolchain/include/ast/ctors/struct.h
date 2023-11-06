@@ -35,7 +35,7 @@ protected:
     Field(ASTContext* ctx, Nodes children, ID id, Meta meta = {})
         : Node(ctx, std::move(children), std::move(meta)), _id(std::move(id)) {}
 
-    HILTI_NODE(Field);
+    HILTI_NODE(hilti, Field);
 
 private:
     ID _id;
@@ -80,7 +80,7 @@ public:
 protected:
     Struct(ASTContext* ctx, Nodes children, Meta meta) : Ctor(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Struct)
+    HILTI_NODE(hilti, Struct)
 };
 
 } // namespace hilti::ctor

@@ -41,7 +41,7 @@ protected:
     RegExp(ASTContext* ctx, Nodes children, std::vector<std::string> v, Meta meta)
         : Ctor(ctx, std::move(children), std::move(meta)), _value(std::move(v)) {}
 
-    HILTI_NODE(RegExp)
+    HILTI_NODE(hilti, RegExp)
 
 private:
     std::vector<std::string> _value;

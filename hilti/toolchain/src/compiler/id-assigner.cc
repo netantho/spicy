@@ -9,7 +9,6 @@
 #include <hilti/base/timing.h>
 #include <hilti/compiler/detail/id-assigner.h>
 #include <hilti/compiler/detail/renderer.h>
-#include <hilti/global.h>
 
 using namespace hilti;
 

@@ -9,18 +9,18 @@
 #include <hilti/ast/expressions/resolved-operator.h>
 #include <hilti/ast/forward.h>
 
-#define HILTI_NODE_OPERATOR(ns, cls)                                                                                   \
+#define HILTI_NODE_OPERATOR(scope, ns, cls)                                                                            \
     namespace ns {                                                                                                     \
     class cls : public hilti::expression::ResolvedOperator {                                                           \
     public:                                                                                                            \
-        static NodeDerivedPtr<cls> create(ASTContext* ctx, const Operator* op, const QualifiedTypePtr& result,         \
+        static NodeDerivedPtr<cls> create(ASTContext* ctx, const hilti::Operator* op, const QualifiedTypePtr& result,  \
                                           const Expressions& operands, const hilti::Meta& meta) {                      \
             return NodeDerivedPtr<cls>(new cls(ctx, op, result, operands, meta));                                      \
-    }                                                                                                                  \
+        }                                                                                                              \
                                                                                                                        \
-        HILTI_NODE(cls)                                                                                                \
+        HILTI_NODE(scope, cls)                                                                                         \
                                                                                                                        \
-private:                                                                                                               \
+    private:                                                                                                           \
         using hilti::expression::ResolvedOperator::ResolvedOperator;                                                   \
     };                                                                                                                 \
     } // namespace ns

@@ -21,7 +21,7 @@ public:
 protected:
     Real(ASTContext* ctx, Meta meta) : UnqualifiedType(ctx, {"real"}, std::move(meta)) {}
 
-    HILTI_NODE(Real)
+    HILTI_NODE(hilti, Real)
 };
 
 } // namespace hilti::type

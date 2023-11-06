@@ -113,7 +113,7 @@ public:
             n->addError("type not packable");
     }
 
-    HILTI_OPERATOR(generic::Pack)
+    HILTI_OPERATOR(hilti, generic::Pack)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Pack);
 
@@ -211,7 +211,7 @@ public:
             n->addError("type not unpackable");
     }
 
-    HILTI_OPERATOR(generic::Unpack)
+    HILTI_OPERATOR(hilti, generic::Unpack)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unpack);
 
@@ -239,7 +239,7 @@ public:
             n->addError("not an iterable type");
     }
 
-    HILTI_OPERATOR(generic::Begin)
+    HILTI_OPERATOR(hilti, generic::Begin)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Begin);
 
@@ -267,7 +267,7 @@ public:
             n->addError("not an iterable type");
     }
 
-    HILTI_OPERATOR(generic::End)
+    HILTI_OPERATOR(hilti, generic::End)
 };
 HILTI_OPERATOR_IMPLEMENTATION(End);
 
@@ -306,7 +306,7 @@ If `x` is an expression, an instance of the expression's type will be allocated 
             n->addError("not an allocable type");
     }
 
-    HILTI_OPERATOR(generic::New)
+    HILTI_OPERATOR(hilti, generic::New)
 };
 HILTI_OPERATOR_IMPLEMENTATION(New);
 

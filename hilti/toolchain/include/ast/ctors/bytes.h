@@ -32,7 +32,7 @@ protected:
     Bytes(ASTContext* ctx, Nodes children, std::string value, Meta meta)
         : Ctor(ctx, std::move(children), std::move(meta)), _value(std::move(value)) {}
 
-    HILTI_NODE(Bytes)
+    HILTI_NODE(hilti, Bytes)
 
 private:
     std::string _value;

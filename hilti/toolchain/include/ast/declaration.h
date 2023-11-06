@@ -107,7 +107,7 @@ protected:
 
     std::string _render() const override;
 
-    HILTI_NODE_BASE(Declaration);
+    HILTI_NODE_BASE(hilti, Declaration);
 
 private:
     ID _id;

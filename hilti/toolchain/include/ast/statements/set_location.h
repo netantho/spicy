@@ -21,7 +21,7 @@ public:
 protected:
     SetLocation(ASTContext* ctx, Nodes children, Meta meta) : Statement(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(SetLocation)
+    HILTI_NODE(hilti, SetLocation)
 };
 
 } // namespace hilti::statement

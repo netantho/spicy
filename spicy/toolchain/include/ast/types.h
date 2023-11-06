@@ -2,11 +2,14 @@
 
 #pragma once
 
-#include <hilti/ast/type.h>
-
-namespace spicy::type {
-
-// Returns whether the passed type supports parsing literals.
-bool supportsLiterals(const hilti::Type& t);
-
-} // namespace spicy::type
+// TODO: Do we need this?
+/*
+ * #include <hilti/ast/type.h>
+ *
+ * namespace spicy::type {
+ *
+ * // Returns whether the passed type supports parsing literals.
+ * bool supportsLiterals(const UnqualifiedTypePtr& t);
+ *
+ * } // namespace spicy::type
+ */

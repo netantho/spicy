@@ -35,7 +35,7 @@ Result<ResolvedOperatorPtr> hilti::function::Call::instantiate(Builder* builder,
     assert(fdecl->fullyQualifiedID());
     auto callee = builder->expressionName(fdecl->fullyQualifiedID(), meta);
     callee->setResolvedDeclaration(builder->context(),
-                                  fdecl->as<Declaration>()); // will be used immediately, cannot wait for resolver
+                                   fdecl->as<Declaration>()); // will be used immediately, cannot wait for resolver
 
     auto args = operands[1];
     auto result = fdecl->function()->ftype()->result();

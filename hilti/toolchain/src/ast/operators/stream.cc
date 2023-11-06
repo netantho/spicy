@@ -27,7 +27,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::Deref)
+    HILTI_OPERATOR(hilti, stream::iterator::Deref)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Deref);
 
@@ -43,7 +43,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::IncrPostfix)
+    HILTI_OPERATOR(hilti, stream::iterator::IncrPostfix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPostfix);
 
@@ -59,7 +59,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::IncrPrefix)
+    HILTI_OPERATOR(hilti, stream::iterator::IncrPrefix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPrefix);
 
@@ -78,7 +78,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::Equal)
+    HILTI_OPERATOR(hilti, stream::iterator::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -97,7 +97,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::Unequal)
+    HILTI_OPERATOR(hilti, stream::iterator::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -116,7 +116,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::Lower)
+    HILTI_OPERATOR(hilti, stream::iterator::Lower)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Lower);
 
@@ -135,7 +135,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::LowerEqual)
+    HILTI_OPERATOR(hilti, stream::iterator::LowerEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(LowerEqual);
 
@@ -154,7 +154,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::Greater)
+    HILTI_OPERATOR(hilti, stream::iterator::Greater)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Greater);
 
@@ -173,7 +173,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::GreaterEqual)
+    HILTI_OPERATOR(hilti, stream::iterator::GreaterEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(GreaterEqual);
 
@@ -195,7 +195,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::Difference)
+    HILTI_OPERATOR(hilti, stream::iterator::Difference)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Difference);
 
@@ -212,7 +212,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::Sum)
+    HILTI_OPERATOR(hilti, stream::iterator::Sum)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Sum)
 
@@ -229,7 +229,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::SumAssign)
+    HILTI_OPERATOR(hilti, stream::iterator::SumAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SumAssign)
 
@@ -249,7 +249,7 @@ beginning of the underlying stream value.
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::Offset);
+    HILTI_OPERATOR(hilti, stream::iterator::Offset);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Offset);
 
@@ -268,7 +268,7 @@ Returns whether the stream value that the iterator refers to has been frozen.
         };
     }
 
-    HILTI_OPERATOR(stream::iterator::IsFrozen);
+    HILTI_OPERATOR(hilti, stream::iterator::IsFrozen);
 };
 HILTI_OPERATOR_IMPLEMENTATION(IsFrozen);
 
@@ -288,7 +288,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::view::Size)
+    HILTI_OPERATOR(hilti, stream::view::Size)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Size);
 
@@ -305,7 +305,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::view::InBytes)
+    HILTI_OPERATOR(hilti, stream::view::InBytes)
 };
 HILTI_OPERATOR_IMPLEMENTATION(InBytes);
 
@@ -322,7 +322,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::view::InView)
+    HILTI_OPERATOR(hilti, stream::view::InView)
 };
 HILTI_OPERATOR_IMPLEMENTATION(InView);
 
@@ -339,7 +339,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::view::EqualView)
+    HILTI_OPERATOR(hilti, stream::view::EqualView)
 };
 HILTI_OPERATOR_IMPLEMENTATION(EqualView);
 
@@ -356,7 +356,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::view::EqualBytes)
+    HILTI_OPERATOR(hilti, stream::view::EqualBytes)
 };
 HILTI_OPERATOR_IMPLEMENTATION(EqualBytes);
 
@@ -373,7 +373,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::view::UnequalView)
+    HILTI_OPERATOR(hilti, stream::view::UnequalView)
 };
 HILTI_OPERATOR_IMPLEMENTATION(UnequalView);
 
@@ -390,7 +390,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::view::UnequalBytes)
+    HILTI_OPERATOR(hilti, stream::view::UnequalBytes)
 };
 HILTI_OPERATOR_IMPLEMENTATION(UnequalBytes);
 
@@ -409,7 +409,7 @@ Returns the offset of the view's starting position within the associated stream 
         };
     }
 
-    HILTI_OPERATOR(stream::view::Offset);
+    HILTI_OPERATOR(hilti, stream::view::Offset);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Offset);
 
@@ -435,7 +435,7 @@ it must be equal or ahead of the view's starting position.
         };
     }
 
-    HILTI_OPERATOR(stream::view::AdvanceBy);
+    HILTI_OPERATOR(hilti, stream::view::AdvanceBy);
 };
 HILTI_OPERATOR_IMPLEMENTATION(AdvanceBy);
 
@@ -455,7 +455,7 @@ advances the input by at least one byte.
         };
     }
 
-    HILTI_OPERATOR(stream::view::AdvanceToNextData);
+    HILTI_OPERATOR(hilti, stream::view::AdvanceToNextData);
 };
 HILTI_OPERATOR_IMPLEMENTATION(AdvanceToNextData);
 
@@ -481,7 +481,7 @@ further.
         };
     }
 
-    HILTI_OPERATOR(stream::view::Limit);
+    HILTI_OPERATOR(hilti, stream::view::Limit);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Limit);
 
@@ -505,7 +505,7 @@ Advances the view's starting position by *i* stream, returning the new view.
         };
     }
 
-    HILTI_OPERATOR(stream::view::AdvanceTo);
+    HILTI_OPERATOR(hilti, stream::view::AdvanceTo);
 };
 HILTI_OPERATOR_IMPLEMENTATION(AdvanceTo);
 
@@ -537,7 +537,7 @@ you should use the ``in`` operator instead of this method, as it's more efficien
         };
     }
 
-    HILTI_OPERATOR(stream::view::Find);
+    HILTI_OPERATOR(hilti, stream::view::Find);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Find);
 
@@ -561,7 +561,7 @@ Returns an iterator representing the offset *i* inside the view.
         };
     }
 
-    HILTI_OPERATOR(stream::view::At);
+    HILTI_OPERATOR(hilti, stream::view::At);
 };
 HILTI_OPERATOR_IMPLEMENTATION(At);
 
@@ -585,7 +585,7 @@ Returns true if the view starts with *b*.
         };
     }
 
-    HILTI_OPERATOR(stream::view::StartsWith);
+    HILTI_OPERATOR(hilti, stream::view::StartsWith);
 };
 HILTI_OPERATOR_IMPLEMENTATION(StartsWith);
 
@@ -615,7 +615,7 @@ Returns a new view of the subsequence from *begin* up to (but not including)
         };
     }
 
-    HILTI_OPERATOR(stream::view::SubIterators);
+    HILTI_OPERATOR(hilti, stream::view::SubIterators);
 };
 HILTI_OPERATOR_IMPLEMENTATION(SubIterators);
 
@@ -640,7 +640,7 @@ Returns a new view of the subsequence from the beginning of the stream up to
         };
     }
 
-    HILTI_OPERATOR(stream::view::SubIterator);
+    HILTI_OPERATOR(hilti, stream::view::SubIterator);
 };
 HILTI_OPERATOR_IMPLEMENTATION(SubIterator);
 
@@ -670,7 +670,7 @@ offset *end*. The offsets are relative to the beginning of the view.
         };
     }
 
-    HILTI_OPERATOR(stream::view::SubOffsets);
+    HILTI_OPERATOR(hilti, stream::view::SubOffsets);
 };
 HILTI_OPERATOR_IMPLEMENTATION(SubOffsets);
 
@@ -692,7 +692,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::Ctor)
+    HILTI_OPERATOR(hilti, stream::Ctor)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Ctor);
 
@@ -708,7 +708,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::Size)
+    HILTI_OPERATOR(hilti, stream::Size)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Size);
 
@@ -725,7 +725,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::Unequal)
+    HILTI_OPERATOR(hilti, stream::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -742,7 +742,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::SumAssignView)
+    HILTI_OPERATOR(hilti, stream::SumAssignView)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SumAssignView);
 
@@ -759,7 +759,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(stream::SumAssignBytes)
+    HILTI_OPERATOR(hilti, stream::SumAssignBytes)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SumAssignBytes);
 
@@ -780,7 +780,7 @@ already frozen, the operation does not change anything.
         };
     }
 
-    HILTI_OPERATOR(stream::Freeze);
+    HILTI_OPERATOR(hilti, stream::Freeze);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Freeze);
 
@@ -801,7 +801,7 @@ change anything.
         };
     }
 
-    HILTI_OPERATOR(stream::Unfreeze);
+    HILTI_OPERATOR(hilti, stream::Unfreeze);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unfreeze);
 
@@ -820,7 +820,7 @@ Returns true if the stream value has been frozen.
         };
     }
 
-    HILTI_OPERATOR(stream::IsFrozen);
+    HILTI_OPERATOR(hilti, stream::IsFrozen);
 };
 HILTI_OPERATOR_IMPLEMENTATION(IsFrozen);
 
@@ -844,7 +844,7 @@ Returns an iterator representing the offset *i* inside the stream value.
         };
     }
 
-    HILTI_OPERATOR(stream::At);
+    HILTI_OPERATOR(hilti, stream::At);
 };
 HILTI_OPERATOR_IMPLEMENTATION(At);
 
@@ -874,7 +874,7 @@ even on frozen values.
         };
     }
 
-    HILTI_OPERATOR(stream::Trim);
+    HILTI_OPERATOR(hilti, stream::Trim);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Trim);
 

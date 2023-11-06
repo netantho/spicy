@@ -24,7 +24,7 @@ public:
 protected:
     Grouping(ASTContext* ctx, Nodes children, Meta meta) : Expression(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Grouping)
+    HILTI_NODE(hilti, Grouping)
 };
 
 } // namespace hilti::expression

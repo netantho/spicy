@@ -39,7 +39,7 @@ protected:
     Library(ASTContext* ctx, std::string cxx_name, Meta meta)
         : UnqualifiedType(ctx, {util::fmt("library(%s)", cxx_name)}, std::move(meta)), _cxx_name(std::move(cxx_name)) {}
 
-    HILTI_NODE(Library)
+    HILTI_NODE(hilti, Library)
 
 private:
     std::string _cxx_name;

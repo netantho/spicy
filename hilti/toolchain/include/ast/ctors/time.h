@@ -33,7 +33,7 @@ protected:
     Time(ASTContext* ctx, Nodes children, hilti::rt::Time v, Meta meta)
         : Ctor(ctx, std::move(children), std::move(meta)), _value(std::move(v)) {}
 
-    HILTI_NODE(Time)
+    HILTI_NODE(hilti, Time)
 
 private:
     hilti::rt::Time _value;

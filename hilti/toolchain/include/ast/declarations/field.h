@@ -93,7 +93,7 @@ protected:
 
     std::string _render() const override;
 
-    HILTI_NODE(Field)
+    HILTI_NODE(hilti, Field)
 
 private:
     std::optional<::hilti::function::CallingConvention> _cc;

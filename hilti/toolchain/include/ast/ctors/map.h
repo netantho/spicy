@@ -34,7 +34,7 @@ protected:
 
     std::string _render() const final;
 
-    HILTI_NODE(Element);
+    HILTI_NODE(hilti, Element);
 };
 
 using ElementPtr = std::shared_ptr<Element>;
@@ -86,7 +86,7 @@ public:
 protected:
     Map(ASTContext* ctx, Nodes children, Meta meta) : Ctor(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Map)
+    HILTI_NODE(hilti, Map)
 };
 
 } // namespace hilti::ctor

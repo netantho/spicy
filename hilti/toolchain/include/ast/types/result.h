@@ -36,7 +36,7 @@ protected:
         : UnqualifiedType(ctx, Wildcard(), {"result(*)"}, std::move(children), std::move(meta)) {}
 
 
-    HILTI_NODE(Result)
+    HILTI_NODE(hilti, Result)
 };
 
 } // namespace hilti::type

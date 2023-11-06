@@ -27,7 +27,7 @@ public:
         return operands[0]->type()->type()->dereferencedType();
     }
 
-    HILTI_OPERATOR(result::Deref)
+    HILTI_OPERATOR(hilti, result::Deref)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Deref);
 
@@ -44,7 +44,7 @@ public:
                     "exception if the result is not in an error state."};
     }
 
-    HILTI_OPERATOR(result::Error);
+    HILTI_OPERATOR(hilti, result::Error);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Error);
 

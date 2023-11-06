@@ -33,7 +33,7 @@ protected:
     Port(ASTContext* ctx, Nodes children, hilti::rt::Port v, Meta meta)
         : Ctor(ctx, std::move(children), std::move(meta)), _value(v) {}
 
-    HILTI_NODE(Port)
+    HILTI_NODE(hilti, Port)
 
 private:
     hilti::rt::Port _value;

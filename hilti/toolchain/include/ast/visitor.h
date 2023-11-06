@@ -156,10 +156,10 @@ private:
  *
  * @tparam order order of iteration
  */
-template<Order order>
-class Visitor : public ::hilti::visitor::Dispatcher {
+template<Order order, typename Dispatcher>
+class Visitor : public Dispatcher {
 public:
-    using base_t = Visitor<order>;
+    using base_t = Visitor<order, Dispatcher>;
     using iterator_t = Iterator<order>;
     static const Order order_ = order;
 
@@ -194,25 +194,8 @@ public:
      */
     MutatingVisitorBase(ASTContext* ctx, logging::DebugStream dbg);
 
-    /**
-     * Constructor.
-     *
-     * @param builder builder to use for modifications
-     * @param dbg debug stream to log modifications to
-     */
-    MutatingVisitorBase(Builder* builder, logging::DebugStream dbg);
-
     /** Returns the AST context the nodes are part of. */
     auto context() const { return _context; }
-
-    /**
-     * Returns a builder for modifications. This will be valid only if the
-     * corresponding constructor was used; and return null otherwise.
-     */
-    auto builder() const {
-        assert(_builder);
-        return _builder;
-    }
 
     /**
      * Returns true, if any modifications of the AST have been performed, or
@@ -250,31 +233,58 @@ public:
      */
     void recordChange(const Node* old, const NodePtr& changed, const std::string& msg = "");
 
+protected:
+    /**
+     * Helper to retrieve the AST context from a HILTI builder. This method
+     * exists only so that we can implement the lookup in the implementation
+     * file, enabling derived, templated classes to perform it without needing
+     * include `builder.h` in their header.
+     */
+    static ASTContext* contextFromBuilder(Builder* builder);
+
 private:
     ASTContext* _context;
-    Builder* _builder; // may be null if not passed to constructor
     logging::DebugStream _dbg;
 
     bool _modified = false;
 };
 
-template<Order order>
-class MutatingVisitor : public Visitor<order>, public MutatingVisitorBase {
+template<Order order, typename Dispatcher, typename Builder>
+class MutatingVisitor : public Visitor<order, Dispatcher>, public MutatingVisitorBase {
+public:
+    /**
+     * Constructor.
+     *
+     * @param builder builder to use for modifications
+     * @param dbg debug stream to log modifications to
+     */
+    MutatingVisitor(Builder* builder, logging::DebugStream dbg)
+        : MutatingVisitorBase(contextFromBuilder(builder), dbg), _builder(builder) {}
+
     using detail::visitor::MutatingVisitorBase::MutatingVisitorBase;
+
+    /**
+     * Returns a builder for modifications. This will be valid only if the
+     * corresponding constructor was used, and return null otherwise.
+     */
+    auto builder() const { return _builder; }
+
+private:
+    Builder* _builder; // may be null if not passed to constructor
 };
 
 } // namespace detail::visitor
 
 /**
- * Visitor performing a pre-order iteration over an AST.
+ * Visitor performing a pre-order iteration over a HILTI AST.
  */
 namespace visitor {
-using PreOrder = detail::visitor::Visitor<detail::visitor::Order::Pre>;
+using PreOrder = detail::visitor::Visitor<detail::visitor::Order::Pre, visitor::Dispatcher>;
 
 /**
- * Mutating visitor performing a pre-order iteration over an AST.
+ * Mutating visitor performing a pre-order iteration over a HILTI AST.
  */
-using MutatingPreOrder = detail::visitor::MutatingVisitor<detail::visitor::Order::Pre>;
+using MutatingPreOrder = detail::visitor::MutatingVisitor<detail::visitor::Order::Pre, visitor::Dispatcher, Builder>;
 
 /**
  * Iterator range traversing an AST in pre-order.
@@ -282,17 +292,17 @@ using MutatingPreOrder = detail::visitor::MutatingVisitor<detail::visitor::Order
 using RangePreOrder = detail::visitor::Range<detail::visitor::Order::Pre>;
 
 /**
- * Visitor performing a post-order iteration over an AST.
+ * Visitor performing a post-order iteration over a HILTI AST.
  */
-using PostOrder = detail::visitor::Visitor<detail::visitor::Order::Post>;
+using PostOrder = detail::visitor::Visitor<detail::visitor::Order::Post, visitor::Dispatcher>;
 
 /**
- * Mutating visitor performing a post-order iteration over an AST.
+ * Mutating visitor performing a post-order iteration over a HILTI AST.
  */
-using MutatingPostOrder = detail::visitor::MutatingVisitor<detail::visitor::Order::Post>;
+using MutatingPostOrder = detail::visitor::MutatingVisitor<detail::visitor::Order::Post, visitor::Dispatcher, Builder>;
 
 /**
- * Iterator range traversing an AST in post-order.
+ * Iterator range traversing a HILTI AST in post-order.
  */
 using RangePostOrder = detail::visitor::Range<detail::visitor::Order::Post>;
 

@@ -7,7 +7,6 @@
 #include <hilti/base/util.h>
 #include <hilti/compiler/detail/codegen/codegen.h>
 #include <hilti/compiler/detail/cxx/all.h>
-#include <hilti/global.h>
 
 #include "compiler/detail/renderer.h"
 

@@ -17,7 +17,6 @@
 #include <hilti/compiler/detail/renderer.h>
 #include <hilti/compiler/driver.h>
 #include <hilti/compiler/plugin.h>
-#include <hilti/global.h>
 
 using namespace hilti;
 using namespace hilti::detail;
@@ -516,13 +515,13 @@ Result<Nothing> Driver::addInput(const hilti::rt::filesystem::path& path) {
         logger().internalError("no further inputs can be added after compilation has finished already");
 
     if ( plugin::registry().supportsExtension(path.extension()) ) {
-            HILTI_DEBUG(logging::debug::Driver, fmt("parsing input file %s", path));
+        HILTI_DEBUG(logging::debug::Driver, fmt("parsing input file %s", path));
         auto unit = Unit::fromSource(context(), path);
-            if ( ! unit )
-                return augmentError(unit.error());
+        if ( ! unit )
+            return augmentError(unit.error());
 
-            (*unit)->setRequiresCompilation();
-            _addUnit(*unit);
+        (*unit)->setRequiresCompilation();
+        _addUnit(*unit);
 
         return Nothing();
     }
@@ -588,8 +587,8 @@ Result<Nothing> Driver::_codegenUnits() {
             return augmentError(rc.error());
 
         if ( ! unit->module()->skipImplementation() ) {
-        if ( auto md = unit->linkerMetaData() )
-            _mds.push_back(*md);
+            if ( auto md = unit->linkerMetaData() )
+                _mds.push_back(*md);
         }
 
         if ( _driver_options.dump_code )
@@ -630,8 +629,8 @@ Result<Nothing> Driver::compileUnits() {
         }
     }
     else {
-    if ( auto rc = _codegenUnits(); ! rc )
-        return error(rc.error());
+        if ( auto rc = _codegenUnits(); ! rc )
+            return error(rc.error());
     }
 
     return Nothing();

@@ -258,7 +258,7 @@ protected:
     /** Implements `Node` interface. */
     std::string _render() const override;
 
-    HILTI_NODE_BASE(Type);
+    HILTI_NODE_BASE(hilti, Type);
 
 private:
     type::Unification _unification;                // types unification string if known yet
@@ -446,7 +446,7 @@ protected:
     /** Implements `Node` interface. */
     std::string _render() const final;
 
-    HILTI_NODE(QualifiedType);
+    HILTI_NODE(hilti, QualifiedType);
 
 private:
     // Internal version of _type() that doesn't follow name references.

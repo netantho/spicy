@@ -158,13 +158,13 @@ auto declarationExpression(ID id, const ExpressionPtr& expr, declaration::Linkag
 auto declarationField(ID id, ::hilti::function::CallingConvention cc, const type::FunctionPtr& ftype,
                       const AttributeSetPtr& attrs, Meta meta = {}) {
     return hilti::declaration::Field::create(context(), id, cc, ftype, attrs, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/field.h:78:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/field.h:79:5
 auto declarationField(ID id, const QualifiedTypePtr& type, const AttributeSetPtr& attrs, Meta meta = {}) {
     return hilti::declaration::Field::create(context(), id, type, attrs, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/field.h:73:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/field.h:74:5
 auto declarationField(const ID& id, const FunctionPtr& inline_func, const AttributeSetPtr& attrs, Meta meta = {}) {
     return hilti::declaration::Field::create(context(), id, inline_func, attrs, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/field.h:84:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/field.h:85:5
 auto declarationFunction(const FunctionPtr& function, declaration::Linkage linkage = declaration::Linkage::Private,
                          const Meta& meta = {}) {
     return hilti::declaration::Function::create(context(), function, linkage, meta);
@@ -172,22 +172,22 @@ auto declarationFunction(const FunctionPtr& function, declaration::Linkage linka
 auto declarationGlobalVariable(ID id, const ExpressionPtr& init,
                                declaration::Linkage linkage = declaration::Linkage::Private, Meta meta = {}) {
     return hilti::declaration::GlobalVariable::create(context(), id, init, linkage, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/global-variable.h:53:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/global-variable.h:50:5
 auto declarationGlobalVariable(ID id, const QualifiedTypePtr& type, ExpressionPtr init = nullptr,
                                declaration::Linkage linkage = declaration::Linkage::Private, Meta meta = {}) {
     return hilti::declaration::GlobalVariable::create(context(), id, type, init, linkage, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/global-variable.h:43:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/global-variable.h:40:5
 auto declarationGlobalVariable(ID id, const QualifiedTypePtr& type, Expressions args, ExpressionPtr init = nullptr,
                                declaration::Linkage linkage = declaration::Linkage::Private, Meta meta = {}) {
     return hilti::declaration::GlobalVariable::create(context(), id, type, args, init, linkage, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/global-variable.h:36:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/global-variable.h:33:5
 auto declarationGlobalVariable(ID id, const QualifiedTypePtr& type,
                                declaration::Linkage linkage = declaration::Linkage::Private, Meta meta = {}) {
     return hilti::declaration::GlobalVariable::create(context(), id, type, linkage, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/global-variable.h:48:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/global-variable.h:45:5
 auto declarationGlobalVariable(ID id, declaration::Linkage linkage = declaration::Linkage::Private, Meta meta = {}) {
     return hilti::declaration::GlobalVariable::create(context(), id, linkage, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/global-variable.h:58:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/global-variable.h:55:5
 auto declarationImportedModule(ID id, const std::string& parse_extension, Meta meta = {}) {
     return hilti::declaration::ImportedModule::create(context(), id, parse_extension, meta);
 } // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/declarations/imported-module.h:52:5
@@ -334,16 +334,16 @@ auto function(const ID& id, const type::FunctionPtr& ftype, const StatementPtr& 
 } // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/function.h:66:5
 auto qualifiedType(const UnqualifiedTypePtr& t, Constness const_, Meta m = Meta()) {
     return hilti::QualifiedType::create(context(), t, const_, m);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/type.h:348:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/type.h:351:5
 auto qualifiedType(const UnqualifiedTypePtr& t, Constness const_, Side side, const Meta& m = Meta()) {
     return hilti::QualifiedType::create(context(), t, const_, side, m);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/type.h:364:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/type.h:367:5
 auto qualifiedType(const UnqualifiedTypePtr& t, bool is_constant, Meta m = Meta()) {
     return hilti::QualifiedType::create(context(), t, is_constant, m);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/type.h:390:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/type.h:391:5
 auto qualifiedType(const UnqualifiedTypePtr& t, bool is_constant, Side side, const Meta& m = Meta()) {
     return hilti::QualifiedType::create(context(), t, is_constant, side, m);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/type.h:395:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/type.h:396:5
 auto statementAssert(const ExpressionPtr& expr, const ExpressionPtr& msg = nullptr, Meta meta = {}) {
     return hilti::statement::Assert::create(context(), expr, msg, meta);
 } // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/statements/assert.h:44:5
@@ -354,7 +354,7 @@ auto statementAssert(statement::assert::Exception _unused, const ExpressionPtr& 
 auto statementBlock(Meta meta = {}) {
     return hilti::statement::Block::create(context(), meta);
 } // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/statements/block.h:23:5
-auto statementBlock(Statements stmts = {}, Meta meta = {}) {
+auto statementBlock(Statements stmts, Meta meta = {}) {
     return hilti::statement::Block::create(context(), stmts, meta);
 } // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/statements/block.h:19:5
 auto statementBreak(Meta meta = {}) {
@@ -445,21 +445,20 @@ auto typeAny(Meta m = Meta()) {
 auto typeAuto(const Meta& m = Meta()) {
     return hilti::type::Auto::create(context(), m);
 } // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/auto.h:15:5
-auto typeBitfield(int width, type::bitfield::BitRanges bits, const AttributeSetPtr& attributes,
-                  const Meta& m = Meta()) {
-    return hilti::type::Bitfield::create(context(), width, bits, attributes, m);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/bitfield.h:124:5
+auto typeBitfield(int width, type::bitfield::BitRanges bits, AttributeSetPtr attrs, const Meta& m = Meta()) {
+    return hilti::type::Bitfield::create(context(), width, bits, attrs, m);
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/bitfield.h:137:5
 auto typeBitfield(type::Wildcard _, const Meta& m = Meta()) {
     return hilti::type::Bitfield::create(context(), _, m);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/bitfield.h:131:5
-auto typeBitfieldBitRange(const ID& id, int lower, int upper, int field_width, const AttributeSetPtr& attrs = {},
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/bitfield.h:146:5
+auto typeBitfieldBitRange(const ID& id, int lower, int upper, int field_width, AttributeSetPtr attrs = {},
                           const ExpressionPtr& ctor_value = nullptr, const Meta& meta = Meta()) {
     return hilti::type::bitfield::BitRange::create(context(), id, lower, upper, field_width, attrs, ctor_value, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/bitfield.h:52:5
-auto typeBitfieldBitRange(const ID& id, int lower, int upper, int field_width, const AttributeSetPtr& attrs = {},
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/bitfield.h:53:5
+auto typeBitfieldBitRange(const ID& id, int lower, int upper, int field_width, AttributeSetPtr attrs = {},
                           const Meta& meta = Meta()) {
     return hilti::type::bitfield::BitRange::create(context(), id, lower, upper, field_width, attrs, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/bitfield.h:63:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/bitfield.h:66:5
 auto typeBool(const Meta& meta = {}) {
     return hilti::type::Bool::create(context(), meta);
 } // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/bool.h:15:5
@@ -550,26 +549,26 @@ auto typeNull(Meta meta = {}) {
 } // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/null.h:16:5
 auto typeOperandList(type::Wildcard _, const Meta& m = Meta()) {
     return hilti::type::OperandList::create(context(), _, m);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/operand-list.h:98:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/operand-list.h:105:5
 auto typeOperandList(type::operand_list::Operands operands, Meta meta = {}) {
     return hilti::type::OperandList::create(context(), operands, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/operand-list.h:94:5
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/operand-list.h:101:5
 auto typeOperandListOperand(ID id, parameter::Kind kind, const UnqualifiedTypePtr& type, bool optional = false,
-                            Meta meta = {}) {
-    return hilti::type::operand_list::Operand::create(context(), id, kind, type, optional, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/operand-list.h:37:5
+                            std::string doc = "", Meta meta = {}) {
+    return hilti::type::operand_list::Operand::create(context(), id, kind, type, optional, doc, meta);
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/operand-list.h:38:5
 auto typeOperandListOperand(ID id, parameter::Kind kind, const UnqualifiedTypePtr& type, const ExpressionPtr& default_,
-                            bool optional, const Meta& meta = {}) {
-    return hilti::type::operand_list::Operand::create(context(), id, kind, type, default_, optional, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/operand-list.h:49:5
+                            bool optional, std::string doc = "", const Meta& meta = {}) {
+    return hilti::type::operand_list::Operand::create(context(), id, kind, type, default_, optional, doc, meta);
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/operand-list.h:50:5
 auto typeOperandListOperand(ID id, parameter::Kind kind, const UnqualifiedTypePtr& type, const ExpressionPtr& default_,
-                            const Meta& meta = {}) {
-    return hilti::type::operand_list::Operand::create(context(), id, kind, type, default_, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/operand-list.h:43:5
+                            std::string doc = "", const Meta& meta = {}) {
+    return hilti::type::operand_list::Operand::create(context(), id, kind, type, default_, doc, meta);
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/operand-list.h:44:5
 auto typeOperandListOperand(parameter::Kind kind, const UnqualifiedTypePtr& type, bool optional = false,
-                            Meta meta = {}) {
-    return hilti::type::operand_list::Operand::create(context(), kind, type, optional, meta);
-} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/operand-list.h:32:5
+                            std::string doc = "", Meta meta = {}) {
+    return hilti::type::operand_list::Operand::create(context(), kind, type, optional, doc, meta);
+} // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/operand-list.h:33:5
 auto typeOptional(const QualifiedTypePtr& t, Meta m = Meta()) {
     return hilti::type::Optional::create(context(), t, m);
 } // /Users/robin/work/spicy/node-rewrite/hilti/toolchain/include/hilti/ast/types/optional.h:23:5

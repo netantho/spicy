@@ -26,7 +26,7 @@ public:
 protected:
     Union(ASTContext* ctx, Nodes children, Meta meta) : Ctor(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Union)
+    HILTI_NODE(hilti, Union)
 };
 
 } // namespace hilti::ctor

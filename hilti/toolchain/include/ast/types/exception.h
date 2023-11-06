@@ -38,7 +38,7 @@ protected:
 
     bool isResolved() const final { return baseType() ? baseType()->isResolved() : true; }
 
-    HILTI_NODE(Exception)
+    HILTI_NODE(hilti, Exception)
 };
 
 } // namespace hilti::type

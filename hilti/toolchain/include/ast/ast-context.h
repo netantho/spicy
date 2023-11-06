@@ -46,7 +46,7 @@ protected:
 
     std::string _render() const final;
 
-    HILTI_NODE(ASTRoot);
+    HILTI_NODE(hilti, ASTRoot);
 };
 
 /**

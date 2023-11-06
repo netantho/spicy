@@ -81,7 +81,7 @@ protected:
           _upper(upper),
           _field_width(field_width) {}
 
-    HILTI_NODE(BitRange);
+    HILTI_NODE(hilti, BitRange);
 
 private:
     ID _id;
@@ -153,7 +153,7 @@ protected:
 
     Bitfield(ASTContext* ctx, Wildcard _, const Meta& meta) : UnqualifiedType(ctx, Wildcard(), {"bitfield(*)"}, meta) {}
 
-    HILTI_NODE(Bitfield)
+    HILTI_NODE(hilti, Bitfield)
 
 private:
     int _width = 0;

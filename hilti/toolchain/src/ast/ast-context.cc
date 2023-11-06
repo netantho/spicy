@@ -114,8 +114,7 @@ Result<module::UID> ASTContext::_parseSource(const hilti::rt::filesystem::path& 
 
     HILTI_DEBUG(logging::debug::Compiler, dbg_message);
 
-    auto builder = Builder(this);
-    auto module = (*plugin->get().parse)(&builder, in, path);
+    auto module = (*plugin->get().parse)(this, in, path);
     if ( ! module )
         return module.error();
 
@@ -263,7 +262,7 @@ Result<Nothing> ASTContext::_resolve(const Plugin& plugin) {
             for ( const auto& i : hilti::visitor::PreOrder().walk(_root) )
                 i->clearScope();
 
-            if ( auto rc = _runHook(&modified, plugin, &Plugin::ast_build_scopes, "building scopes", &builder, _root);
+            if ( auto rc = _runHook(&modified, plugin, &Plugin::ast_build_scopes, "building scopes", this, _root);
                  ! rc )
                 return rc.error();
         }
@@ -276,7 +275,7 @@ Result<Nothing> ASTContext::_resolve(const Plugin& plugin) {
             modified = true;
         }
 
-        if ( auto rc = _runHook(&modified, plugin, &Plugin::ast_resolve, "resolving", &builder, _root); ! rc )
+        if ( auto rc = _runHook(&modified, plugin, &Plugin::ast_resolve, "resolving", this, _root); ! rc )
             return rc.error();
 
         HILTI_DEBUG(logging::debug::Compiler, "unifying types");
@@ -316,9 +315,8 @@ Result<Nothing> ASTContext::_transform(const Plugin& plugin) {
 
     HILTI_DEBUG(logging::debug::Compiler, "transforming AST");
 
-    auto builder = Builder(this);
     bool modified = false;
-    if ( auto rc = _runHook(&modified, plugin, &Plugin::ast_transform, "transforming", &builder, _root); ! rc )
+    if ( auto rc = _runHook(&modified, plugin, &Plugin::ast_transform, "transforming", this, _root); ! rc )
         return rc;
 
     _dumpAST(logging::debug::AstTransformed, plugin, "AST after transforming", 0);
@@ -340,13 +338,12 @@ Result<Nothing> ASTContext::_validate(const Plugin& plugin, bool pre_resolve) {
     if ( _context->options().skip_validation )
         return Nothing();
 
-    auto builder = Builder(this);
     bool modified = false; // not used
 
     if ( pre_resolve )
-        _runHook(&modified, plugin, &Plugin::ast_validate_pre, "validating (pre)", &builder, _root);
+        _runHook(&modified, plugin, &Plugin::ast_validate_pre, "validating (pre)", this, _root);
     else
-        _runHook(&modified, plugin, &Plugin::ast_validate_post, "validating (post)", &builder, _root);
+        _runHook(&modified, plugin, &Plugin::ast_validate_post, "validating (post)", this, _root);
 
     return _collectErrors();
 }

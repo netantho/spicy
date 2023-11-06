@@ -31,7 +31,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(enum_::Equal)
+    HILTI_OPERATOR(hilti, enum_::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -53,7 +53,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(enum_::Unequal)
+    HILTI_OPERATOR(hilti, enum_::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -63,7 +63,8 @@ public:
         return {
             .kind = Kind::Cast,
             .op0 = {parameter::Kind::In, builder->typeEnum(type::Wildcard())},
-            .op1 = {parameter::Kind::In, builder->typeType(builder->qualifiedType(builder->typeSignedInteger(type::Wildcard()), Const))},
+            .op1 = {parameter::Kind::In,
+                    builder->typeType(builder->qualifiedType(builder->typeSignedInteger(type::Wildcard()), Const))},
             .result_doc = "int",
             .ns = "enum",
             .doc =
@@ -75,7 +76,7 @@ public:
         return operands[1]->type()->type()->as<type::Type_>()->typeValue();
     }
 
-    HILTI_OPERATOR(enum_::CastToSignedInteger)
+    HILTI_OPERATOR(hilti, enum_::CastToSignedInteger)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToSignedInteger);
 
@@ -85,7 +86,8 @@ public:
         return {
             .kind = Kind::Cast,
             .op0 = {parameter::Kind::In, builder->typeEnum(type::Wildcard())},
-            .op1 = {parameter::Kind::In, builder->typeType(builder->qualifiedType(builder->typeUnsignedInteger(type::Wildcard()), Const))},
+            .op1 = {parameter::Kind::In,
+                    builder->typeType(builder->qualifiedType(builder->typeUnsignedInteger(type::Wildcard()), Const))},
             .result_doc = "uint",
             .ns = "enum",
             .doc =
@@ -98,7 +100,7 @@ public:
         return operands[1]->type()->type()->as<type::Type_>()->typeValue();
     }
 
-    HILTI_OPERATOR(enum_::CastToUnsignedInteger)
+    HILTI_OPERATOR(hilti, enum_::CastToUnsignedInteger)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToUnsignedInteger);
 
@@ -126,7 +128,7 @@ Instantiates an enum instance initialized from a signed integer value. The value
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(enum_::CtorSigned)
+    HILTI_OPERATOR(hilti, enum_::CtorSigned)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorSigned);
 
@@ -155,7 +157,7 @@ enumerator labels. It must not be larger than the maximum that a
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(enum_::CtorUnsigned)
+    HILTI_OPERATOR(hilti, enum_::CtorUnsigned)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorUnsigned);
 
@@ -175,7 +177,7 @@ than ``Undef``), as defined by it's type.
         };
     }
 
-    HILTI_OPERATOR(enum_::HasLabel);
+    HILTI_OPERATOR(hilti, enum_::HasLabel);
 };
 HILTI_OPERATOR_IMPLEMENTATION(HasLabel);
 

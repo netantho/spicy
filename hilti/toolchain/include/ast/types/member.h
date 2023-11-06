@@ -38,7 +38,7 @@ protected:
     Member(ASTContext* ctx, Wildcard _, const Meta& meta)
         : UnqualifiedType(ctx, Wildcard(), {"member(*)"}, meta), _id("<wildcard>") {}
 
-    HILTI_NODE(Member)
+    HILTI_NODE(hilti, Member)
 
 private:
     ID _id;

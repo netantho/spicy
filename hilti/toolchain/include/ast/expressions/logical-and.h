@@ -30,7 +30,7 @@ public:
 protected:
     LogicalAnd(ASTContext* ctx, Nodes children, Meta meta) : Expression(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(LogicalAnd)
+    HILTI_NODE(hilti, LogicalAnd)
 };
 
 } // namespace hilti::expression

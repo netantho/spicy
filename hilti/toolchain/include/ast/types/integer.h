@@ -52,7 +52,7 @@ protected:
         : IntegerBase(ctx, {util::fmt("int%" PRIu64, width)}, children, width, m) {}
     SignedInteger(ASTContext* ctx, Wildcard _, const Meta& m = Meta()) : IntegerBase(ctx, Wildcard(), {"int<*>"}, m) {}
 
-    HILTI_NODE(SignedInteger)
+    HILTI_NODE(hilti, SignedInteger)
 };
 
 /** AST node for an unsigned integer type. */
@@ -72,7 +72,7 @@ protected:
     UnsignedInteger(ASTContext* ctx, Wildcard _, const Meta& m = Meta())
         : IntegerBase(ctx, Wildcard(), {"uint<*>"}, m) {}
 
-    HILTI_NODE(UnsignedInteger);
+    HILTI_NODE(hilti, UnsignedInteger);
 };
 
 } // namespace hilti::type

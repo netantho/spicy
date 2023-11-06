@@ -24,7 +24,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(port::Equal)
+    HILTI_OPERATOR(hilti, port::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal)
 
@@ -41,7 +41,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(port::Unequal)
+    HILTI_OPERATOR(hilti, port::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal)
 
@@ -58,7 +58,7 @@ public:
             .doc = "Creates a port instance.",
         };
     }
-    HILTI_OPERATOR(port::Ctor)
+    HILTI_OPERATOR(hilti, port::Ctor)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Ctor)
 
@@ -77,7 +77,7 @@ Returns the protocol the port is using (such as UDP or TCP).
         };
     }
 
-    HILTI_OPERATOR(port::Protocol);
+    HILTI_OPERATOR(hilti, port::Protocol);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Protocol)
 

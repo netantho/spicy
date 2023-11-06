@@ -5,7 +5,6 @@
 #include <hilti/compiler/context.h>
 #include <hilti/compiler/plugin.h>
 #include <hilti/compiler/unit.h>
-#include <hilti/global.h>
 
 using namespace hilti;
 using namespace hilti::context;

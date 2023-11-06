@@ -26,7 +26,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(error::Ctor)
+    HILTI_OPERATOR(hilti, error::Ctor)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Ctor);
 
@@ -43,7 +43,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(error::Description);
+    HILTI_OPERATOR(hilti, error::Description);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Description);
 

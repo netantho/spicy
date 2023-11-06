@@ -24,7 +24,7 @@ public:
         return operands[0]->type()->type()->as<type::Optional>()->dereferencedType();
     }
 
-    HILTI_OPERATOR(optional::Deref)
+    HILTI_OPERATOR(hilti, optional::Deref)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Deref);
 

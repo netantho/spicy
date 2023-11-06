@@ -22,8 +22,8 @@ namespace hilti { namespace detail { class Parser; } }
     @$.begin.filename = @$.end.filename = driver->currentFile();
 };
 
-%parse-param {class Driver* driver} {class Builder* builder}
-%lex-param   {class Driver* driver}
+%parse-param {Driver* driver} {Builder* builder}
+%lex-param   {Driver* driver}
 
 %define api.namespace {hilti::detail::parser}
 %define api.parser.class {Parser}

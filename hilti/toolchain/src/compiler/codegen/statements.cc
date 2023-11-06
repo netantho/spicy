@@ -1,14 +1,13 @@
 // Copyright (c) 2020-2023 by the Zeek Project. See LICENSE for details.
 
+#include <hilti/ast/ctors/string.h>
 #include <hilti/ast/declarations/local-variable.h>
+#include <hilti/ast/expressions/ctor.h>
 #include <hilti/ast/statements/all.h>
+#include <hilti/ast/types/struct.h>
 #include <hilti/base/logger.h>
 #include <hilti/compiler/detail/codegen/codegen.h>
 #include <hilti/compiler/detail/cxx/all.h>
-
-#include <hilti/ast/ctors/string.h>
-#include <hilti/ast/expressions/ctor.h>
-#include <hilti/ast/types/struct.h>
 
 using namespace hilti;
 using util::fmt;

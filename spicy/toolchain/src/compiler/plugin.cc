@@ -1,16 +1,15 @@
 // Copyright (c) 2020-2023 by the Zeek Project. See LICENSE for details.
 
-#include "compiler/plugin.h"
-
-#include <hilti/compiler/plugin.h>
-#include <hilti/compiler/printer.h>
-
-#include <spicy/ast/aliases.h>
+#include <spicy/ast/builder/builder.h>
 #include <spicy/autogen/config.h>
 #include <spicy/compiler/detail/codegen/codegen.h>
-#include <spicy/compiler/detail/coercion.h>
-#include <spicy/compiler/detail/visitors.h>
-#include <spicy/global.h>
+#include <spicy/compiler/detail/coercer.h>
+#include <spicy/compiler/detail/parser/driver.h>
+#include <spicy/compiler/detail/printer.h>
+#include <spicy/compiler/detail/resolver.h>
+#include <spicy/compiler/detail/scope-builder.h>
+#include <spicy/compiler/detail/validator.h>
+#include <spicy/compiler/plugin.h>
 
 using namespace spicy;
 using namespace spicy::detail;
@@ -22,48 +21,59 @@ hilti::Plugin spicy::detail::create_spicy_plugin() {
         .extension = ".spicy",
         .cxx_includes = {"spicy/rt/libspicy.h"},
 
-        .library_paths =
-            [](const std::shared_ptr<hilti::Context>& /* ctx */) { return spicy::configuration().spicy_library_paths; },
+        .library_paths = [](const hilti::Context* /* ctx */) { return spicy::configuration().spicy_library_paths; },
 
-        .parse = [](std::istream& in, const hilti::rt::filesystem::path& path) { return parseSource(in, path); },
+        .parse =
+            [](ASTContext* ctx, std::istream& in, const hilti::rt::filesystem::path& path) {
+                Builder builder(ctx);
+                return parser::parseSource(&builder, in, path);
+            },
 
-        .coerce_ctor = [](Ctor c, const Type& dst,
-                          bitmask<hilti::CoercionStyle> style) { return detail::coerceCtor(std::move(c), dst, style); },
+        .coerce_ctor =
+            [](ASTContext* ctx, const CtorPtr& c, const QualifiedTypePtr& dst, bitmask<hilti::CoercionStyle> style) {
+                Builder builder(ctx);
+                return coercer::coerceCtor(&builder, c, dst, style);
+            },
 
-        .coerce_type = [](Type t, const Type& dst,
-                          bitmask<hilti::CoercionStyle> style) { return detail::coerceType(std::move(t), dst, style); },
+        .coerce_type =
+            [](ASTContext* ctx, const QualifiedTypePtr& t, const QualifiedTypePtr& dst,
+               bitmask<hilti::CoercionStyle> style) {
+                Builder builder(ctx);
+                return coercer::coerceType(&builder, t, dst, style);
+            },
 
         .ast_build_scopes =
-            [](const std::shared_ptr<hilti::Context>& ctx, Node* m, hilti::Unit* u) {
-                ast::buildScopes(ctx, m, u);
+            [](ASTContext* ctx, const ASTRootPtr& root) {
+                Builder builder(ctx);
+                scope_builder::build(&builder, root);
                 return false;
             },
 
-        .ast_normalize = [](const std::shared_ptr<hilti::Context>& ctx, Node* m,
-                            hilti::Unit* u) { return ast::normalize(ctx, m, u); },
-
-        .ast_coerce = [](const std::shared_ptr<hilti::Context>& ctx, hilti::Node* m,
-                         hilti::Unit* u) { return ast::coerce(ctx, m, u); },
-
-        .ast_resolve = [](const std::shared_ptr<hilti::Context>& ctx, Node* m,
-                          hilti::Unit* u) { return ast::resolve(ctx, m, u); },
+        .ast_resolve =
+            [](ASTContext* ctx, const ASTRootPtr& root) {
+                Builder builder(ctx);
+                return resolver::resolve(&builder, root);
+            },
 
         .ast_validate_pre =
-            [](const std::shared_ptr<hilti::Context>& ctx, Node* m, hilti::Unit* u) {
-                ast::validate_pre(ctx, m, u);
+            [](ASTContext* ctx, const ASTRootPtr& m) {
+                Builder builder(ctx);
+                validator::validate_pre(&builder, m);
                 return false;
             },
 
         .ast_validate_post =
-            [](const std::shared_ptr<hilti::Context>& ctx, Node* m, hilti::Unit* u) {
-                ast::validate_post(ctx, m, u);
+            [](ASTContext* ctx, const ASTRootPtr& root) {
+                Builder builder(ctx);
+                validator::validate_post(&builder, root);
                 return false;
             },
 
-        .ast_print = [](const Node& root, hilti::printer::Stream& out) { return ast::print(root, out); },
+        .ast_print = [](const NodePtr& node, hilti::detail::printer::Stream& out) { return printer::print(out, node); },
 
-        .ast_transform = [](const std::shared_ptr<hilti::Context>& ctx, Node* n, hilti::Unit* u) -> bool {
-            return CodeGen(ctx).compileModule(n, u);
+        .ast_transform = [](ASTContext* ctx, const ASTRootPtr& m) -> bool {
+            Builder builder(ctx);
+            return CodeGen(&builder).compileAST(m);
         },
     };
 }

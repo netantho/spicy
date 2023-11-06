@@ -41,7 +41,7 @@ protected:
     Element(ASTContext* ctx, Nodes children, ID id, Meta meta = {})
         : Node(ctx, std::move(children), std::move(meta)), _id(std::move(id)) {}
 
-    HILTI_NODE(Element);
+    HILTI_NODE(hilti, Element);
 
 private:
     ID _id;
@@ -83,7 +83,7 @@ protected:
     Tuple(ASTContext* ctx, Wildcard _, const Meta& meta) : UnqualifiedType(ctx, Wildcard(), {"tuple(*)"}, meta) {}
 
 
-    HILTI_NODE(Tuple)
+    HILTI_NODE(hilti, Tuple)
 };
 
 } // namespace hilti::type

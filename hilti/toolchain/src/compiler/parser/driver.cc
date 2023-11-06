@@ -7,7 +7,6 @@
 #include <hilti/compiler/detail/parser/driver.h>
 #include <hilti/compiler/detail/parser/scanner.h>
 #include <hilti/compiler/plugin.h>
-#include <hilti/global.h>
 
 /** We compile with a source property to find this. */
 #include <__parser.h>

@@ -93,7 +93,7 @@ protected:
 
     // TODO: Do we need to implement _qualified() to make fields const/non-const?
 
-    HILTI_NODE(Union)
+    HILTI_NODE(hilti, Union)
 
 private:
     int64_t _anon_union = -1;

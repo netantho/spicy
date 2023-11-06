@@ -26,7 +26,7 @@ public:
 protected:
     Ctor(ASTContext* ctx, Nodes children, Meta meta) : Expression(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Ctor)
+    HILTI_NODE(hilti, Ctor)
 };
 
 } // namespace hilti::expression

@@ -233,15 +233,10 @@ struct Signature {
 
     std::optional<std::string> member;
     QParam param0;
-    std::string param0_doc;
     QParam param1;
-    std::string param1_doc;
     QParam param2;
-    std::string param2_doc;
     QParam param3;
-    std::string param3_doc;
     QParam param4;
-    std::string param4_doc;
 
     QResult result;         /**< result of the method; if not set, `result()` will be called dynamically */
     std::string result_doc; /**< documentation string for the result */
@@ -258,6 +253,8 @@ struct ProcessedSignature {
     QualifiedTypePtr result; /**< result of the method; if null, `result()` will be called dynamically */
     OperandListPtr operands; /**< null for operators to be instantiated only manually */
     operator_::Priority priority;
+    std::string doc;        /**< documentation string */
+    std::string namespace_; /**< namespace where to document this operator */
 };
 } // namespace detail
 
@@ -334,6 +331,9 @@ public:
     /** Returns the operator's meta information. */
     auto meta() const { return _meta; }
 
+    /** Returns the operator's documentation string. */
+    auto doc() const { return signature().doc; }
+
     /**
      * Returns the C++-level name of the operator's class. Should be used only
      * for debugging purposes.
@@ -399,7 +399,7 @@ protected:
      * @param t type of the operand
      */
     static NodeDerivedPtr<operator_::Operand> operandForType(Builder* builder, parameter::Kind kind,
-                                                             const UnqualifiedTypePtr& t);
+                                                             const UnqualifiedTypePtr& t, std::string doc = "");
 
     /**
      * Helper to create an signature operand matching the type of a given expression.
@@ -409,7 +409,7 @@ protected:
      */
     static NodeDerivedPtr<operator_::Operand> operandForExpression(Builder* builder, parameter::Kind kind,
                                                                    const Expressions& e, size_t i) {
-        return operandForType(builder, kind, e[i]->type()->type());
+        return operandForType(builder, kind, e[i]->type()->type(), "");
     }
 
 private:

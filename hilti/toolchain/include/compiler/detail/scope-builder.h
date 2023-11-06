@@ -3,6 +3,7 @@
 #pragma once
 
 #include <hilti/ast/forward.h>
+#include <hilti/compiler/unit.h>
 
 namespace hilti::detail::scope_builder {
 

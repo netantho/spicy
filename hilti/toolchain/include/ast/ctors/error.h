@@ -32,7 +32,7 @@ protected:
     Error(ASTContext* ctx, Nodes children, std::string v, Meta meta)
         : Ctor(ctx, std::move(children), std::move(meta)), _value(std::move(v)) {}
 
-    HILTI_NODE(Error)
+    HILTI_NODE(hilti, Error)
 
 private:
     std::string _value;

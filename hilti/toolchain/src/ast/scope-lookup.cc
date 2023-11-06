@@ -4,9 +4,9 @@
 #include <hilti/ast/declarations/constant.h>
 #include <hilti/ast/declarations/imported-module.h>
 #include <hilti/ast/declarations/module.h>
+#include <hilti/ast/expressions/ctor.h>
 #include <hilti/ast/scope-lookup.h>
 #include <hilti/base/logger.h>
-#include <hilti/ast/expressions/ctor.h>
 
 using namespace hilti;
 

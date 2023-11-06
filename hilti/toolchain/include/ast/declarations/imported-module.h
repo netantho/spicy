@@ -74,7 +74,7 @@ protected:
           _scope(std::move(search_scope)),
           _dirs(std::move(search_dirs)) {}
 
-    HILTI_NODE(ImportedModule)
+    HILTI_NODE(hilti, ImportedModule)
 
 private:
     hilti::rt::filesystem::path _path;

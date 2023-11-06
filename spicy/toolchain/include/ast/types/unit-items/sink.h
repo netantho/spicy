@@ -4,34 +4,46 @@
 
 #include <utility>
 
-#include <spicy/ast/aliases.h>
-#include <spicy/ast/engine.h>
+#include <hilti/ast/attribute.h>
+#include <hilti/ast/type.h>
+
 #include <spicy/ast/types/sink.h>
 #include <spicy/ast/types/unit-item.h>
-#include <spicy/ast/types/unit.h>
 
 namespace spicy::type::unit::item {
 
 /**
  * AST node for a unit sink.
  */
-class Sink : public hilti::NodeBase, public spicy::trait::isUnitItem {
+class Sink : public unit::Item {
 public:
-    Sink(ID id, std::optional<AttributeSet> attrs = {}, const Meta& m = Meta())
-        : NodeBase(nodes(std::move(id), std::move(attrs), type::Sink(m)), m) {}
+    const auto& id() const { return _id; }
+    auto attributes() const { return child<AttributeSet>(0); }
 
-    const auto& id() const { return child<ID>(0); }
-    auto attributes() const { return children()[1].tryAs<AttributeSet>(); }
+    QualifiedTypePtr itemType() const final { return child<QualifiedType>(1); }
 
-    bool operator==(const Sink& other) const { return id() == other.id() && attributes() == other.attributes(); }
+    bool isResolved() const final { return itemType()->isResolved(); }
 
-    // Unit field interface
-    const Type& itemType() const { return child<Type>(2); }
-    bool isResolved() const { return type::isResolved(itemType()); }
-    auto isEqual(const Item& other) const { return node::isEqual(this, other); }
+    node::Properties properties() const final {
+        auto p = node::Properties{{"id", _id}};
+        return unit::Item::properties() + p;
+    }
 
-    // Node interface.
-    auto properties() const { return node::Properties{}; }
+    static auto create(ASTContext* ctx, ID id, AttributeSetPtr attrs, const Meta& meta = {}) {
+        if ( ! attrs )
+            attrs = AttributeSet::create(ctx);
+
+        return NodeDerivedPtr<Sink>(new Sink(ctx, {attrs, type::Sink::create(ctx)}, std::move(id), meta));
+    }
+
+protected:
+    Sink(ASTContext* ctx, Nodes children, ID id, const Meta& meta)
+        : unit::Item(ctx, std::move(children), meta), _id(std::move(id)) {}
+
+    HILTI_NODE(spicy, Sink)
+
+private:
+    ID _id;
 };
 
 } // namespace spicy::type::unit::item

@@ -68,7 +68,7 @@ protected:
     Keyword(ASTContext* ctx, Nodes children, keyword::Kind kind, Meta meta)
         : Expression(ctx, std::move(children), std::move(meta)), _kind(kind) {}
 
-    HILTI_NODE(Keyword)
+    HILTI_NODE(hilti, Keyword)
 
 private:
     keyword::Kind _kind;

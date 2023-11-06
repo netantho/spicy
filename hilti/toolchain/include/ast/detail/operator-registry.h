@@ -11,14 +11,15 @@
 
 #include <hilti/ast/operator.h>
 
-#define HILTI_OPERATOR(cls)                                                                                            \
-    Result<ResolvedOperatorPtr> instantiate(Builder* builder, Expressions operands, const Meta& meta) const final {    \
-        return {operator_::cls::create(builder->context(), this, result(builder, operands, meta), std::move(operands), \
-                                       meta)};                                                                         \
+#define HILTI_OPERATOR(ns, cls)                                                                                        \
+    Result<hilti::ResolvedOperatorPtr> instantiate(hilti::Builder* builder, Expressions operands, const Meta& meta)    \
+        const final {                                                                                                  \
+        return {ns::operator_::cls::create(builder->context(), this, result(builder, operands, meta),                  \
+                                           std::move(operands), meta)};                                                \
     }                                                                                                                  \
                                                                                                                        \
     std::string name() const final { return #cls; }                                                                    \
-    std::string _typename() const final { return util::typename_(*this); }
+    std::string _typename() const final { return hilti::util::typename_(*this); }
 
 #define HILTI_OPERATOR_IMPLEMENTATION(cls)                                                                             \
     namespace {                                                                                                        \
@@ -50,6 +51,9 @@ public:
 
     std::pair<bool, std::optional<std::vector<const Operator*>>> functionCallCandidates(
         const expression::UnresolvedOperator* op);
+
+    /** Returns all available operators. */
+    const auto& operators() { return _operators; }
 
     /**
      * Registers an operator with the registry. It will not immediately become

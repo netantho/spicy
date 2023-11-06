@@ -16,7 +16,13 @@ public:
 
     void add(ASTContext* ctx, StatementPtr s) { addChild(ctx, std::move(s)); }
 
-    static auto create(ASTContext* ctx, Statements stmts = {}, Meta meta = {}) {
+    /** Internal method for use by builder API only. */
+    void _add(ASTContext* ctx, const StatementPtr& s) { addChild(ctx, s); }
+
+    /** Internal method for use by builder API only. */
+    auto _lastStatement() { return children().back()->as<Statement>(); }
+
+    static auto create(ASTContext* ctx, Statements stmts, Meta meta = {}) {
         return NodeDerivedPtr<Block>(new Block(ctx, std::move(stmts), std::move(meta)));
     }
 
@@ -25,7 +31,7 @@ public:
 protected:
     Block(ASTContext* ctx, Nodes children, Meta meta) : Statement(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Block)
+    HILTI_NODE(hilti, Block)
 };
 
 } // namespace hilti::statement

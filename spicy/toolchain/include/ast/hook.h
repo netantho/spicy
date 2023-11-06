@@ -2,16 +2,18 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
-#include <hilti/ast/attribute.h>
-#include <hilti/ast/declarations/type.h>
-#include <hilti/ast/expressions/keyword.h>
 #include <hilti/ast/function.h>
+#include <hilti/ast/node.h>
+#include <hilti/ast/types/function.h>
+#include <hilti/ast/types/void.h>
 
-#include <spicy/ast/aliases.h>
 #include <spicy/ast/engine.h>
+#include <spicy/ast/forward.h>
 
 namespace spicy {
 
@@ -26,62 +28,69 @@ class Field;
 } // namespace type
 
 /** AST node representing a Spicy unit hook. */
-class Hook : public hilti::NodeBase {
+class Hook : public Node {
 public:
-    Hook(const std::vector<type::function::Parameter>& params, std::optional<Statement> body, Engine engine,
-         std::optional<AttributeSet> attrs = {}, const Meta& m = Meta())
-        : NodeBase(nodes(Function(ID(),
-                                  type::Function(type::function::Result(type::void_, m), params,
-                                                 type::function::Flavor::Hook, m),
-                                  std::move(body), hilti::function::CallingConvention::Standard, std::move(attrs), m),
-                         hilti::node::none),
-                   m),
-          _engine(engine) {}
+    ~Hook() override;
 
-    Hook() = default;
+    auto function() const { return child<Function>(0); }
+    auto attributes() const { return function()->attributes(); }
+    auto dd() const { return child(1)->tryAs<Declaration>(); }
 
-    const auto& function() const { return child<Function>(0); }
-
-    auto body() const { return function().body(); }
-    const auto& ftype() const { return function().ftype(); }
-    const auto& id() const { return function().id(); }
-    const auto& type() const { return function().type(); }
+    auto body() const { return function()->body(); }
+    auto ftype() const { return function()->ftype(); }
+    auto id() const { return function()->id(); }
+    auto type() const { return function()->type(); }
 
     Engine engine() const { return _engine; }
-    NodeRef ddRef() const;
-    hilti::optional_ref<const spicy::type::Unit> unitType() const;
-    hilti::optional_ref<const spicy::type::unit::item::Field> unitField() const;
-    std::optional<Expression> priority() const;
+    auto unitType() { return _unit_type.lock(); }
+    auto unitField() { return _unit_field.lock(); }
 
-    bool isForEach() const { return AttributeSet::find(function().attributes(), "foreach").has_value(); }
-    bool isDebug() const { return AttributeSet::find(function().attributes(), "%debug").has_value(); }
-
-    void setID(const ID& id) { children()[0].as<Function>().setID(id); }
-    void setUnitTypeRef(NodeRef p) { _unit_type = std::move(p); }
-    void setFieldRef(NodeRef p) { _unit_field = std::move(p); }
-    void setDDType(Type t) { children()[1] = hilti::expression::Keyword::createDollarDollarDeclaration(std::move(t)); }
-    void setParameters(const std::vector<type::function::Parameter>& params) {
-        children()[0].as<Function>().setFunctionType(
-            type::Function(type::function::Result(type::void_, meta()), params, type::function::Flavor::Hook, meta()));
+    ExpressionPtr priority() const {
+        if ( auto attr = attributes()->find("priority") )
+            return *attr->valueAsExpression();
+        else
+            return nullptr;
     }
 
-    void setResultType(const Type& t) { children()[0].as<Function>().setResultType(t); }
+    auto isForEach() const { return attributes()->has("foreach"); }
+    auto isDebug() const { return attributes()->has("%debug"); }
 
-    bool operator==(const Hook& other) const { return function() == other.function() && _engine == other._engine; }
+    void setID(const ID& id) { function()->setID(id); }
+    void setUnitType(const NodeDerivedPtr<type::Unit>& unit) { _unit_type = unit; }
+    void setField(const NodeDerivedPtr<type::unit::item::Field>& field) { _unit_field = field; }
 
-    auto properties() const {
-        return node::Properties{{"engine", to_string(_engine)},
-                                {"unit_type", _unit_type.renderedRid()},
-                                {"unit_field", _unit_field.renderedRid()}};
+    void setDD(ASTContext* ctx, const QualifiedTypePtr& t) { setChild(ctx, 1, t); }
+    void setParameters(ASTContext* ctx, const hilti::declaration::Parameters& params) {
+        ftype()->setParameters(ctx, params);
     }
+    void setResult(ASTContext* ctx, const QualifiedTypePtr& t) { function()->setResultType(ctx, t); }
+
+    node::Properties properties() const final;
+
+    static auto create(ASTContext* ctx, const hilti::declaration::Parameters& parameters, const StatementPtr& body,
+                       Engine engine, const AttributeSetPtr& attrs, const Meta& m = Meta()) {
+        auto ftype = hilti::type::Function::create(ctx,
+                                                   QualifiedType::create(ctx, hilti::type::Void::create(ctx, m),
+                                                                         hilti::Constness::Const),
+                                                   parameters, hilti::type::function::Flavor::Hook, m);
+        auto func = hilti::Function::create(ctx, hilti::ID(), ftype, body, hilti::function::CallingConvention::Standard,
+                                            attrs, m);
+        return NodeDerivedPtr<Hook>(new Hook(ctx, node::flatten(func, nullptr), engine, m));
+    }
+
+protected:
+    Hook(ASTContext* ctx, Nodes children, Engine engine, Meta m = Meta())
+        : Node(ctx, std::move(children), std::move(m)), _engine(engine) {}
+
+    HILTI_NODE(spicy, Hook);
 
 private:
     Engine _engine = {};
-    NodeRef _unit_type;
-    NodeRef _unit_field;
+    std::weak_ptr<type::Unit> _unit_type;
+    std::weak_ptr<type::unit::item::Field> _unit_field;
 };
 
-/** Creates an AST node representing a `Hook`. */
-inline Node to_node(Hook f) { return Node(std::move(f)); }
+using HookPtr = NodeDerivedPtr<Hook>;
+using Hooks = std::vector<HookPtr>;
 
 } // namespace spicy

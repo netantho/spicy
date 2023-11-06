@@ -33,7 +33,7 @@ protected:
     Interval(ASTContext* ctx, Nodes children, hilti::rt::Interval v, Meta meta)
         : Ctor(ctx, std::move(children), std::move(meta)), _value(v) {}
 
-    HILTI_NODE(Interval)
+    HILTI_NODE(hilti, Interval)
 
 private:
     hilti::rt::Interval _value;

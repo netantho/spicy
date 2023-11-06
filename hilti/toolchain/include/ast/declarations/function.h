@@ -55,7 +55,7 @@ protected:
     Function(ASTContext* ctx, Nodes children, ID id, declaration::Linkage linkage, Meta meta)
         : Declaration(ctx, std::move(children), std::move(id), linkage, std::move(meta)) {}
 
-    HILTI_NODE(Function)
+    HILTI_NODE(hilti, Function)
 
 private:
     const Operator* _operator = nullptr;

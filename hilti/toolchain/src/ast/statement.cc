@@ -7,6 +7,4 @@ using namespace hilti;
 
 Statement::~Statement() = default;
 
-std::string Statement::_render() const {
-	return "";
-}
+std::string Statement::_render() const { return ""; }

@@ -23,7 +23,7 @@ public:
 protected:
     Interval(ASTContext* ctx, Meta meta) : UnqualifiedType(ctx, {"interval"}, std::move(meta)) {}
 
-    HILTI_NODE(Interval)
+    HILTI_NODE(hilti, Interval)
 };
 
 } // namespace hilti::type

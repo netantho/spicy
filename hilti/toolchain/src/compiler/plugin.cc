@@ -1,13 +1,14 @@
 // Copyright (c) 2020-2023 by the Zeek Project. See LICENSE for details.
 
 #include <hilti/autogen/config.h>
+#include <hilti/compiler/coercer.h>
 #include <hilti/compiler/context.h>
 #include <hilti/compiler/detail/parser/driver.h>
 #include <hilti/compiler/detail/resolver.h>
 #include <hilti/compiler/detail/scope-builder.h>
+#include <hilti/compiler/detail/type-unifier.h>
 #include <hilti/compiler/detail/validator.h>
 #include <hilti/compiler/plugin.h>
-#include <hilti/global.h>
 
 using namespace hilti;
 using namespace hilti::detail;
@@ -56,32 +57,50 @@ Plugin hilti::detail::create_hilti_plugin() {
 
         .library_paths = [](hilti::Context* ctx) { return hilti::configuration().hilti_library_paths; },
 
-        .parse = [](Builder* builder, std::istream& in,
-                    const hilti::rt::filesystem::path& path) { return parser::parseSource(builder, in, path); },
+        .unify_type = type_unifier::detail::unifyType,
 
-        .coerce_ctor = [](Builder* builder, const CtorPtr& c, const QualifiedTypePtr& dst,
-                          bitmask<CoercionStyle> style) { return coercer::coerceCtor(builder, c, dst, style); },
+        .parse =
+            [](ASTContext* ctx, std::istream& in, const hilti::rt::filesystem::path& path) {
+                Builder builder(ctx);
+                return parser::parseSource(&builder, in, path);
+            },
 
-        .coerce_type = [](Builder* builder, const QualifiedTypePtr& t, const QualifiedTypePtr& dst,
-                          bitmask<CoercionStyle> style) { return coercer::coerceType(builder, t, dst, style); },
+        .coerce_ctor =
+            [](ASTContext* ctx, const CtorPtr& c, const QualifiedTypePtr& dst, bitmask<CoercionStyle> style) {
+                Builder builder(ctx);
+                return coercer::detail::coerceCtor(&builder, c, dst, style);
+            },
+
+        .coerce_type =
+            [](ASTContext* ctx, const QualifiedTypePtr& t, const QualifiedTypePtr& dst, bitmask<CoercionStyle> style) {
+                Builder builder(ctx);
+                return coercer::detail::coerceType(&builder, t, dst, style);
+            },
 
         .ast_build_scopes =
-            [](Builder* ctx, const ASTRootPtr& root) {
-                scope_builder::build(ctx, root);
+            [](ASTContext* ctx, const ASTRootPtr& root) {
+                Builder builder(ctx);
+                scope_builder::build(&builder, root);
                 return false;
             },
 
-        .ast_resolve = [](Builder* ctx, const ASTRootPtr& root) { return resolver::resolve(ctx, root); },
+        .ast_resolve =
+            [](ASTContext* ctx, const ASTRootPtr& root) {
+                Builder builder(ctx);
+                return resolver::resolve(&builder, root);
+            },
 
         .ast_validate_pre =
-            [](Builder* builder, const ASTRootPtr& m) {
-                validator::validate_pre(builder, m);
+            [](ASTContext* ctx, const ASTRootPtr& m) {
+                Builder builder(ctx);
+                validator::detail::validate_pre(&builder, m);
                 return false;
             },
 
         .ast_validate_post =
-            [](Builder* builder, const ASTRootPtr& root) {
-                validator::validate_post(builder, root);
+            [](ASTContext* ctx, const ASTRootPtr& root) {
+                Builder builder(ctx);
+                validator::detail::validate_post(&builder, root);
                 return false;
             },
 

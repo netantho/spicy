@@ -22,7 +22,7 @@ public:
 protected:
     Address(ASTContext* ctx, const Meta& meta) : UnqualifiedType(ctx, {"address"}, meta) {}
 
-    HILTI_NODE(Address);
+    HILTI_NODE(hilti, Address);
 };
 
 } // namespace hilti::type

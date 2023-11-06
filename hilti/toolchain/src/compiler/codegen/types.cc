@@ -12,7 +12,6 @@
 #include <hilti/compiler/detail/cxx/all.h>
 #include <hilti/compiler/detail/renderer.h>
 #include <hilti/compiler/unit.h>
-#include <hilti/global.h>
 
 using namespace hilti;
 using namespace hilti::detail;

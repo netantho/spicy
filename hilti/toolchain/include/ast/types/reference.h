@@ -38,7 +38,7 @@ protected:
     StrongReference(ASTContext* ctx, Wildcard _, Nodes children, Meta meta)
         : UnqualifiedType(ctx, Wildcard(), {"strong_ref(*)"}, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(StrongReference)
+    HILTI_NODE(hilti, StrongReference)
 };
 
 /** AST node for a `weak_ref<T>` type. */
@@ -68,7 +68,7 @@ protected:
 
     bool isResolved() const final { return dereferencedType()->isResolved(); }
 
-    HILTI_NODE(WeakReference)
+    HILTI_NODE(hilti, WeakReference)
 };
 
 /** AST node for a `value_ref<T>` type. */
@@ -98,7 +98,7 @@ protected:
 
     bool isResolved() const final { return dereferencedType()->isResolved(); }
 
-    HILTI_NODE(ValueReference)
+    HILTI_NODE(hilti, ValueReference)
 };
 
 } // namespace hilti::type

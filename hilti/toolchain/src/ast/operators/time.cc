@@ -25,7 +25,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::Equal)
+    HILTI_OPERATOR(hilti, time::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal)
 
@@ -42,7 +42,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::Unequal)
+    HILTI_OPERATOR(hilti, time::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal)
 
@@ -59,7 +59,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::SumInterval)
+    HILTI_OPERATOR(hilti, time::SumInterval)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SumInterval);
 
@@ -76,7 +76,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::DifferenceTime)
+    HILTI_OPERATOR(hilti, time::DifferenceTime)
 };
 HILTI_OPERATOR_IMPLEMENTATION(DifferenceTime);
 
@@ -93,7 +93,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::DifferenceInterval)
+    HILTI_OPERATOR(hilti, time::DifferenceInterval)
 };
 HILTI_OPERATOR_IMPLEMENTATION(DifferenceInterval);
 
@@ -110,7 +110,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::Greater)
+    HILTI_OPERATOR(hilti, time::Greater)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Greater);
 
@@ -127,7 +127,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::GreaterEqual)
+    HILTI_OPERATOR(hilti, time::GreaterEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(GreaterEqual);
 
@@ -144,7 +144,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::Lower)
+    HILTI_OPERATOR(hilti, time::Lower)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Lower);
 
@@ -161,7 +161,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::LowerEqual)
+    HILTI_OPERATOR(hilti, time::LowerEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(LowerEqual);
 
@@ -181,7 +181,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::CtorSignedIntegerNs)
+    HILTI_OPERATOR(hilti, time::CtorSignedIntegerNs)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorSignedIntegerNs);
 
@@ -201,7 +201,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::CtorSignedIntegerSecs)
+    HILTI_OPERATOR(hilti, time::CtorSignedIntegerSecs)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorSignedIntegerSecs);
 
@@ -221,7 +221,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::CtorUnsignedIntegerNs)
+    HILTI_OPERATOR(hilti, time::CtorUnsignedIntegerNs)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorUnsignedIntegerNs);
 
@@ -241,7 +241,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::CtorUnsignedIntegerSecs)
+    HILTI_OPERATOR(hilti, time::CtorUnsignedIntegerSecs)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorUnsignedIntegerSecs);
 
@@ -261,7 +261,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(time::CtorRealSecs)
+    HILTI_OPERATOR(hilti, time::CtorRealSecs)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorRealSecs);
 
@@ -280,7 +280,7 @@ Returns the time as a real value representing seconds since the UNIX epoch.
         };
     }
 
-    HILTI_OPERATOR(time::Seconds);
+    HILTI_OPERATOR(hilti, time::Seconds);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Seconds);
 
@@ -299,7 +299,7 @@ Returns the time as an integer value representing nanoseconds since the UNIX epo
         };
     }
 
-    HILTI_OPERATOR(time::Nanoseconds);
+    HILTI_OPERATOR(hilti, time::Nanoseconds);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Nanoseconds);
 

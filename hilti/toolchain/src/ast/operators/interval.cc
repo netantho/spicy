@@ -24,7 +24,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::Equal)
+    HILTI_OPERATOR(hilti, interval::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal)
 
@@ -41,7 +41,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::Unequal)
+    HILTI_OPERATOR(hilti, interval::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal)
 
@@ -58,7 +58,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::Sum)
+    HILTI_OPERATOR(hilti, interval::Sum)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Sum);
 
@@ -75,7 +75,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::Difference)
+    HILTI_OPERATOR(hilti, interval::Difference)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Difference);
 
@@ -92,7 +92,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::Greater)
+    HILTI_OPERATOR(hilti, interval::Greater)
 };
 
 HILTI_OPERATOR_IMPLEMENTATION(Greater);
@@ -109,7 +109,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::GreaterEqual)
+    HILTI_OPERATOR(hilti, interval::GreaterEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(GreaterEqual);
 
@@ -126,7 +126,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::Lower)
+    HILTI_OPERATOR(hilti, interval::Lower)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Lower);
 
@@ -143,7 +143,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::LowerEqual)
+    HILTI_OPERATOR(hilti, interval::LowerEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(LowerEqual);
 
@@ -160,7 +160,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::MultipleUnsignedInteger)
+    HILTI_OPERATOR(hilti, interval::MultipleUnsignedInteger)
 };
 HILTI_OPERATOR_IMPLEMENTATION(MultipleUnsignedInteger);
 
@@ -177,7 +177,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::MultipleReal)
+    HILTI_OPERATOR(hilti, interval::MultipleReal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(MultipleReal);
 
@@ -197,7 +197,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::CtorSignedIntegerNs)
+    HILTI_OPERATOR(hilti, interval::CtorSignedIntegerNs)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorSignedIntegerNs);
 
@@ -217,7 +217,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::CtorSignedIntegerSecs)
+    HILTI_OPERATOR(hilti, interval::CtorSignedIntegerSecs)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorSignedIntegerSecs);
 
@@ -237,7 +237,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::CtorUnsignedIntegerNs)
+    HILTI_OPERATOR(hilti, interval::CtorUnsignedIntegerNs)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorUnsignedIntegerNs);
 
@@ -257,7 +257,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::CtorUnsignedIntegerSecs)
+    HILTI_OPERATOR(hilti, interval::CtorUnsignedIntegerSecs)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorUnsignedIntegerSecs);
 
@@ -277,7 +277,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(interval::CtorRealSecs)
+    HILTI_OPERATOR(hilti, interval::CtorRealSecs)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorRealSecs);
 
@@ -296,7 +296,7 @@ Returns the interval as a real value representing seconds.
         };
     }
 
-    HILTI_OPERATOR(interval::Seconds);
+    HILTI_OPERATOR(hilti, interval::Seconds);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Seconds);
 
@@ -315,7 +315,7 @@ Returns the interval as an integer value representing nanoseconds.
         };
     }
 
-    HILTI_OPERATOR(interval::Nanoseconds);
+    HILTI_OPERATOR(hilti, interval::Nanoseconds);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Nanoseconds);
 

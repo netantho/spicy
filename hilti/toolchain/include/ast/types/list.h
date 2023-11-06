@@ -39,7 +39,7 @@ protected:
         : UnqualifiedType(ctx, Wildcard(), {"iterator(list(*))"}, children, meta) {}
 
 
-    HILTI_NODE(Iterator)
+    HILTI_NODE(hilti, Iterator)
 };
 
 } // namespace list
@@ -74,7 +74,7 @@ protected:
 
     void newlyQualified(const QualifiedType* qtype) const final { elementType()->setConst(qtype->constness()); }
 
-    HILTI_NODE(List)
+    HILTI_NODE(hilti, List)
 };
 
 } // namespace hilti::type

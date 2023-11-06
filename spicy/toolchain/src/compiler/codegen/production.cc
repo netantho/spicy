@@ -5,13 +5,13 @@
 using namespace spicy;
 using namespace spicy::detail;
 
-bool codegen::production::nullable(const std::vector<std::vector<Production>>& rhss) {
+bool codegen::production::isNullable(const std::vector<std::vector<Production*>>& rhss) {
     if ( rhss.empty() )
         return true;
 
     for ( const auto& rhs : rhss ) {
         for ( auto& r : rhs ) {
-            if ( ! r.nullable() )
+            if ( ! r->isNullable() )
                 goto next;
         }
         return true;
@@ -22,8 +22,8 @@ bool codegen::production::nullable(const std::vector<std::vector<Production>>& r
     return false;
 }
 
-std::string codegen::production::to_string(const Production& p) {
-    auto name = hilti::util::rsplit1(p.typename_(), "::").second;
+std::string codegen::to_string(const Production& p) {
+    auto name = hilti::util::rsplit1(hilti::util::typename_(p), "::").second;
 
     std::string can_sync;
     std::string sync_at;
@@ -57,7 +57,7 @@ std::string codegen::production::to_string(const Production& p) {
     return hilti::util::fmt("%10s: %-3s -> %s%s%s%s", name, p.symbol(), p.render(), field, container, can_sync);
 }
 
-uint64_t codegen::production::tokenID(const std::string& p) {
+uint64_t codegen::Production::tokenID(const std::string& p) {
     // We record the IDs in a global map to keep them stable.
     static std::unordered_map<std::string, size_t> ids;
 

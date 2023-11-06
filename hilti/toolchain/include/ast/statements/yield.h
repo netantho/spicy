@@ -19,7 +19,7 @@ public:
 protected:
     Yield(ASTContext* ctx, Nodes children, Meta meta) : Statement(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Yield)
+    HILTI_NODE(hilti, Yield)
 };
 
 } // namespace hilti::statement

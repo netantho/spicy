@@ -84,6 +84,9 @@ class Module;
 class Parameter;
 class Property;
 class Type;
+
+using ParameterPtr = std::shared_ptr<Parameter>;
+
 } // namespace declaration
 
 namespace expression {
@@ -229,7 +232,8 @@ class Iterator;
 
 namespace function {
 using Parameter = declaration::Parameter;
-}
+using ParameterPtr = declaration::ParameterPtr;
+} // namespace function
 
 namespace tuple {
 class Element;
@@ -273,9 +277,10 @@ using QualifiedTypes = std::vector<QualifiedTypePtr>;
 using UnqualifiedTypes = std::vector<UnqualifiedTypePtr>;
 
 class Builder;
+using BuilderPtr = std::shared_ptr<Builder>;
+
 class ASTContext;
 class Nodes;
 
-using BuilderPtr = std::shared_ptr<Builder>;
 
 } // namespace hilti

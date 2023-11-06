@@ -86,7 +86,7 @@ protected:
 
     std::string _render() const override { return isResolved() ? "(resolved)" : "(not resolved)"; }
 
-    HILTI_NODE(Parameter)
+    HILTI_NODE(hilti, Parameter)
 
 private:
     static QualifiedTypePtr _qtype(ASTContext* ctx, const UnqualifiedTypePtr& t, parameter::Kind kind) {

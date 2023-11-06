@@ -2,14 +2,17 @@
 
 #pragma once
 
-#include <optional>
 #include <utility>
-#include <vector>
 
-#include <hilti/ast/types/unknown.h>
+#include <hilti/ast/attribute.h>
+#include <hilti/ast/ctor.h>
+#include <hilti/ast/expression.h>
+#include <hilti/ast/type.h>
+#include <hilti/ast/types/auto.h>
 
-#include <spicy/ast/aliases.h>
 #include <spicy/ast/engine.h>
+#include <spicy/ast/hook.h>
+#include <spicy/ast/types/sink.h>
 #include <spicy/ast/types/unit-item.h>
 
 namespace spicy::type::unit::item {
@@ -18,77 +21,20 @@ namespace spicy::type::unit::item {
  * AST node for a unit field with its type determined by a not yet resolved
  * ID. The ID may refer to either a type or an ctor.
  */
-class UnresolvedField : public hilti::NodeBase, public spicy::trait::isUnitItem {
+class UnresolvedField : public unit::Item {
 public:
-    UnresolvedField(const std::optional<ID>& id, Type type, Engine e, bool skip, const std::vector<Expression>& args,
-                    std::optional<Expression> repeat, const std::vector<Expression>& sinks,
-                    std::optional<AttributeSet> attrs = {}, std::optional<Expression> cond = {},
-                    std::vector<Hook> hooks = {}, Meta m = Meta())
-
-        : NodeBase(nodes(node::none, std::move(type), id, std::move(repeat), std::move(attrs), std::move(cond), args,
-                         sinks, std::move(hooks)),
-                   std::move(m)),
-          _is_skip(skip),
-          _engine(e),
-          _args_start(6),
-          _args_end(_args_start + static_cast<int>(args.size())),
-          _sinks_start(_args_end),
-          _sinks_end(_sinks_start + static_cast<int>(sinks.size())) {}
-
-    UnresolvedField(const std::optional<ID>& id, Ctor ctor, Engine e, bool skip, const std::vector<Expression>& args,
-                    std::optional<Expression> repeat, const std::vector<Expression>& sinks,
-                    std::optional<AttributeSet> attrs = {}, std::optional<Expression> cond = {},
-                    std::vector<Hook> hooks = {}, Meta m = Meta())
-        : NodeBase(nodes(node::none, std::move(ctor), id, std::move(repeat), std::move(attrs), std::move(cond), args,
-                         sinks, std::move(hooks)),
-                   std::move(m)),
-          _is_skip(skip),
-          _engine(e),
-          _args_start(6),
-          _args_end(_args_start + static_cast<int>(args.size())),
-          _sinks_start(_args_end),
-          _sinks_end(_sinks_start + static_cast<int>(sinks.size())) {}
-
-    UnresolvedField(const std::optional<ID>& id, Item item, Engine e, bool skip, const std::vector<Expression>& args,
-                    std::optional<Expression> repeat, const std::vector<Expression>& sinks,
-                    std::optional<AttributeSet> attrs = {}, std::optional<Expression> cond = {},
-                    std::vector<Hook> hooks = {}, Meta m = Meta())
-        : NodeBase(nodes(node::none, std::move(item), id, std::move(repeat), std::move(attrs), std::move(cond), args,
-                         sinks, std::move(hooks)),
-                   std::move(m)),
-          _is_skip(skip),
-          _engine(e),
-          _args_start(6),
-          _args_end(_args_start + static_cast<int>(args.size())),
-          _sinks_start(_args_end),
-          _sinks_end(_sinks_start + static_cast<int>(sinks.size())) {}
-
-    UnresolvedField(std::optional<ID> id, ID unresolved_id, Engine e, bool skip, const std::vector<Expression>& args,
-                    std::optional<Expression> repeat, const std::vector<Expression>& sinks,
-                    std::optional<AttributeSet> attrs = {}, std::optional<Expression> cond = {},
-                    std::vector<Hook> hooks = {}, Meta m = Meta())
-        : NodeBase(nodes(std::move(unresolved_id), node::none, std::move(id), std::move(repeat), std::move(attrs),
-                         std::move(cond), args, sinks, std::move(hooks)),
-                   std::move(m)),
-          _is_skip(skip),
-          _engine(e),
-          _args_start(6),
-          _args_end(_args_start + static_cast<int>(args.size())),
-          _sinks_start(_args_end),
-          _sinks_end(_sinks_start + static_cast<int>(sinks.size())) {}
-
-    auto fieldID() const { return children()[2].tryAs<ID>(); }
-    auto unresolvedID() const { return children()[0].tryAs<ID>(); }
+    auto fieldID() const { return _id; }
+    auto unresolvedID() const { return _unresolved_id; }
     const auto& index() const { return _index; }
 
     // Only one of these will have return value.
-    auto ctor() const { return children()[1].tryAs<Ctor>(); }
-    auto item() const { return children()[1].tryAs<Item>(); }
-    auto type() const { return children()[1].tryAs<Type>(); }
+    auto ctor() const { return child<Ctor>(1); }
+    auto item() const { return child<Item>(1); }
+    auto type() const { return child<QualifiedType>(1); }
 
-    auto repeatCount() const { return children()[3].tryAs<Expression>(); }
-    auto attributes() const { return children()[4].tryAs<AttributeSet>(); }
-    auto condition() const { return children()[5].tryAs<Expression>(); }
+    auto repeatCount() const { return child<Expression>(2); }
+    auto attributes() const { return child<AttributeSet>(3); }
+    auto condition() const { return child<Expression>(4); }
     auto arguments() const { return children<Expression>(_args_start, _args_end); }
     auto sinks() const { return children<Expression>(_sinks_start, _sinks_end); }
     auto hooks() const { return children<Hook>(_sinks_end, {}); }
@@ -97,23 +43,84 @@ public:
 
     void setIndex(uint64_t index) { _index = index; }
     void setSkip(bool skip) { _is_skip = skip; }
-    void setType(const Type& t) { children()[1] = t; }
+    void setType(ASTContext* ctx, QualifiedTypePtr t) { setChild(ctx, 1, std::move(t)); }
 
-    bool operator==(const UnresolvedField& other) const {
-        return _is_skip == other._is_skip && _engine == other._engine && unresolvedID() == other.unresolvedID() &&
-               fieldID() == other.fieldID() && attributes() == other.attributes() && arguments() == other.arguments() &&
-               sinks() == other.sinks() && condition() == other.condition() && hooks() == other.hooks();
+    QualifiedTypePtr itemType() const final { return child<QualifiedType>(0); /* return `auto` */ }
+
+    bool isResolved() const final { return false; }
+
+    node::Properties properties() const final {
+        auto p = node::Properties{{"engine", to_string(_engine)}};
+        return unit::Item::properties() + p;
     }
 
-    // Unit item interface
-    const Type& itemType() const { return hilti::type::auto_; }
-    bool isResolved() const { return false; }
-    auto isEqual(const Item& other) const { return node::isEqual(this, other); }
+    static auto create(ASTContext* ctx, ID id, QualifiedTypePtr type, Engine engine, bool skip, Expressions args,
+                       ExpressionPtr repeat, Expressions sinks, AttributeSetPtr attrs, ExpressionPtr cond,
+                       spicy::Hooks hooks, const Meta& meta = {}) {
+        return _create(ctx, std::move(id), std::move(type), engine, skip, std::move(args), std::move(repeat),
+                       std::move(sinks), std::move(attrs), std::move(cond), std::move(hooks), meta);
+    }
 
-    // Node interface.
-    auto properties() const { return node::Properties{{"engine", to_string(_engine)}}; }
+    static auto create(ASTContext* ctx, ID id, CtorPtr ctor, Engine engine, bool skip, Expressions args,
+                       ExpressionPtr repeat, Expressions sinks, AttributeSetPtr attrs, ExpressionPtr cond,
+                       spicy::Hooks hooks, const Meta& meta = {}) {
+        return _create(ctx, std::move(id), std::move(ctor), engine, skip, std::move(args), std::move(repeat),
+                       std::move(sinks), std::move(attrs), std::move(cond), std::move(hooks), meta);
+    }
+
+    static auto create(ASTContext* ctx, ID id, type::unit::ItemPtr item, Engine engine, bool skip, Expressions args,
+                       ExpressionPtr repeat, Expressions sinks, AttributeSetPtr attrs, ExpressionPtr cond,
+                       spicy::Hooks hooks, const Meta& meta = {}) {
+        return _create(ctx, std::move(id), std::move(item), engine, skip, std::move(args), std::move(repeat),
+                       std::move(sinks), std::move(attrs), std::move(cond), std::move(hooks), meta);
+    }
+
+    static auto create(ASTContext* ctx, ID id, ID unresolved_id, Engine engine, bool skip, Expressions args,
+                       ExpressionPtr repeat, Expressions sinks, AttributeSetPtr attrs, ExpressionPtr cond,
+                       spicy::Hooks hooks, const Meta& meta = {}) {
+        auto f = _create(ctx, std::move(id), nullptr, engine, skip, std::move(args), std::move(repeat),
+                         std::move(sinks), std::move(attrs), std::move(cond), std::move(hooks), meta);
+        f->_unresolved_id = std::move(unresolved_id);
+        return f;
+    }
+
+
+protected:
+    UnresolvedField(ASTContext* ctx, Nodes children, size_t args_start, size_t args_end, size_t sinks_start,
+                    size_t sinks_end, ID id, Engine engine, bool skip, const Meta& meta)
+        : unit::Item(ctx, std::move(children), meta),
+          _id(std::move(id)),
+          _is_skip(skip),
+          _engine(engine),
+          _args_start(static_cast<int>(args_start)),
+          _args_end(static_cast<int>(args_end)),
+          _sinks_start(static_cast<int>(sinks_start)),
+          _sinks_end(static_cast<int>(sinks_end)) {}
+
+    HILTI_NODE(spicy, UnresolvedField)
 
 private:
+    static NodeDerivedPtr<UnresolvedField> _create(ASTContext* ctx, ID id, NodePtr node, Engine engine, bool skip,
+                                                   Expressions args, ExpressionPtr repeat, Expressions sinks,
+                                                   AttributeSetPtr attrs, ExpressionPtr cond, spicy::Hooks hooks,
+                                                   const Meta& meta) {
+        if ( ! attrs )
+            attrs = AttributeSet::create(ctx);
+
+        auto auto_ = QualifiedType::create(ctx, hilti::type::Auto::create(ctx), hilti::Constness::Const, meta);
+        auto num_args = args.size();
+        auto num_sinks = sinks.size();
+
+        return NodeDerivedPtr<UnresolvedField>(
+            new UnresolvedField(ctx,
+                                node::flatten(std::move(auto_), std::move(node), std::move(repeat), std::move(attrs),
+                                              std::move(cond), std::move(args), std::move(sinks), std::move(hooks)),
+                                4U, 4U + num_args, 4U + num_args, 4U + num_args + num_sinks, std::move(id), engine,
+                                skip, meta));
+    }
+
+    ID _id;
+    ID _unresolved_id;
     bool _is_skip;
     Engine _engine;
     std::optional<uint64_t> _index;

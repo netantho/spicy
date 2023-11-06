@@ -2,9 +2,45 @@
 
 #pragma once
 
-#include <hilti/ast/forward.h>
+#include <string>
+#include <vector>
 
-namespace hilti::detail::validator {
+#include <hilti/ast/forward.h>
+#include <hilti/ast/node.h>
+
+// TODO: This should move out of detail/.
+namespace hilti::validator {
+
+/** Mix-in class for AST validators providing some common helpers. */
+class VisitorMixIn {
+public:
+    VisitorMixIn(Builder* builder) : _builder(builder) {}
+
+    /** Returns the builder associated with the validator. */
+    auto builder() const { return _builder; }
+
+    /* Record error with given node. */
+    void error(std::string msg, Node* n, node::ErrorPriority priority = node::ErrorPriority::Normal);
+
+    /** Record error with given node, providing additional context for the error report. */
+    void error(std::string msg, std::vector<std::string> context, Node* n,
+               node::ErrorPriority priority = node::ErrorPriority::Normal);
+
+    /* Record error with given node but use another's location for reporting. */
+    void error(std::string msg, Node* n, const Node* other, node::ErrorPriority priority = node::ErrorPriority::Normal);
+
+    /* Record error with given node but use a custom location for reporting. */
+    void error(std::string msg, Node* n, Location l, node::ErrorPriority priority = node::ErrorPriority::Normal);
+
+    /** Returns the number of errors reported so far. */
+    auto errors() const { return _errors; }
+
+private:
+    Builder* _builder;
+    int _errors = 0;
+};
+
+namespace detail {
 
 /** Implements the corresponding functionality for the default HILTI compiler plugin. */
 void validate_pre(Builder* builder, const ASTRootPtr& root);
@@ -12,4 +48,5 @@ void validate_pre(Builder* builder, const ASTRootPtr& root);
 /** Implements the corresponding functionality for the default HILTI compiler plugin. */
 void validate_post(Builder* builder, const ASTRootPtr& root);
 
-} // namespace hilti::detail::validator
+} // namespace detail
+} // namespace hilti::validator

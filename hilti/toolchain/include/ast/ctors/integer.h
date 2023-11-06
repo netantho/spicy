@@ -49,7 +49,7 @@ protected:
     SignedInteger(ASTContext* ctx, Nodes children, int64_t value, unsigned int width, Meta meta)
         : IntegerBase(ctx, std::move(children), value, width, std::move(meta)) {}
 
-    HILTI_NODE(SignedInteger)
+    HILTI_NODE(hilti, SignedInteger)
 };
 
 /** AST node for a unsigned integer constructor. */
@@ -71,7 +71,7 @@ protected:
     UnsignedInteger(ASTContext* ctx, Nodes children, uint64_t value, unsigned int width, Meta meta)
         : IntegerBase(ctx, std::move(children), value, width, std::move(meta)) {}
 
-    HILTI_NODE(UnsignedInteger)
+    HILTI_NODE(hilti, UnsignedInteger)
 };
 
 } // namespace hilti::ctor

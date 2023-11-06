@@ -31,7 +31,7 @@ protected:
     Bool(ASTContext* ctx, Nodes children, bool v, Meta meta)
         : Ctor(ctx, std::move(children), std::move(meta)), _value(v) {}
 
-    HILTI_NODE(Bool)
+    HILTI_NODE(hilti, Bool)
 
 private:
     bool _value;

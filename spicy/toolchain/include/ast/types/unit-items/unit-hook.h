@@ -4,32 +4,46 @@
 
 #include <utility>
 
-#include <spicy/ast/aliases.h>
+#include <hilti/ast/attribute.h>
+#include <hilti/ast/type.h>
+
+#include <spicy/ast/hook.h>
 #include <spicy/ast/types/unit-item.h>
-#include <spicy/ast/types/unit.h>
 
 namespace spicy::type::unit::item {
 
-/** AST node for a unit hook. */
-class UnitHook : public hilti::NodeBase, public spicy::trait::isUnitItem {
+/**
+ * AST node for a unit hook.
+ */
+class UnitHook : public unit::Item {
 public:
-    UnitHook(const ID& id, Hook hook, Meta m = Meta()) : NodeBase(nodes(id, std::move(hook)), std::move(m)) {
-        children()[1].as<Hook>().setID(id);
+    const auto& id() const { return _id; }
+    auto hook() const { return child<spicy::Hook>(0); }
+    auto location() const { return hook()->location(); }
+
+    QualifiedTypePtr itemType() const final { return hook()->function()->type(); }
+
+    bool isResolved() const final { return itemType()->isResolved(); }
+
+    node::Properties properties() const final {
+        auto p = node::Properties{{"id", _id}};
+        return unit::Item::properties() + p;
     }
 
-    const auto& id() const { return child<ID>(0); }
-    const auto& hook() const { return child<Hook>(1); }
-    const auto& location() const { return children()[0].location(); }
+    static auto create(ASTContext* ctx, ID id, spicy::HookPtr hook, const Meta& meta = {}) {
+        auto h = NodeDerivedPtr<UnitHook>(new UnitHook(ctx, {std::move(hook)}, std::move(id), meta));
+        h->hook()->setID(id);
+        return h;
+    }
 
-    bool operator==(const UnitHook& other) const { return id() == other.id() && hook() == other.hook(); }
+protected:
+    UnitHook(ASTContext* ctx, Nodes children, ID id, const Meta& meta)
+        : unit::Item(ctx, std::move(children), meta), _id(std::move(id)) {}
 
-    // Unit field interface
-    const Type& itemType() const { return hook().function().type(); }
-    bool isResolved() const { return type::isResolved(itemType()); }
-    auto isEqual(const Item& other) const { return node::isEqual(this, other); }
+    HILTI_NODE(spicy, UnitHook)
 
-    // Node interface.
-    auto properties() const { return node::Properties{}; }
+private:
+    ID _id;
 };
 
 } // namespace spicy::type::unit::item

@@ -38,7 +38,7 @@ protected:
 
     bool isResolved() const final { return _resolved && _resolved->type()->isResolved(); }
 
-    HILTI_NODE(Name)
+    HILTI_NODE(hilti, Name)
 
 private:
     ID _id;

@@ -58,7 +58,7 @@ protected:
           _cxxname(std::move(cxxname)),
           _num_parameters(num_parameters) {}
 
-    HILTI_NODE(BuiltInFunction)
+    HILTI_NODE(hilti, BuiltInFunction)
 
 private:
     std::string _name;

@@ -22,7 +22,7 @@ public:
 protected:
     Declaration(ASTContext* ctx, Nodes children, Meta meta) : Statement(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Declaration)
+    HILTI_NODE(hilti, Declaration)
 };
 
 } // namespace hilti::statement

@@ -34,7 +34,7 @@ protected:
     Expression(ASTContext* ctx, Nodes children, ID id, declaration::Linkage linkage, Meta meta)
         : Declaration(ctx, std::move(children), std::move(id), linkage, std::move(meta)) {}
 
-    HILTI_NODE(Expression)
+    HILTI_NODE(hilti, Expression)
 };
 
 } // namespace hilti::declaration

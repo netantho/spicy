@@ -52,7 +52,7 @@ protected:
 
     bool isResolved() const final { return keyType()->isResolved() && valueType()->isResolved(); }
 
-    HILTI_NODE(Iterator)
+    HILTI_NODE(hilti, Iterator)
 };
 
 } // namespace map
@@ -95,7 +95,7 @@ protected:
         iteratorType()->type()->dereferencedType()->setConst(qtype->constness());
     }
 
-    HILTI_NODE(Map)
+    HILTI_NODE(hilti, Map)
 };
 
 } // namespace hilti::type

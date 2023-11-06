@@ -1,30 +1,24 @@
 // Copyright (c) 2020-2023 by the Zeek Project. See LICENSE for details.
 
-#include <optional>
-
-#include <hilti/ast/builder/all.h>
-#include <hilti/ast/types/bitfield.h>
 #include <hilti/ast/types/reference.h>
-#include <hilti/ast/types/vector.h>
 
-#include <spicy/ast/detail/visitor.h>
 #include <spicy/ast/types/unit-items/field.h>
+#include <spicy/ast/types/unit.h>
 
 using namespace spicy;
 using namespace spicy::detail;
 
-std::optional<std::pair<const Expression, std::optional<const Type>>> spicy::type::unit::item::Field::
-    convertExpression() const {
-    if ( auto convert = AttributeSet::find(attributes(), "&convert") )
-        return std::make_pair((*convert->valueAsExpression()).get(), std::nullopt);
+std::optional<std::pair<ExpressionPtr, QualifiedTypePtr>> type::unit::item::Field::convertExpression() const {
+    if ( auto convert = attributes()->find("&convert") )
+        return std::make_pair(*convert->valueAsExpression(), nullptr);
 
-    Type t = parseType();
+    auto t = parseType();
 
-    if ( auto x = t.tryAs<type::ValueReference>() )
+    if ( auto x = t->type()->tryAs<hilti::type::ValueReference>() )
         t = x->dereferencedType();
 
-    if ( auto x = t.tryAs<type::Unit>() ) {
-        if ( auto convert = AttributeSet::find(x->attributes(), "&convert") )
+    if ( auto x = t->type()->tryAs<type::Unit>() ) {
+        if ( auto convert = x->attributes()->find("&convert") )
             return std::make_pair(*convert->valueAsExpression(), std::move(t));
     }
 

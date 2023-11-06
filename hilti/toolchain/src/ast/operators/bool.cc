@@ -23,7 +23,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(bool_::Equal)
+    HILTI_OPERATOR(hilti, bool_::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal)
 
@@ -40,7 +40,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(bool_::Unequal)
+    HILTI_OPERATOR(hilti, bool_::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal)
 
@@ -57,7 +57,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(bool_::BitAnd)
+    HILTI_OPERATOR(hilti, bool_::BitAnd)
 };
 HILTI_OPERATOR_IMPLEMENTATION(BitAnd);
 
@@ -74,7 +74,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(bool_::BitOr)
+    HILTI_OPERATOR(hilti, bool_::BitOr)
 };
 HILTI_OPERATOR_IMPLEMENTATION(BitOr);
 
@@ -91,7 +91,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(bool_::BitXor)
+    HILTI_OPERATOR(hilti, bool_::BitXor)
 };
 HILTI_OPERATOR_IMPLEMENTATION(BitXor);
 

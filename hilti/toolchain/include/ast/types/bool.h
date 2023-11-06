@@ -24,7 +24,7 @@ public:
 protected:
     Bool(ASTContext* ctx, const Meta& meta) : UnqualifiedType(ctx, {"bool"}, meta) {}
 
-    HILTI_NODE(Bool)
+    HILTI_NODE(hilti, Bool)
 };
 
 } // namespace hilti::type

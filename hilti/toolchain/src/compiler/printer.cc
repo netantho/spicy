@@ -12,7 +12,6 @@
 #include <hilti/base/util.h>
 #include <hilti/compiler/detail/printer.h>
 #include <hilti/compiler/plugin.h>
-#include <hilti/global.h>
 
 using namespace hilti;
 using util::fmt;

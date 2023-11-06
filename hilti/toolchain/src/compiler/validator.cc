@@ -56,45 +56,39 @@
 #include <hilti/base/logger.h>
 #include <hilti/base/timing.h>
 #include <hilti/compiler/detail/validator.h>
-#include <hilti/global.h>
 
 using namespace hilti;
 using util::fmt;
 
+void validator::VisitorMixIn::error(std::string msg, Node* n, node::ErrorPriority priority) {
+    n->addError(std::move(msg), n->location(), priority);
+    ++_errors;
+}
+
+void validator::VisitorMixIn::error(std::string msg, std::vector<std::string> context, Node* n,
+                                    node::ErrorPriority priority) {
+    n->addError(std::move(msg), n->location(), priority, std::move(context));
+    ++_errors;
+}
+
+void validator::VisitorMixIn::error(std::string msg, Node* n, const Node* other, node::ErrorPriority priority) {
+    n->addError(std::move(msg), other->location(), priority);
+    ++_errors;
+}
+
+void validator::VisitorMixIn::error(std::string msg, Node* n, Location l, node::ErrorPriority priority) {
+    n->addError(std::move(msg), std::move(l), priority);
+    ++_errors;
+}
+
 namespace {
-
-struct VisitorBase {
-    // Record error at location of current node.
-    void error(std::string msg, Node* n, node::ErrorPriority priority = node::ErrorPriority::Normal) {
-        n->addError(std::move(msg), n->location(), priority);
-        ++errors;
-    }
-
-    void error(std::string msg, std::vector<std::string> context, Node* n,
-               node::ErrorPriority priority = node::ErrorPriority::Normal) {
-        n->addError(std::move(msg), n->location(), priority, std::move(context));
-        ++errors;
-    }
-
-    // Record error with current node, but report with another node's location.
-    void error(std::string msg, Node* n, const Node* other,
-               node::ErrorPriority priority = node::ErrorPriority::Normal) {
-        n->addError(std::move(msg), other->location(), priority);
-        ++errors;
-    }
-
-    // Record error with current node, but report with a custom location.
-    void error(std::string msg, Node* n, Location l, node::ErrorPriority priority = node::ErrorPriority::Normal) {
-        n->addError(std::move(msg), std::move(l), priority);
-        ++errors;
-    }
-
-    int errors = 0;
+struct VisitorPre : visitor::PreOrder, public validator::VisitorMixIn {
+    using hilti::validator::VisitorMixIn::VisitorMixIn;
 };
 
-struct VisitorPre : visitor::PreOrder, public VisitorBase {};
+struct VisitorPost : visitor::PreOrder, public validator::VisitorMixIn {
+    using hilti::validator::VisitorMixIn::VisitorMixIn;
 
-struct VisitorPost : visitor::PreOrder, public VisitorBase {
     // Returns an error if the given type cannot be used for ordering at
     // runtime.
     Result<Nothing> isSortable(const QualifiedTypePtr& t) {
@@ -738,12 +732,12 @@ struct VisitorPost : visitor::PreOrder, public VisitorBase {
 
 } // anonymous namespace
 
-void detail::validator::validate_pre(Builder* builder, const ASTRootPtr& root) {
+void validator::detail::validate_pre(Builder* builder, const ASTRootPtr& root) {
     util::timing::Collector _("hilti/compiler/ast/validator");
-    ::hilti::visitor::visit(VisitorPre(), root);
+    ::hilti::visitor::visit(VisitorPre(builder), root);
 }
 
-void detail::validator::validate_post(Builder* builder, const ASTRootPtr& root) {
+void validator::detail::validate_post(Builder* builder, const ASTRootPtr& root) {
     util::timing::Collector _("hilti/compiler/ast/validator");
-    ::hilti::visitor::visit(VisitorPost(), root);
+    ::hilti::visitor::visit(VisitorPost(builder), root);
 }

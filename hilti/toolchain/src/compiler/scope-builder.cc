@@ -19,8 +19,6 @@
 #include <hilti/ast/types/struct.h>
 #include <hilti/base/timing.h>
 #include <hilti/compiler/detail/scope-builder.h>
-#include <hilti/compiler/unit.h>
-#include <hilti/global.h>
 
 using namespace hilti;
 
@@ -91,20 +89,6 @@ struct Visitor : visitor::PostOrder {
             n->setType(builder->context(), n->type()->recreateAsLhs(builder->context()));
         }
     }
-
-    /*
-     * TODO: Do we still need this?
-     *
-     * void operator()(declaration::ImportedModule* m) final {
-     *     if ( const auto& cached = context->lookupUnit(m.id(), m.scope(), unit->extension()) ) {
-     *         auto other = cached->unit->moduleRef();
-     *         p.node.setScope(other->scope());
-     *         auto n = unit->module().as<Module>().preserve(p.node);
-     *         const_cast<Node&>(*n).setScope(other->scope());
-     *         d.parent()->scope()->insert(std::move(n));
-     *     }
-     * }
-     */
 
     void operator()(expression::ListComprehension* n) final { n->getOrCreateScope()->insert(n->local()); }
 

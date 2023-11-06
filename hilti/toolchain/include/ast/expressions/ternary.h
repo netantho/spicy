@@ -34,7 +34,7 @@ public:
 protected:
     Ternary(ASTContext* ctx, Nodes children, Meta meta) : Expression(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Ternary)
+    HILTI_NODE(hilti, Ternary)
 };
 
 } // namespace hilti::expression

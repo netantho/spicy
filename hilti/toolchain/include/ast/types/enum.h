@@ -49,7 +49,7 @@ protected:
 
     void setType(std::weak_ptr<UnqualifiedType> enum_type) { _enum_type = std::move(enum_type); }
 
-    HILTI_NODE(Label)
+    HILTI_NODE(hilti, Label)
 
     static auto create(ASTContext* ctx, const ID& id, int value, const std::weak_ptr<UnqualifiedType>& enum_type,
                        const Meta& meta = {}) {
@@ -109,7 +109,7 @@ protected:
     Enum(ASTContext* ctx, Nodes children, Meta meta) : UnqualifiedType(ctx, {}, std::move(children), std::move(meta)) {}
     Enum(ASTContext* ctx, Wildcard _, const Meta& meta) : UnqualifiedType(ctx, Wildcard(), {"enum(*)"}, meta) {}
 
-    HILTI_NODE(Enum)
+    HILTI_NODE(hilti, Enum)
 
 private:
     void _setLabels(ASTContext* ctx, enum_::Labels labels);

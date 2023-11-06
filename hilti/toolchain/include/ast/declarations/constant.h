@@ -46,7 +46,7 @@ protected:
         assert(! child(0) || child(0)->as<QualifiedType>()->isConstant());
     }
 
-    HILTI_NODE(Constant)
+    HILTI_NODE(hilti, Constant)
 };
 
 } // namespace hilti::declaration

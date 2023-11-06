@@ -5,15 +5,14 @@
 #include <hilti/rt/util.h>
 
 #include <hilti/ast/declaration.h>
+#include <hilti/ast/declarations/constant.h>
 #include <hilti/ast/declarations/expression.h>
 #include <hilti/ast/declarations/imported-module.h>
 #include <hilti/ast/declarations/module.h>
+#include <hilti/ast/expressions/ctor.h>
 #include <hilti/ast/id.h>
 #include <hilti/ast/scope.h>
 #include <hilti/ast/type.h>
-
-#include <hilti/ast/declarations/constant.h>
-#include <hilti/ast/expressions/ctor.h>
 
 
 using namespace hilti;
@@ -103,7 +102,8 @@ void Scope::render(std::ostream& out, const std::string& prefix) const {
 
             if ( x ) {
                 if ( auto d = x->tryAs<declaration::Expression>() )
-                    s += util::fmt(" (type: [@e:%s] [@t:%s])", d->expression()->type()->identity(), d->expression()->type()->identity());
+                    s += util::fmt(" (type: [@e:%s] [@t:%s])", d->expression()->type()->identity(),
+                                   d->expression()->type()->identity());
                 else
                     s += util::fmt(" ([@d:%p])", x->identity());
             }

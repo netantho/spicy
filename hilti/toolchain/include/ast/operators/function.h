@@ -12,7 +12,7 @@
 namespace hilti {
 
 namespace operator_ {
-HILTI_NODE_OPERATOR(function, Call); // AST node for instantiated call operator
+HILTI_NODE_OPERATOR(hilti, function, Call); // AST node for instantiated call operator
 }
 
 namespace function {
@@ -28,7 +28,7 @@ public:
 
     std::string name() const final { return "function::Call"; }
 
-    private:
+private:
     friend class declaration::Function;
 
     std::weak_ptr<declaration::Function> _fdecl;

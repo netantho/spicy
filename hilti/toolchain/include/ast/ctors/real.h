@@ -31,7 +31,7 @@ protected:
     Real(ASTContext* ctx, Nodes children, double v, Meta meta)
         : Ctor(ctx, std::move(children), std::move(meta)), _value(v) {}
 
-    HILTI_NODE(Real)
+    HILTI_NODE(hilti, Real)
 
 private:
     double _value;

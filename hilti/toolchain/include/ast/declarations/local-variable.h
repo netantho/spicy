@@ -62,7 +62,7 @@ protected:
     LocalVariable(ASTContext* ctx, Nodes children, ID id, Meta meta)
         : Declaration(ctx, std::move(children), std::move(id), declaration::Linkage::Private, std::move(meta)) {}
 
-    HILTI_NODE(LocalVariable)
+    HILTI_NODE(hilti, LocalVariable)
 };
 
 } // namespace hilti::declaration

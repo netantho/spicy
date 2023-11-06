@@ -23,7 +23,7 @@ protected:
 
     std::string _render() const override;
 
-    HILTI_NODE_BASE(Ctor);
+    HILTI_NODE_BASE(hilti, Ctor);
 };
 
 } // namespace hilti

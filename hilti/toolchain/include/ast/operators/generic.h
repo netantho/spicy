@@ -9,8 +9,8 @@
 namespace hilti {
 
 namespace operator_ {
-HILTI_NODE_OPERATOR(generic, CastedCoercion); // AST node for instantiated call operator
-    }
+HILTI_NODE_OPERATOR(hilti, generic, CastedCoercion); // AST node for instantiated call operator
+}
 
 namespace generic {
 

@@ -20,9 +20,8 @@
 #include <hilti/ast/types/result.h>
 #include <hilti/base/logger.h>
 #include <hilti/base/timing.h>
-#include <hilti/compiler/detail/coercer.h>
+#include <hilti/compiler/coercer.h>
 #include <hilti/compiler/plugin.h>
-#include <hilti/global.h>
 
 #include "ast/type.h"
 
@@ -36,7 +35,7 @@ inline const DebugStream Coercer("coercer");
 namespace {
 
 struct VisitorCtor : visitor::PreOrder {
-    explicit VisitorCtor(Builder* builder, QualifiedTypePtr dst, bitmask<CoercionStyle> style)
+    VisitorCtor(Builder* builder, QualifiedTypePtr dst, bitmask<CoercionStyle> style)
         : builder(builder), dst(std::move(dst)), style(style) {}
 
     Builder* builder;
@@ -45,15 +44,15 @@ struct VisitorCtor : visitor::PreOrder {
 
     CtorPtr result = nullptr;
 
-    void operator()(ctor::Enum* c) final {
+    void operator()(ctor::Enum* n) final {
         if ( dst->type()->isA<type::Bool>() && (style & CoercionStyle::ContextualConversion) )
-            result = builder->ctorBool(c->value()->id() != ID("Undef"), c->meta());
+            result = builder->ctorBool(n->value()->id() != ID("Undef"), n->meta());
     }
 
-    void operator()(ctor::Map* c) final {
+    void operator()(ctor::Map* n) final {
         if ( auto t = dst->type()->tryAs<type::Map>() ) {
             ctor::map::Elements nelemns;
-            for ( const auto& e : c->value() ) {
+            for ( const auto& e : n->value() ) {
                 auto k = hilti::coerceExpression(builder, e->key(), t->keyType(), style);
                 auto v = hilti::coerceExpression(builder, e->value(), t->elementType(), style);
 
@@ -63,11 +62,11 @@ struct VisitorCtor : visitor::PreOrder {
                     return;
             }
 
-            result = builder->ctorMap(t->keyType(), t->elementType(), nelemns, c->meta());
+            result = builder->ctorMap(t->keyType(), t->elementType(), nelemns, n->meta());
         }
     }
 
-    void operator()(ctor::Null* c) final {
+    void operator()(ctor::Null* n) final {
         if ( auto t = dst->type()->tryAs<type::Optional>() ) {
             result = builder->ctorOptional(t->dereferencedType());
             return;
@@ -84,240 +83,240 @@ struct VisitorCtor : visitor::PreOrder {
         }
     }
 
-    void operator()(ctor::List* c) final {
+    void operator()(ctor::List* n) final {
         if ( auto t = dst->type()->tryAs<type::List>() ) {
             Expressions nexprs;
-            for ( const auto& e : c->value() ) {
+            for ( const auto& e : n->value() ) {
                 if ( auto x =
                          hilti::coerceExpression(builder, e, t->elementType(), CoercionStyle::TryAllForAssignment) )
                     nexprs.push_back(*x.coerced);
                 else
                     return;
             }
-            result = builder->ctorList(t->elementType(), std::move(nexprs), c->meta());
+            result = builder->ctorList(t->elementType(), std::move(nexprs), n->meta());
         }
 
         if ( auto t = dst->type()->tryAs<type::Vector>() ) {
-            auto dt = t->isWildcard() ? c->elementType() : t->elementType();
+            auto dt = t->isWildcard() ? n->elementType() : t->elementType();
 
             Expressions nexprs;
-            for ( const auto& e : c->value() ) {
+            for ( const auto& e : n->value() ) {
                 if ( auto x = hilti::coerceExpression(builder, e, dt, CoercionStyle::TryAllForAssignment) )
                     nexprs.push_back(*x.coerced);
                 else
                     return;
             }
-            result = builder->ctorVector(dt, std::move(nexprs), c->meta());
+            result = builder->ctorVector(dt, std::move(nexprs), n->meta());
         }
 
         if ( auto t = dst->type()->tryAs<type::Set>() ) {
-            auto dt = t->isWildcard() ? c->elementType() : t->elementType();
+            auto dt = t->isWildcard() ? n->elementType() : t->elementType();
 
             Expressions nexprs;
-            for ( const auto& e : c->value() ) {
+            for ( const auto& e : n->value() ) {
                 if ( auto x = hilti::coerceExpression(builder, e, dt, CoercionStyle::TryAllForAssignment) )
                     nexprs.push_back(*x.coerced);
                 else
                     return;
             }
-            result = builder->ctorSet(dt, nexprs, c->meta());
+            result = builder->ctorSet(dt, nexprs, n->meta());
         }
     }
 
-    void operator()(ctor::Real* c) final {
+    void operator()(ctor::Real* n) final {
         // Note: double->Integral constant conversions check 'non-narrowing' via
         // double->Int->double roundtrip - the generated code looks good.
 
         if ( auto t = dst->type()->tryAs<type::SignedInteger>() ) {
-            double d = c->value();
+            double d = n->value();
 
             if ( static_cast<double>(static_cast<int64_t>(d)) == d ) {
                 switch ( t->isWildcard() ? 64 : t->width() ) {
                     case 8:
                         if ( static_cast<double>(int8_t(d)) == d )
-                            result = builder->ctorSignedInteger(int64_t(d), 8, c->meta());
+                            result = builder->ctorSignedInteger(int64_t(d), 8, n->meta());
                         break;
 
                     case 16:
                         if ( static_cast<double>(static_cast<int16_t>(d)) == d )
-                            result = builder->ctorSignedInteger(static_cast<int64_t>(d), 16, c->meta());
+                            result = builder->ctorSignedInteger(static_cast<int64_t>(d), 16, n->meta());
                         break;
 
                     case 32:
                         if ( static_cast<double>(static_cast<int32_t>(d)) == d )
-                            result = builder->ctorSignedInteger(static_cast<int64_t>(d), 32, c->meta());
+                            result = builder->ctorSignedInteger(static_cast<int64_t>(d), 32, n->meta());
                         break;
 
-                    case 64: result = builder->ctorSignedInteger(static_cast<int64_t>(d), 64, c->meta()); break;
+                    case 64: result = builder->ctorSignedInteger(static_cast<int64_t>(d), 64, n->meta()); break;
                 }
             }
         }
 
         if ( auto t = dst->type()->tryAs<type::UnsignedInteger>() ) {
-            double d = c->value();
+            double d = n->value();
 
             if ( static_cast<double>(static_cast<uint64_t>(d)) == d ) {
                 switch ( t->isWildcard() ? 64 : t->width() ) {
                     case 8:
                         if ( static_cast<double>(static_cast<uint8_t>(d)) == d )
-                            result = builder->ctorUnsignedInteger(static_cast<uint64_t>(d), 8, c->meta());
+                            result = builder->ctorUnsignedInteger(static_cast<uint64_t>(d), 8, n->meta());
                         break;
 
                     case 16:
                         if ( static_cast<double>(static_cast<uint16_t>(d)) == d )
-                            result = builder->ctorUnsignedInteger(uint64_t(d), 16, c->meta());
+                            result = builder->ctorUnsignedInteger(uint64_t(d), 16, n->meta());
                         break;
 
                     case 32:
                         if ( static_cast<double>(static_cast<uint32_t>(d)) == d )
-                            result = builder->ctorUnsignedInteger(static_cast<uint64_t>(d), 32, c->meta());
+                            result = builder->ctorUnsignedInteger(static_cast<uint64_t>(d), 32, n->meta());
                         break;
 
-                    case 64: result = builder->ctorUnsignedInteger(static_cast<uint64_t>(d), 64, c->meta()); break;
+                    case 64: result = builder->ctorUnsignedInteger(static_cast<uint64_t>(d), 64, n->meta()); break;
                 }
             }
         }
     }
 
-    void operator()(ctor::Set* c) final {
+    void operator()(ctor::Set* n) final {
         if ( auto t = dst->type()->tryAs<type::Set>() ) {
             Expressions nexprs;
-            for ( const auto& e : c->value() ) {
+            for ( const auto& e : n->value() ) {
                 if ( auto x = hilti::coerceExpression(builder, e, t->elementType(), style) )
                     nexprs.push_back(*x.coerced);
                 else
                     return;
             }
-            result = builder->ctorSet(t->elementType(), std::move(nexprs), c->meta());
+            result = builder->ctorSet(t->elementType(), std::move(nexprs), n->meta());
         }
     }
 
-    void operator()(ctor::SignedInteger* c) final {
+    void operator()(ctor::SignedInteger* n) final {
         if ( auto t = dst->type()->tryAs<type::SignedInteger>() ) {
             if ( t->width() == 64 ) {
-                result = c->as<Ctor>();
+                result = n->as<Ctor>();
                 return;
             }
 
-            int64_t i = c->value();
+            int64_t i = n->value();
 
             if ( t->isWildcard() ) {
-                result = builder->ctorSignedInteger(i, c->width(), c->meta());
+                result = builder->ctorSignedInteger(i, n->width(), n->meta());
                 return;
             }
 
             else if ( auto [imin, imax] = util::signed_integer_range(t->width()); i >= imin && i <= imax ) {
-                result = builder->ctorSignedInteger(i, t->width(), c->meta());
+                result = builder->ctorSignedInteger(i, t->width(), n->meta());
                 return;
             }
         }
 
-        if ( auto t = dst->type()->tryAs<type::UnsignedInteger>(); t && c->value() >= 0 ) {
-            auto u = static_cast<uint64_t>(c->value());
+        if ( auto t = dst->type()->tryAs<type::UnsignedInteger>(); t && n->value() >= 0 ) {
+            auto u = static_cast<uint64_t>(n->value());
 
             if ( t->isWildcard() ) {
-                result = builder->ctorUnsignedInteger(u, c->width(), c->meta());
+                result = builder->ctorUnsignedInteger(u, n->width(), n->meta());
                 return;
             }
 
             else if ( auto [zero, umax] = util::unsigned_integer_range(t->width()); u <= umax ) {
-                result = builder->ctorUnsignedInteger(u, t->width(), c->meta());
+                result = builder->ctorUnsignedInteger(u, t->width(), n->meta());
                 return;
             }
         }
 
         if ( auto t = dst->type()->tryAs<type::Real>() ) {
-            if ( static_cast<int64_t>(static_cast<double>(c->value())) == c->value() ) {
-                result = builder->ctorReal(static_cast<double>(c->value()));
+            if ( static_cast<int64_t>(static_cast<double>(n->value())) == n->value() ) {
+                result = builder->ctorReal(static_cast<double>(n->value()));
                 return;
             }
         }
 
         if ( dst->type()->isA<type::Bool>() && (style & CoercionStyle::ContextualConversion) ) {
-            result = builder->ctorBool(c->value() != 0, c->meta());
+            result = builder->ctorBool(n->value() != 0, n->meta());
             return;
         }
 
-        if ( auto t = dst->type()->tryAs<type::Bitfield>(); t && c->value() >= 0 ) {
-            auto u = static_cast<uint64_t>(c->value());
+        if ( auto t = dst->type()->tryAs<type::Bitfield>(); t && n->value() >= 0 ) {
+            auto u = static_cast<uint64_t>(n->value());
             if ( auto [umin, umax] = util::unsigned_integer_range(t->width()); u >= umin && u <= umax ) {
-                result = builder->ctorUnsignedInteger(u, t->width(), c->meta());
+                result = builder->ctorUnsignedInteger(u, t->width(), n->meta());
                 return;
             }
         }
     }
 
-    void operator()(ctor::Vector* c) final {
+    void operator()(ctor::Vector* n) final {
         if ( auto t = dst->type()->tryAs<type::Vector>() ) {
             Expressions nexprs;
-            for ( const auto& e : c->value() ) {
+            for ( const auto& e : n->value() ) {
                 if ( auto x = hilti::coerceExpression(builder, e, t->elementType(), style) )
                     nexprs.push_back(*x.coerced);
                 else
                     return;
             }
-            result = builder->ctorVector(t->elementType(), std::move(nexprs), c->meta());
+            result = builder->ctorVector(t->elementType(), std::move(nexprs), n->meta());
         }
     }
 
-    void operator()(ctor::UnsignedInteger* c) final {
+    void operator()(ctor::UnsignedInteger* n) final {
         if ( auto t = dst->type()->tryAs<type::UnsignedInteger>() ) {
             if ( t->width() == 64 ) {
-                result = c->as<Ctor>();
+                result = n->as<Ctor>();
                 return;
             }
 
-            uint64_t u = c->value();
+            uint64_t u = n->value();
 
             if ( t->isWildcard() ) {
-                result = builder->ctorUnsignedInteger(u, c->width(), c->meta());
+                result = builder->ctorUnsignedInteger(u, n->width(), n->meta());
                 return;
             }
 
             else if ( auto [umin, umax] = util::unsigned_integer_range(t->width()); u >= umin && u <= umax ) {
-                result = builder->ctorUnsignedInteger(u, t->width(), c->meta());
+                result = builder->ctorUnsignedInteger(u, t->width(), n->meta());
                 return;
             }
         }
 
-        if ( auto t = dst->type()->tryAs<type::SignedInteger>(); t && static_cast<int64_t>(c->value()) >= 0 ) {
-            auto i = static_cast<int64_t>(c->value());
+        if ( auto t = dst->type()->tryAs<type::SignedInteger>(); t && static_cast<int64_t>(n->value()) >= 0 ) {
+            auto i = static_cast<int64_t>(n->value());
 
             if ( t->isWildcard() ) {
-                result = builder->ctorSignedInteger(i, c->width(), c->meta());
+                result = builder->ctorSignedInteger(i, n->width(), n->meta());
                 return;
             }
 
             else if ( auto [imin, imax] = util::signed_integer_range(t->width()); i >= imin && i <= imax ) {
-                result = builder->ctorSignedInteger(i, t->width(), c->meta());
+                result = builder->ctorSignedInteger(i, t->width(), n->meta());
                 return;
             }
         }
 
         if ( dst->type()->isA<type::Bool>() && (style & CoercionStyle::ContextualConversion) ) {
-            result = builder->ctorBool(c->value() != 0, c->meta());
+            result = builder->ctorBool(n->value() != 0, n->meta());
             return;
         }
 
         if ( auto t = dst->type()->tryAs<type::Real>() ) {
-            if ( static_cast<uint64_t>(static_cast<double>(c->value())) == c->value() ) {
-                result = builder->ctorReal(static_cast<double>(c->value()));
+            if ( static_cast<uint64_t>(static_cast<double>(n->value())) == n->value() ) {
+                result = builder->ctorReal(static_cast<double>(n->value()));
                 return;
             }
         }
 
         if ( auto t = dst->type()->tryAs<type::Bitfield>() ) {
-            uint64_t u = c->value();
+            uint64_t u = n->value();
             if ( auto [umin, umax] = util::unsigned_integer_range(t->width()); u >= umin && u <= umax ) {
-                result = builder->ctorUnsignedInteger(u, t->width(), c->meta());
+                result = builder->ctorUnsignedInteger(u, t->width(), n->meta());
                 return;
             }
         }
     }
 
-    void operator()(ctor::Tuple* c) final {
+    void operator()(ctor::Tuple* n) final {
         if ( auto t = dst->type()->tryAs<type::Tuple>() ) {
-            auto vc = c->value();
+            auto vc = n->value();
             auto ve = t->elements();
 
             if ( vc.size() != ve.size() )
@@ -335,11 +334,11 @@ struct VisitorCtor : visitor::PreOrder {
                     return;
             }
 
-            result = builder->ctorTuple(coerced, c->meta());
+            result = builder->ctorTuple(coerced, n->meta());
         }
     }
 
-    void operator()(ctor::Struct* c) final {
+    void operator()(ctor::Struct* n) final {
         auto dst_ = dst;
 
         if ( (dst->type()->isA<type::ValueReference>() || dst->type()->isA<type::StrongReference>()) &&
@@ -352,7 +351,7 @@ struct VisitorCtor : visitor::PreOrder {
                 // Wait for this to be resolved.
                 return;
 
-            auto stype = c->type()->type()->as<type::Struct>();
+            auto stype = n->type()->type()->as<type::Struct>();
 
             std::set<ID> src_fields;
             for ( const auto& f : stype->fields() )
@@ -390,7 +389,7 @@ struct VisitorCtor : visitor::PreOrder {
 
             for ( const auto& sf : stype->fields() ) {
                 const auto& df = dtype->field(sf->id());
-                const auto& se = c->field(sf->id());
+                const auto& se = n->field(sf->id());
                 assert(df && se);
                 if ( const auto& ne = hilti::coerceExpression(builder, se->expression(), df->type(), style) )
                     nf.emplace_back(builder->ctorStructField(sf->id(), *ne.coerced));
@@ -399,7 +398,7 @@ struct VisitorCtor : visitor::PreOrder {
                     return;
             }
 
-            result = builder->ctorStruct(std::move(nf), dst_, c->meta());
+            result = builder->ctorStruct(std::move(nf), dst_, n->meta());
 
             // The original type might go away, so clear the `self` declaration
             // that keeps a weak pointer to it.
@@ -411,7 +410,7 @@ struct VisitorCtor : visitor::PreOrder {
                 // Wait for this to be resolved.
                 return;
 
-            auto stype = c->type()->type()->as<type::Struct>();
+            auto stype = n->type()->type()->as<type::Struct>();
 
             std::set<ID> src_fields;
             for ( const auto& f : stype->fields() )
@@ -430,7 +429,7 @@ struct VisitorCtor : visitor::PreOrder {
 
             for ( const auto& sf : stype->fields() ) {
                 const auto& dbits = dtype->bits(sf->id());
-                const auto& se = c->field(sf->id());
+                const auto& se = n->field(sf->id());
                 assert(dbits && se);
                 if ( const auto& ne = coerceExpression(builder, se->expression(), dbits->itemType(), style) )
                     bits.emplace_back(builder->ctorBitfieldBitRange(sf->id(), *ne.coerced));
@@ -439,7 +438,7 @@ struct VisitorCtor : visitor::PreOrder {
                     return;
             }
 
-            result = builder->ctorBitfield(bits, builder->qualifiedType(dtype, Const), c->meta());
+            result = builder->ctorBitfield(bits, builder->qualifiedType(dtype, Const), n->meta());
             return;
         }
     }
@@ -455,17 +454,17 @@ struct VisitorType : visitor::PreOrder {
 
     QualifiedTypePtr result = nullptr;
 
-    void operator()(type::Enum* c) final {
+    void operator()(type::Enum* n) final {
         if ( auto t = dst->type()->tryAs<type::Bool>(); t && (style & CoercionStyle::ContextualConversion) )
             result = dst;
     }
 
-    void operator()(type::Interval* c) final {
+    void operator()(type::Interval* n) final {
         if ( auto t = dst->type()->tryAs<type::Bool>(); t && (style & CoercionStyle::ContextualConversion) )
             result = dst;
     }
 
-    void operator()(type::Null* c) final {
+    void operator()(type::Null* n) final {
         if ( auto t = dst->type()->tryAs<type::Optional>() )
             result = dst;
         else if ( auto t = dst->type()->tryAs<type::StrongReference>() )
@@ -474,27 +473,27 @@ struct VisitorType : visitor::PreOrder {
             result = dst;
     }
 
-    void operator()(type::Bytes* c) final {
+    void operator()(type::Bytes* n) final {
         if ( dst->type()->tryAs<type::Stream>() && (style & (CoercionStyle::Assignment | CoercionStyle::FunctionCall)) )
             result = dst;
     }
 
-    void operator()(type::Error* e) final {
+    void operator()(type::Error* n) final {
         if ( auto t = dst->type()->tryAs<type::Result>() )
             result = dst;
     }
 
-    void operator()(type::List* e) final {
-        if ( auto t = dst->type()->tryAs<type::Set>(); t && type::same(t->elementType(), e->elementType()) )
+    void operator()(type::List* n) final {
+        if ( auto t = dst->type()->tryAs<type::Set>(); t && type::same(t->elementType(), n->elementType()) )
             result = dst;
 
-        else if ( auto t = dst->type()->tryAs<type::Vector>(); t && type::same(t->elementType(), e->elementType()) )
+        else if ( auto t = dst->type()->tryAs<type::Vector>(); t && type::same(t->elementType(), n->elementType()) )
             result = dst;
     }
 
-    void operator()(type::Optional* r) final {
+    void operator()(type::Optional* n) final {
         if ( auto t = dst->type()->tryAs<type::Optional>() ) {
-            const auto& s = r->dereferencedType();
+            const auto& s = n->dereferencedType();
             const auto& d = t->dereferencedType();
 
             if ( type::sameExceptForConstness(s, d) && (style & CoercionStyle::Assignment) ) {
@@ -509,82 +508,82 @@ struct VisitorType : visitor::PreOrder {
             result = dst;
     }
 
-    void operator()(type::StrongReference* r) final {
+    void operator()(type::StrongReference* n) final {
         if ( auto t = dst->type()->tryAs<type::Bool>(); (style & CoercionStyle::ContextualConversion) && t ) {
             result = dst;
             return;
         }
 
         if ( dst->type()->isReferenceType() ) {
-            if ( type::sameExceptForConstness(r->dereferencedType(), dst->type()->dereferencedType()) ) {
+            if ( type::sameExceptForConstness(n->dereferencedType(), dst->type()->dereferencedType()) ) {
                 result = dst;
                 return;
             }
         }
 
         if ( ! (style & CoercionStyle::Assignment) ) {
-            if ( type::same(r->dereferencedType(), dst) ) {
+            if ( type::same(n->dereferencedType(), dst) ) {
                 result = dst;
             }
         }
     }
 
-    void operator()(type::Time* c) final {
+    void operator()(type::Time* n) final {
         if ( auto t = dst->type()->tryAs<type::Bool>(); t && (style & CoercionStyle::ContextualConversion) )
             result = dst;
     }
 
-    void operator()(type::Result* r) final {
+    void operator()(type::Result* n) final {
         if ( auto t = dst->type()->tryAs<type::Bool>(); (style & CoercionStyle::ContextualConversion) && t )
             result = dst;
 
         else if ( auto t = dst->type()->tryAs<type::Optional>();
-                  t && type::same(t->dereferencedType(), r->dereferencedType()) )
+                  t && type::same(t->dereferencedType(), n->dereferencedType()) )
             result = dst;
     }
 
-    void operator()(type::SignedInteger* src) final {
+    void operator()(type::SignedInteger* n) final {
         if ( dst->type()->isA<type::Bool>() && (style & CoercionStyle::ContextualConversion) )
             result = dst;
 
         else if ( auto t = dst->type()->tryAs<type::SignedInteger>() ) {
-            if ( src->width() <= t->width() )
+            if ( n->width() <= t->width() )
                 result = dst;
         }
     }
 
-    void operator()(type::Stream* c) final {
+    void operator()(type::Stream* n) final {
         if ( auto t = dst->type()->tryAs<type::stream::View>() )
             result = dst;
     }
 
-    void operator()(type::stream::View* c) final {
+    void operator()(type::stream::View* n) final {
         if ( dst->type()->tryAs<type::Bytes>() && (style & (CoercionStyle::Assignment | CoercionStyle::FunctionCall)) )
             result = dst;
     }
 
-    void operator()(type::Type_* src) final {
+    void operator()(type::Type_* n) final {
         if ( auto t = dst->type()->tryAs<type::Type_>() ) {
             // We don't allow arbitrary coercions here, just (more or less) direct matches.
             if ( auto x =
-                     hilti::coerceType(builder, src->typeValue(), t->typeValue(), CoercionStyle::TryDirectForMatching) )
+                     hilti::coerceType(builder, n->typeValue(), t->typeValue(), CoercionStyle::TryDirectForMatching) )
                 result = builder->qualifiedType(builder->typeType(*x), true);
         }
     }
 
-    void operator()(type::Union* c) final {
+    void operator()(type::Union* n) final {
         if ( auto t = dst->type()->tryAs<type::Bool>(); t && (style & CoercionStyle::ContextualConversion) )
             result = dst;
     }
 
-    void operator()(type::UnsignedInteger* src) final {
+    void operator()(type::UnsignedInteger* n) final {
         if ( dst->type()->isA<type::Bool>() && (style & CoercionStyle::ContextualConversion) ) {
             result = dst;
             return;
         }
 
         if ( auto t = dst->type()->tryAs<type::UnsignedInteger>() ) {
-            if ( src->width() <= t->width() ) {
+            if ( n->width() <= t->width() ) {
                 result = dst;
                 return;
             }
@@ -592,23 +591,23 @@ struct VisitorType : visitor::PreOrder {
 
         if ( auto t = dst->type()->tryAs<type::SignedInteger>() ) {
             // As long as the target type has more bits, we can coerce.
-            if ( src->width() < t->width() ) {
+            if ( n->width() < t->width() ) {
                 result = dst;
                 return;
             }
         }
 
         if ( auto t = dst->type()->tryAs<type::Bitfield>() ) {
-            if ( src->width() <= t->width() ) {
+            if ( n->width() <= t->width() ) {
                 result = dst;
                 return;
             }
         }
     }
 
-    void operator()(type::Tuple* src) final {
+    void operator()(type::Tuple* n) final {
         if ( auto t = dst->type()->tryAs<type::Tuple>() ) {
-            auto vc = src->elements();
+            auto vc = n->elements();
             auto ve = t->elements();
 
             if ( vc.size() != ve.size() )
@@ -623,42 +622,42 @@ struct VisitorType : visitor::PreOrder {
         }
     }
 
-    void operator()(type::ValueReference* r) final {
+    void operator()(type::ValueReference* n) final {
         if ( auto t = dst->type()->tryAs<type::Bool>(); (style & CoercionStyle::ContextualConversion) && t ) {
-            if ( auto t = hilti::coerceType(builder, r->dereferencedType(), dst, style) )
+            if ( auto t = hilti::coerceType(builder, n->dereferencedType(), dst, style) )
                 result = *t;
 
             return;
         }
 
         if ( dst->type()->isReferenceType() ) {
-            if ( type::sameExceptForConstness(r->dereferencedType(), dst->type()->dereferencedType()) ) {
+            if ( type::sameExceptForConstness(n->dereferencedType(), dst->type()->dereferencedType()) ) {
                 result = dst;
                 return;
             }
         }
 
-        if ( type::same(r->dereferencedType(), dst) ) {
+        if ( type::same(n->dereferencedType(), dst) ) {
             result = dst;
             return;
         }
     }
 
-    void operator()(type::WeakReference* r) final {
+    void operator()(type::WeakReference* n) final {
         if ( auto t = dst->type()->tryAs<type::Bool>(); (style & CoercionStyle::ContextualConversion) && t ) {
             result = dst;
             return;
         }
 
         if ( dst->type()->isReferenceType() ) {
-            if ( type::sameExceptForConstness(r->dereferencedType(), dst->type()->dereferencedType()) ) {
+            if ( type::sameExceptForConstness(n->dereferencedType(), dst->type()->dereferencedType()) ) {
                 result = dst;
                 return;
             }
         }
 
         if ( ! (style & CoercionStyle::Assignment) ) {
-            if ( type::same(r->dereferencedType(), dst) ) {
+            if ( type::same(n->dereferencedType(), dst) ) {
                 result = dst;
                 return;
             }
@@ -674,11 +673,11 @@ Result<CtorPtr> hilti::coerceCtor(Builder* builder, CtorPtr c, const QualifiedTy
     if ( type::same(c->type(), dst) )
         return std::move(c);
 
-    for ( auto p : plugin::registry().plugins() ) {
+    for ( const auto& p : plugin::registry().plugins() ) {
         if ( ! (p.coerce_ctor) )
             continue;
 
-        if ( auto nc = (*p.coerce_ctor)(builder, c, dst, style) )
+        if ( auto nc = (*p.coerce_ctor)(builder->context(), c, dst, style) )
             return nc;
     }
 
@@ -757,11 +756,11 @@ static Result<QualifiedTypePtr> _coerceType(Builder* builder, const QualifiedTyp
         }
     }
 
-    for ( auto p : plugin::registry().plugins() ) {
+    for ( const auto& p : plugin::registry().plugins() ) {
         if ( ! (p.coerce_type) )
             continue;
 
-        if ( auto nt = (*p.coerce_type)(builder, src, dst, style) )
+        if ( auto nt = (*p.coerce_type)(builder->context(), src, dst, style) )
             return nt;
     }
 
@@ -1134,7 +1133,7 @@ CoercedExpression hilti::coerceExpression(Builder* builder, const ExpressionPtr&
 }
 
 // Plugin-specific version just kicking off the local visitor.
-CtorPtr hilti::detail::coercer::coerceCtor(Builder* builder, const CtorPtr& c, const QualifiedTypePtr& dst,
+CtorPtr hilti::coercer::detail::coerceCtor(Builder* builder, const CtorPtr& c, const QualifiedTypePtr& dst,
                                            bitmask<CoercionStyle> style) {
     util::timing::Collector _("hilti/compiler/ast/coerce");
 
@@ -1147,8 +1146,8 @@ CtorPtr hilti::detail::coercer::coerceCtor(Builder* builder, const CtorPtr& c, c
 }
 
 // Plugin-specific version just kicking off the local visitor.
-QualifiedTypePtr hilti::detail::coercer::coerceType(Builder* builder, const QualifiedTypePtr& t,
-                                                    const QualifiedTypePtr& dst, bitmask<CoercionStyle> style) {
+QualifiedTypePtr coercer::detail::coerceType(Builder* builder, const QualifiedTypePtr& t, const QualifiedTypePtr& dst,
+                                             bitmask<CoercionStyle> style) {
     util::timing::Collector _("hilti/compiler/ast/coerce");
 
     if ( ! (t->isResolved() && dst->isResolved()) )

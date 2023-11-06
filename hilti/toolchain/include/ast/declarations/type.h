@@ -57,7 +57,7 @@ protected:
     Type(ASTContext* ctx, Nodes children, ID id, declaration::Linkage linkage, Meta meta)
         : Declaration(ctx, std::move(children), std::move(id), linkage, std::move(meta)) {}
 
-    HILTI_NODE(Type)
+    HILTI_NODE(hilti, Type)
 };
 
 } // namespace hilti::declaration

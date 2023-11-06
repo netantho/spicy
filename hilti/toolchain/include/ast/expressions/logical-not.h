@@ -28,7 +28,7 @@ public:
 protected:
     LogicalNot(ASTContext* ctx, Nodes children, Meta meta) : Expression(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(LogicalNot)
+    HILTI_NODE(hilti, LogicalNot)
 };
 
 } // namespace hilti::expression

@@ -22,7 +22,7 @@ public:
 protected:
     Unknown(ASTContext* ctx, Meta meta) : UnqualifiedType(ctx, {type::NeverMatch()}, std::move(meta)) {}
 
-    HILTI_NODE(Unknown)
+    HILTI_NODE(hilti, Unknown)
 };
 
 } // namespace hilti::type

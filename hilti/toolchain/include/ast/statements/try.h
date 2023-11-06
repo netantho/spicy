@@ -40,7 +40,7 @@ protected:
 
     std::string _render() const final;
 
-    HILTI_NODE(Catch);
+    HILTI_NODE(hilti, Catch);
 };
 
 using CatchPtr = std::shared_ptr<Catch>;
@@ -54,6 +54,8 @@ public:
     auto body() const { return child<hilti::Statement>(0); }
     auto catches() const { return children<try_::Catch>(1, {}); }
 
+    void addCatch(ASTContext* ctx, const try_::CatchPtr& c) { addChild(ctx, c); }
+
     static auto create(ASTContext* ctx, StatementPtr body, const try_::Catches& catches, Meta meta = {}) {
         return NodeDerivedPtr<Try>(new Try(ctx, node::flatten(std::move(body), catches), std::move(meta)));
     }
@@ -61,7 +63,7 @@ public:
 protected:
     Try(ASTContext* ctx, Nodes children, Meta meta) : Statement(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Try)
+    HILTI_NODE(hilti, Try)
 };
 
 } // namespace hilti::statement

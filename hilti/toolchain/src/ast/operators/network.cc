@@ -23,7 +23,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(network::Equal)
+    HILTI_OPERATOR(hilti, network::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal)
 
@@ -40,7 +40,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(network::Unequal)
+    HILTI_OPERATOR(hilti, network::Unequal)
 };
 
 HILTI_OPERATOR_IMPLEMENTATION(Unequal)
@@ -57,7 +57,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(network::In)
+    HILTI_OPERATOR(hilti, network::In)
 };
 HILTI_OPERATOR_IMPLEMENTATION(In)
 
@@ -76,7 +76,7 @@ Returns the protocol family of the network, which can be IPv4 or IPv6.
         };
     }
 
-    HILTI_OPERATOR(network::Family);
+    HILTI_OPERATOR(hilti, network::Family);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Family);
 
@@ -95,7 +95,7 @@ Returns the network's prefix as a masked IP address.
         };
     }
 
-    HILTI_OPERATOR(network::Prefix);
+    HILTI_OPERATOR(hilti, network::Prefix);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Prefix);
 
@@ -114,7 +114,7 @@ Returns the length of the network's prefix.
         };
     }
 
-    HILTI_OPERATOR(network::Length);
+    HILTI_OPERATOR(hilti, network::Length);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Length);
 

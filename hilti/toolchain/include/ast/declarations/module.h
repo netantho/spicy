@@ -191,7 +191,7 @@ protected:
 
     std::string _render() const override;
 
-    HILTI_NODE(Module);
+    HILTI_NODE(hilti, Module);
 
 private:
     module::UID _uid;

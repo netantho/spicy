@@ -36,7 +36,7 @@ protected:
 
     std::string _render() const override;
 
-    HILTI_NODE_BASE(Type);
+    HILTI_NODE_BASE(hilti, Type);
 };
 
 namespace expression {

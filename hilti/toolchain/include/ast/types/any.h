@@ -23,7 +23,7 @@ protected:
     // We create this as no-match type because we handle matching against `any` explicitly.
     Any(ASTContext* ctx, Meta meta) : UnqualifiedType(ctx, {type::NeverMatch()}, std::move(meta)) {}
 
-    HILTI_NODE(Any);
+    HILTI_NODE(hilti, Any);
 };
 
 } // namespace hilti::type

@@ -32,7 +32,7 @@ protected:
     Stream(ASTContext* ctx, Nodes children, std::string value, Meta meta)
         : Ctor(ctx, std::move(children), std::move(meta)), _value(std::move(value)) {}
 
-    HILTI_NODE(Stream)
+    HILTI_NODE(hilti, Stream)
 
 private:
     std::string _value;

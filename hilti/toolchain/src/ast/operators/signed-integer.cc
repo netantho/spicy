@@ -53,7 +53,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(signed_integer::DecrPostfix)
+    HILTI_OPERATOR(hilti, signed_integer::DecrPostfix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(DecrPostfix);
 
@@ -74,7 +74,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(signed_integer::DecrPrefix)
+    HILTI_OPERATOR(hilti, signed_integer::DecrPrefix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(DecrPrefix);
 
@@ -95,7 +95,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(signed_integer::IncrPostfix)
+    HILTI_OPERATOR(hilti, signed_integer::IncrPostfix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPostfix);
 
@@ -116,7 +116,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(signed_integer::IncrPrefix)
+    HILTI_OPERATOR(hilti, signed_integer::IncrPrefix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPrefix);
 
@@ -137,7 +137,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(signed_integer::SignNeg)
+    HILTI_OPERATOR(hilti, signed_integer::SignNeg)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SignNeg);
 
@@ -165,7 +165,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::Difference)
+    HILTI_OPERATOR(hilti, signed_integer::Difference)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Difference);
 
@@ -193,7 +193,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::DifferenceAssign)
+    HILTI_OPERATOR(hilti, signed_integer::DifferenceAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(DifferenceAssign);
 
@@ -221,7 +221,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::Division)
+    HILTI_OPERATOR(hilti, signed_integer::Division)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Division);
 
@@ -249,7 +249,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::DivisionAssign)
+    HILTI_OPERATOR(hilti, signed_integer::DivisionAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(DivisionAssign);
 
@@ -273,7 +273,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::Equal)
+    HILTI_OPERATOR(hilti, signed_integer::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -297,7 +297,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::Greater)
+    HILTI_OPERATOR(hilti, signed_integer::Greater)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Greater);
 
@@ -321,7 +321,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::GreaterEqual)
+    HILTI_OPERATOR(hilti, signed_integer::GreaterEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(GreaterEqual);
 
@@ -345,7 +345,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::Lower)
+    HILTI_OPERATOR(hilti, signed_integer::Lower)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Lower);
 
@@ -369,7 +369,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::LowerEqual)
+    HILTI_OPERATOR(hilti, signed_integer::LowerEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(LowerEqual);
 
@@ -397,7 +397,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::Modulo)
+    HILTI_OPERATOR(hilti, signed_integer::Modulo)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Modulo);
 
@@ -425,7 +425,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::Multiple)
+    HILTI_OPERATOR(hilti, signed_integer::Multiple)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Multiple);
 
@@ -453,7 +453,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::MultipleAssign)
+    HILTI_OPERATOR(hilti, signed_integer::MultipleAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(MultipleAssign);
 
@@ -481,7 +481,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::Power)
+    HILTI_OPERATOR(hilti, signed_integer::Power)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Power);
 
@@ -509,7 +509,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::Sum)
+    HILTI_OPERATOR(hilti, signed_integer::Sum)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Sum);
 
@@ -537,7 +537,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::SumAssign)
+    HILTI_OPERATOR(hilti, signed_integer::SumAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SumAssign);
 
@@ -561,7 +561,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(signed_integer::Unequal)
+    HILTI_OPERATOR(hilti, signed_integer::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -584,7 +584,7 @@ public:
         return operands[1]->type()->type()->as<type::Type_>()->typeValue();
     }
 
-    HILTI_OPERATOR(signed_integer::CastToSigned)
+    HILTI_OPERATOR(hilti, signed_integer::CastToSigned)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToSigned);
 
@@ -607,7 +607,7 @@ public:
         return operands[1]->type()->type()->as<type::Type_>()->typeValue();
     }
 
-    HILTI_OPERATOR(signed_integer::CastToUnsigned)
+    HILTI_OPERATOR(hilti, signed_integer::CastToUnsigned)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToUnsigned);
 
@@ -625,7 +625,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(signed_integer::CastToReal)
+    HILTI_OPERATOR(hilti, signed_integer::CastToReal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToReal);
 
@@ -636,7 +636,8 @@ public:
         return {
             .kind = Kind::Cast,
             .op0 = {parameter::Kind::In, builder->typeSignedInteger(type::Wildcard())},
-            .op1 = {parameter::Kind::In, builder->typeType(builder->qualifiedType(builder->typeEnum(type::Wildcard()), true))},
+            .op1 = {parameter::Kind::In,
+                    builder->typeType(builder->qualifiedType(builder->typeEnum(type::Wildcard()), true))},
             .result_doc = "enum<*>",
             .ns = "signed_integer",
             .doc =
@@ -649,7 +650,7 @@ public:
         return operands[1]->type()->type()->as<type::Type_>()->typeValue();
     }
 
-    HILTI_OPERATOR(signed_integer::CastToEnum)
+    HILTI_OPERATOR(hilti, signed_integer::CastToEnum)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToEnum);
 
@@ -666,7 +667,7 @@ public:
             .doc = "Interprets the value as number of seconds.",
         };
     }
-    HILTI_OPERATOR(signed_integer::CastToInterval)
+    HILTI_OPERATOR(hilti, signed_integer::CastToInterval)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToInterval);
 
@@ -683,7 +684,7 @@ public:
             .doc = "Converts the value to a boolean by comparing against zero",
         };
     }
-    HILTI_OPERATOR(signed_integer::CastToBool)
+    HILTI_OPERATOR(hilti, signed_integer::CastToBool)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToBool);
 
@@ -700,7 +701,7 @@ public:
             .doc = "Creates a 8-bit signed integer value.",
         };
     }
-    HILTI_OPERATOR(signed_integer::CtorSigned8)
+    HILTI_OPERATOR(hilti, signed_integer::CtorSigned8)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorSigned8);
 
@@ -716,7 +717,7 @@ public:
             .doc = "Creates a 16-bit signed integer value.",
         };
     }
-    HILTI_OPERATOR(signed_integer::CtorSigned16)
+    HILTI_OPERATOR(hilti, signed_integer::CtorSigned16)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorSigned16);
 
@@ -732,7 +733,7 @@ public:
             .doc = "Creates a 32-bit signed integer value.",
         };
     }
-    HILTI_OPERATOR(signed_integer::CtorSigned32)
+    HILTI_OPERATOR(hilti, signed_integer::CtorSigned32)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorSigned32);
 
@@ -748,7 +749,7 @@ public:
             .doc = "Creates a 64-bit signed integer value.",
         };
     }
-    HILTI_OPERATOR(signed_integer::CtorSigned64)
+    HILTI_OPERATOR(hilti, signed_integer::CtorSigned64)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorSigned64);
 
@@ -764,7 +765,7 @@ public:
             .doc = "Creates a 8-bit signed integer value.",
         };
     }
-    HILTI_OPERATOR(signed_integer::CtorUnsigned8)
+    HILTI_OPERATOR(hilti, signed_integer::CtorUnsigned8)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorUnsigned8);
 
@@ -780,7 +781,7 @@ public:
             .doc = "Creates a 16-bit signed integer value.",
         };
     }
-    HILTI_OPERATOR(signed_integer::CtorUnsigned16)
+    HILTI_OPERATOR(hilti, signed_integer::CtorUnsigned16)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorUnsigned16);
 
@@ -796,7 +797,7 @@ public:
             .doc = "Creates a 32-bit signed integer value.",
         };
     }
-    HILTI_OPERATOR(signed_integer::CtorUnsigned32)
+    HILTI_OPERATOR(hilti, signed_integer::CtorUnsigned32)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorUnsigned32);
 
@@ -812,7 +813,7 @@ public:
             .doc = "Creates a 64-bit signed integer value.",
         };
     }
-    HILTI_OPERATOR(signed_integer::CtorUnsigned64)
+    HILTI_OPERATOR(hilti, signed_integer::CtorUnsigned64)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CtorUnsigned64);
 

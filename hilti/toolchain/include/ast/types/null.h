@@ -18,7 +18,7 @@ public:
 protected:
     Null(ASTContext* ctx, Meta meta) : UnqualifiedType(ctx, {"null"}, std::move(meta)) {}
 
-    HILTI_NODE(Null)
+    HILTI_NODE(hilti, Null)
 };
 
 } // namespace hilti::type

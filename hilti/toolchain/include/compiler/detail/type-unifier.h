@@ -2,9 +2,12 @@
 
 #pragma once
 
+#include <string>
+
 #include <hilti/ast/forward.h>
 
-namespace hilti::detail::type_unifier {
+// TODO: This should move out of detail/.
+namespace hilti::type_unifier {
 
 /**
  * Unifies all the unqualified types in the AST to the degree possible.
@@ -22,4 +25,30 @@ bool unify(Builder* builder, const ASTRootPtr& root);
  */
 bool unify(ASTContext* ctx, const UnqualifiedTypePtr& type);
 
-} // namespace hilti::detail::type_unifier
+/** API class for implementing type unification for custom types by plugins. */
+class Unifier {
+public:
+    void add(UnqualifiedType* t);
+    void add(const QualifiedTypePtr& t);
+    void add(const std::string& s);
+
+    void abort() { _abort = true; }
+    auto isAborted() const { return _abort; }
+
+    const auto& serialization() const { return _serial; }
+
+    void reset() {
+        _serial.clear();
+        _abort = false;
+    }
+
+protected:
+    std::string _serial; // builds up serialization incrementally
+    bool _abort = false; // if true, cannot compute serialization yet
+};
+
+namespace detail {
+bool unifyType(type_unifier::Unifier* unifier, NodePtr& node);
+}
+
+} // namespace hilti::type_unifier

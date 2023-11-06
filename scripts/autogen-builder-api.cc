@@ -102,6 +102,7 @@ public:
 
         auto method = class_;
         method = replace(method, "hilti::", "");
+        method = replace(method, "spicy::", "");
         method = replace(method, "_::", "::");
         if ( method[method.size() - 1] == '_' )
             method = method.substr(0, method.size() - 1);

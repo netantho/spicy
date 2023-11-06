@@ -20,7 +20,7 @@ protected:
 
     std::string _render() const override;
 
-    HILTI_NODE_BASE(Statement);
+    HILTI_NODE_BASE(hilti, Statement);
 };
 
 } // namespace hilti

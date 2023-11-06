@@ -43,7 +43,7 @@ protected:
     ListComprehension(ASTContext* ctx, Nodes children, Meta meta)
         : Expression(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(ListComprehension)
+    HILTI_NODE(hilti, ListComprehension)
 };
 
 } // namespace hilti::expression

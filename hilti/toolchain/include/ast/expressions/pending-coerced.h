@@ -29,7 +29,7 @@ protected:
     PendingCoerced(ASTContext* ctx, Nodes children, Meta meta)
         : Expression(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(PendingCoerced)
+    HILTI_NODE(hilti, PendingCoerced)
 };
 
 } // namespace hilti::expression

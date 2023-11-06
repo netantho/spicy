@@ -9,7 +9,7 @@ macro (autogen_operators outputs ns srcdir autogen_h autogen_cc)
 
     add_custom_command(
         OUTPUT ${_outputs}
-        COMMAND ${PROJECT_SOURCE_DIR}/scripts/autogen-operators hilti ${autogen_h} ${autogen_cc} --
+        COMMAND ${PROJECT_SOURCE_DIR}/scripts/autogen-operators ${ns} ${autogen_h} ${autogen_cc} --
                 ${_operators}
         DEPENDS ${PROJECT_SOURCE_DIR}/scripts/autogen-operators ${_operators}
         COMMENT "Generating operator glue code ...")

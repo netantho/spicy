@@ -42,7 +42,7 @@ public:
 protected:
     Vector(ASTContext* ctx, Nodes children, Meta meta) : Ctor(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Vector)
+    HILTI_NODE(hilti, Vector)
 };
 
 } // namespace hilti::ctor

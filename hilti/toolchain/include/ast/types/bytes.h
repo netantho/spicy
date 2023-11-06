@@ -31,7 +31,7 @@ protected:
     Iterator(ASTContext* ctx, Nodes children, Meta meta)
         : UnqualifiedType(ctx, {"iterator(bytes)"}, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Iterator)
+    HILTI_NODE(hilti, Iterator)
 };
 
 } // namespace bytes
@@ -59,7 +59,7 @@ protected:
 
     void newlyQualified(const QualifiedType* qtype) const final { elementType()->setConst(qtype->constness()); }
 
-    HILTI_NODE(Bytes)
+    HILTI_NODE(hilti, Bytes)
 };
 
 } // namespace hilti::type

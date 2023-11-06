@@ -65,7 +65,7 @@ protected:
     UnresolvedOperator(ASTContext* ctx, Nodes children, operator_::Kind kind, Meta meta)
         : Expression(ctx, std::move(children), std::move(meta)), _kind(kind) {}
 
-    HILTI_NODE(UnresolvedOperator)
+    HILTI_NODE(hilti, UnresolvedOperator)
 
 private:
     operator_::Kind _kind;

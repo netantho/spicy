@@ -21,7 +21,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(string::Equal)
+    HILTI_OPERATOR(hilti, string::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -38,7 +38,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(string::Unequal)
+    HILTI_OPERATOR(hilti, string::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -54,7 +54,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(string::Size)
+    HILTI_OPERATOR(hilti, string::Size)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Size);
 
@@ -71,7 +71,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(string::Sum)
+    HILTI_OPERATOR(hilti, string::Sum)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Sum);
 
@@ -86,7 +86,7 @@ public:
                 .doc = "Renders a printf-style format string."};
     }
 
-    HILTI_OPERATOR(string::Modulo)
+    HILTI_OPERATOR(hilti, string::Modulo)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Modulo);
 
@@ -104,7 +104,7 @@ public:
                 .doc = "Compares two strings lexicographically."};
     };
 
-    HILTI_OPERATOR(string::Encode);
+    HILTI_OPERATOR(hilti, string::Encode);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Encode);
 

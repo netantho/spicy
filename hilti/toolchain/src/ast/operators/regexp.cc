@@ -44,7 +44,7 @@ beginning of the data.
         };
     }
 
-    HILTI_OPERATOR(regexp::Match);
+    HILTI_OPERATOR(hilti, regexp::Match);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Match);
 
@@ -76,7 +76,7 @@ issue.)
         };
     }
 
-    HILTI_OPERATOR(regexp::Find);
+    HILTI_OPERATOR(hilti, regexp::Find);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Find);
 
@@ -108,7 +108,7 @@ expression compiled from a set.
         };
     }
 
-    HILTI_OPERATOR(regexp::MatchGroups);
+    HILTI_OPERATOR(hilti, regexp::MatchGroups);
 };
 HILTI_OPERATOR_IMPLEMENTATION(MatchGroups);
 
@@ -129,7 +129,7 @@ with an implicit ``^`` regexp operator, to the beginning of the data.
         };
     }
 
-    HILTI_OPERATOR(regexp::TokenMatcher);
+    HILTI_OPERATOR(hilti, regexp::TokenMatcher);
 };
 HILTI_OPERATOR_IMPLEMENTATION(TokenMatcher);
 
@@ -166,7 +166,7 @@ or equal zero has been returned.
         };
     }
 
-    HILTI_OPERATOR(regexp_match_state::AdvanceBytes);
+    HILTI_OPERATOR(hilti, regexp_match_state::AdvanceBytes);
 };
 HILTI_OPERATOR_IMPLEMENTATION(AdvanceBytes);
 
@@ -203,7 +203,7 @@ larger or equal zero has been returned.
         };
     }
 
-    HILTI_OPERATOR(regexp_match_state::AdvanceView);
+    HILTI_OPERATOR(hilti, regexp_match_state::AdvanceView);
 };
 HILTI_OPERATOR_IMPLEMENTATION(AdvanceView);
 

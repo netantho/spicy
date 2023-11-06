@@ -65,7 +65,10 @@ public:
 
     static auto create(ASTContext* ctx, const ID& id, const type::FunctionPtr& ftype, const StatementPtr& body,
                        function::CallingConvention cc = function::CallingConvention::Standard,
-                       const AttributeSetPtr& attrs = nullptr, const Meta& meta = {}) {
+                       AttributeSetPtr attrs = nullptr, const Meta& meta = {}) {
+        if ( ! attrs )
+            attrs = AttributeSet::create(ctx);
+
         return NodeDerivedPtr<Function>(
             new Function(ctx, {QualifiedType::create(ctx, ftype, true, meta), body, attrs}, id, cc, meta));
     }
@@ -76,7 +79,7 @@ protected:
 
     std::string _render() const override;
 
-    HILTI_NODE(Function);
+    HILTI_NODE(hilti, Function);
 
 private:
     ID _id;

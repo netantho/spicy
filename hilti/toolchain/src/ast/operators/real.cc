@@ -25,7 +25,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::SignNeg)
+    HILTI_OPERATOR(hilti, real::SignNeg)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SignNeg);
 class Difference : public Operator {
@@ -41,7 +41,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::Difference)
+    HILTI_OPERATOR(hilti, real::Difference)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Difference);
 
@@ -58,7 +58,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::DifferenceAssign)
+    HILTI_OPERATOR(hilti, real::DifferenceAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(DifferenceAssign);
 
@@ -75,7 +75,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::Division)
+    HILTI_OPERATOR(hilti, real::Division)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Division);
 class DivisionAssign : public Operator {
@@ -91,7 +91,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::DivisionAssign)
+    HILTI_OPERATOR(hilti, real::DivisionAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(DivisionAssign);
 
@@ -108,7 +108,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::Equal)
+    HILTI_OPERATOR(hilti, real::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 class Greater : public Operator {
@@ -124,7 +124,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::Greater)
+    HILTI_OPERATOR(hilti, real::Greater)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Greater);
 class GreaterEqual : public Operator {
@@ -140,7 +140,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::GreaterEqual)
+    HILTI_OPERATOR(hilti, real::GreaterEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(GreaterEqual);
 class Lower : public Operator {
@@ -156,7 +156,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::Lower)
+    HILTI_OPERATOR(hilti, real::Lower)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Lower);
 class LowerEqual : public Operator {
@@ -172,7 +172,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::LowerEqual)
+    HILTI_OPERATOR(hilti, real::LowerEqual)
 };
 HILTI_OPERATOR_IMPLEMENTATION(LowerEqual);
 class Modulo : public Operator {
@@ -188,7 +188,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::Modulo)
+    HILTI_OPERATOR(hilti, real::Modulo)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Modulo);
 
@@ -205,7 +205,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::Multiple)
+    HILTI_OPERATOR(hilti, real::Multiple)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Multiple);
 
@@ -222,7 +222,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::MultipleAssign)
+    HILTI_OPERATOR(hilti, real::MultipleAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(MultipleAssign);
 
@@ -239,7 +239,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::Power)
+    HILTI_OPERATOR(hilti, real::Power)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Power);
 
@@ -256,7 +256,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::Sum)
+    HILTI_OPERATOR(hilti, real::Sum)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Sum);
 class SumAssign : public Operator {
@@ -272,7 +272,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::SumAssign)
+    HILTI_OPERATOR(hilti, real::SumAssign)
 };
 HILTI_OPERATOR_IMPLEMENTATION(SumAssign);
 
@@ -289,7 +289,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::Unequal)
+    HILTI_OPERATOR(hilti, real::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -311,7 +311,7 @@ public:
         return operands[1]->type()->type()->as<type::Type_>()->typeValue();
     }
 
-    HILTI_OPERATOR(real::CastToUnsignedInteger)
+    HILTI_OPERATOR(hilti, real::CastToUnsignedInteger)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToUnsignedInteger);
 
@@ -334,7 +334,7 @@ public:
         return operands[1]->type()->type()->as<type::Type_>()->typeValue();
     }
 
-    HILTI_OPERATOR(real::CastToSignedInteger)
+    HILTI_OPERATOR(hilti, real::CastToSignedInteger)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToSignedInteger);
 
@@ -352,7 +352,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::CastToTime)
+    HILTI_OPERATOR(hilti, real::CastToTime)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToTime);
 
@@ -369,7 +369,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(real::CastToInterval)
+    HILTI_OPERATOR(hilti, real::CastToInterval)
 };
 HILTI_OPERATOR_IMPLEMENTATION(CastToInterval);
 

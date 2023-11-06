@@ -10,6 +10,7 @@
 #include <spicy/compiler/detail/codegen/productions/epsilon.h>
 #include <spicy/compiler/detail/codegen/productions/for-each.h>
 #include <spicy/compiler/detail/codegen/productions/look-ahead.h>
+#include <spicy/compiler/detail/codegen/productions/reference.h>
 #include <spicy/compiler/detail/codegen/productions/resolved.h>
 #include <spicy/compiler/detail/codegen/productions/sequence.h>
 #include <spicy/compiler/detail/codegen/productions/skip.h>

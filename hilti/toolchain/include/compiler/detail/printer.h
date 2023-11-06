@@ -15,6 +15,8 @@
 
 namespace hilti::detail::printer {
 
+// TODO: This should move out of detail, and this whole header file probably
+// too so that the two methods below become part of the public API.
 class Stream;
 
 /**

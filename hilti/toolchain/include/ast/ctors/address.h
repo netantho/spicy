@@ -34,7 +34,7 @@ protected:
     Address(ASTContext* ctx, Nodes children, hilti::rt::Address v, Meta meta)
         : Ctor(ctx, std::move(children), std::move(meta)), _value(v) {}
 
-    HILTI_NODE(Address)
+    HILTI_NODE(hilti, Address)
 
 private:
     hilti::rt::Address _value;

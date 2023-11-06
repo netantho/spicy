@@ -39,7 +39,7 @@ protected:
         : UnqualifiedType(ctx, Wildcard(), {"iterator(vector(*))"}, std::move(children), std::move(meta)) {}
 
 
-    HILTI_NODE(Iterator)
+    HILTI_NODE(hilti, Iterator)
 };
 
 } // namespace vector
@@ -76,7 +76,7 @@ protected:
 
     void newlyQualified(const QualifiedType* qtype) const final { elementType()->setConst(qtype->constness()); }
 
-    HILTI_NODE(Vector)
+    HILTI_NODE(hilti, Vector)
 };
 
 } // namespace hilti::type

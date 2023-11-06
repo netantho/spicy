@@ -21,7 +21,7 @@ public:
 protected:
     Time(ASTContext* ctx, Meta meta) : UnqualifiedType(ctx, {"time"}, std::move(meta)) {}
 
-    HILTI_NODE(Time)
+    HILTI_NODE(hilti, Time)
 };
 
 } // namespace hilti::type

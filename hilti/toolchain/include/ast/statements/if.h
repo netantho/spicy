@@ -38,7 +38,7 @@ protected:
             logger().internalError("initialization for 'if' must be a local declaration");
     }
 
-    HILTI_NODE(If)
+    HILTI_NODE(hilti, If)
 };
 
 } // namespace hilti::statement

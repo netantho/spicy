@@ -40,7 +40,7 @@ protected:
         : UnqualifiedType(ctx, Wildcard(), {"iterator(set(*))"}, std::move(children), std::move(meta)) {}
 
 
-    HILTI_NODE(Iterator)
+    HILTI_NODE(hilti, Iterator)
 };
 
 } // namespace set
@@ -76,7 +76,7 @@ protected:
 
     void newlyQualified(const QualifiedType* qtype) const final { elementType()->setConst(qtype->constness()); }
 
-    HILTI_NODE(Set)
+    HILTI_NODE(hilti, Set)
 };
 
 } // namespace hilti::type

@@ -26,7 +26,7 @@ public:
 protected:
     Type_(ASTContext* ctx, Nodes children, Meta meta) : Expression(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Type_)
+    HILTI_NODE(hilti, Type_)
 };
 
 } // namespace hilti::expression

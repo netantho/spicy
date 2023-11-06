@@ -1,13 +1,15 @@
 // Copyright (c) 2020-2023 by the Zeek Project. See LICENSE for details.
 
 #include <hilti/ast/attribute.h>
+#include <hilti/ast/ctors/integer.h>
+#include <hilti/ast/ctors/string.h>
 #include <hilti/ast/expression.h>
+#include <hilti/ast/expressions/ctor.h>
 #include <hilti/ast/type.h>
 #include <hilti/ast/visitor.h>
 
-#include <hilti/ast/ctors/integer.h>
-#include <hilti/ast/ctors/string.h>
-#include <hilti/ast/expressions/ctor.h>
+#include "ast/builder/builder.h"
+#include "compiler/coercer.h"
 
 using namespace hilti;
 
@@ -47,6 +49,25 @@ Result<int64_t> Attribute::valueAsInteger() const {
     }
 
     return result::Error(hilti::util::fmt("value for attribute '%s' must be an integer", _tag));
+}
+
+Result<bool> Attribute::coerceValueTo(Builder* builder, const QualifiedTypePtr& dst) {
+    if ( ! dst->isResolved() )
+        return result::Error("cannot coerce attribute value to unresolved type");
+
+    if ( auto e = valueAsExpression() ) {
+        auto ne = coerceExpression(builder, *e, dst);
+        if ( ! ne.coerced )
+            return result::Error("cannot coerce attribute value");
+
+        if ( ! ne.nexpr )
+            return false;
+
+        setChild(builder->context(), 0, std::move(ne.nexpr));
+        return true;
+    }
+    else
+        return result::Error("cannot coerce non-expression attribute value");
 }
 
 std::string Attribute::_render() const { return ""; }

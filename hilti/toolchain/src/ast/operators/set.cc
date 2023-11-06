@@ -31,7 +31,7 @@ public:
         return operands[0]->type()->type()->dereferencedType();
     }
 
-    HILTI_OPERATOR(set::iterator::Deref)
+    HILTI_OPERATOR(hilti, set::iterator::Deref)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Deref);
 
@@ -51,7 +51,7 @@ public:
         return operands[0]->type();
     }
 
-    HILTI_OPERATOR(set::iterator::IncrPostfix)
+    HILTI_OPERATOR(hilti, set::iterator::IncrPostfix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPostfix);
 
@@ -72,7 +72,7 @@ public:
     }
 
 
-    HILTI_OPERATOR(set::iterator::IncrPrefix)
+    HILTI_OPERATOR(hilti, set::iterator::IncrPrefix)
 };
 HILTI_OPERATOR_IMPLEMENTATION(IncrPrefix);
 
@@ -94,7 +94,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(set::iterator::Equal)
+    HILTI_OPERATOR(hilti, set::iterator::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -116,7 +116,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(set::iterator::Unequal)
+    HILTI_OPERATOR(hilti, set::iterator::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -134,7 +134,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(set::Size)
+    HILTI_OPERATOR(hilti, set::Size)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Size);
 
@@ -156,7 +156,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(set::Equal)
+    HILTI_OPERATOR(hilti, set::Equal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Equal);
 
@@ -178,7 +178,7 @@ public:
         return {{op0, op0}};
     }
 
-    HILTI_OPERATOR(set::Unequal)
+    HILTI_OPERATOR(hilti, set::Unequal)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Unequal);
 
@@ -195,7 +195,7 @@ public:
         };
     }
 
-    HILTI_OPERATOR(set::In)
+    HILTI_OPERATOR(hilti, set::In)
 };
 HILTI_OPERATOR_IMPLEMENTATION(In);
 
@@ -219,7 +219,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(set::Add)
+    HILTI_OPERATOR(hilti, set::Add)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Add)
 
@@ -243,7 +243,7 @@ public:
         return {{op0, op1}};
     }
 
-    HILTI_OPERATOR(set::Delete)
+    HILTI_OPERATOR(hilti, set::Delete)
 };
 HILTI_OPERATOR_IMPLEMENTATION(Delete)
 
@@ -262,7 +262,7 @@ Removes all elements from the set.
         };
     }
 
-    HILTI_OPERATOR(set::Clear);
+    HILTI_OPERATOR(hilti, set::Clear);
 };
 HILTI_OPERATOR_IMPLEMENTATION(Clear);
 

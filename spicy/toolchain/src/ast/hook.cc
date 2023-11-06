@@ -6,30 +6,20 @@
 
 using namespace spicy;
 
-hilti::optional_ref<const spicy::type::Unit> Hook::unitType() const {
-    if ( _unit_type )
-        return _unit_type->as<spicy::type::Unit>();
+Hook::~Hook() {}
+
+node::Properties Hook::properties() const {
+    auto p = node::Properties{{"engine", to_string(_engine)}};
+
+    if ( auto t = _unit_type.lock() )
+        p.emplace("unit", t->typeID());
     else
-        return {};
-}
+        p.emplace("unit", "<unset>");
 
-hilti::optional_ref<const spicy::type::unit::item::Field> Hook::unitField() const {
-    if ( _unit_field )
-        return _unit_field->as<spicy::type::unit::item::Field>();
+    if ( auto f = _unit_field.lock() )
+        p.emplace("field", f->id());
     else
-        return {};
-}
+        p.emplace("field", "<unset>");
 
-std::optional<Expression> Hook::priority() const {
-    if ( auto p = AttributeSet::find(function().attributes(), "priority") )
-        return *p->valueAsExpression();
-
-    return {};
-}
-
-NodeRef Hook::ddRef() const {
-    if ( children()[1].isA<Declaration>() )
-        return NodeRef(children()[1]);
-    else
-        return {};
+    return Node::properties() + p;
 }

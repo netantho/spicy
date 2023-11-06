@@ -37,7 +37,7 @@ protected:
     Member(ASTContext* ctx, Nodes children, hilti::ID id, Meta meta)
         : Expression(ctx, std::move(children), std::move(meta)), _id(std::move(id)) {}
 
-    HILTI_NODE(Member)
+    HILTI_NODE(hilti, Member)
 
 private:
     hilti::ID _id;

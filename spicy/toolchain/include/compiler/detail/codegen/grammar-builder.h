@@ -6,10 +6,12 @@
 #include <map>
 #include <string>
 
-#include <spicy/ast/types/unit.h>
+#include <hilti/base/logger.h>
+#include <hilti/base/result.h>
+#include <hilti/compiler/context.h>
+
+#include <spicy/ast/forward.h>
 #include <spicy/compiler/detail/codegen/grammar.h>
-#include <spicy/compiler/detail/codegen/production.h>
-#include <spicy/compiler/detail/codegen/productions/all.h>
 
 namespace spicy::logging::debug {
 inline const hilti::logging::DebugStream Grammar("grammar");
@@ -21,16 +23,23 @@ class CodeGen;
 
 namespace codegen {
 
+class Grammar;
+
 /** Generates the grammars for all unit types declared in an AST. */
 class GrammarBuilder {
 public:
     GrammarBuilder(CodeGen* cg) : _cg(cg) {}
 
+    CodeGen* cg() const { return _cg; }
+    Builder* builder() const;
+    ASTContext* context() const;
+    const hilti::Options& options() const;
+
     /**
      * Generates the grammar for a unit type. The grammar will afterwards be
      * available through `grammar()`.
      */
-    Result<Nothing> run(const type::Unit& unit, Node* node, CodeGen* cg);
+    hilti::Result<hilti::Nothing> run(const hilti::NodeDerivedPtr<type::Unit>& unit);
 
     /**
      * Returns the grammar for a unit type. The type must have been computed
@@ -39,11 +48,9 @@ public:
      */
     const Grammar& grammar(const type::Unit& unit);
 
-    CodeGen* cg() const { return _cg; }
-
 private:
     CodeGen* _cg;
-    std::map<std::string, Grammar> _grammars;
+    std::map<ID, Grammar> _grammars;
 };
 
 } // namespace codegen

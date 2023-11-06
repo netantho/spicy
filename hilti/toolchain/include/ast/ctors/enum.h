@@ -29,6 +29,6 @@ public:
 protected:
     Enum(ASTContext* ctx, Nodes children, Meta meta) : Ctor(ctx, std::move(children), std::move(meta)) {}
 
-    HILTI_NODE(Enum)
+    HILTI_NODE(hilti, Enum)
 };
 } // namespace hilti::ctor

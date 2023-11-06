@@ -21,7 +21,7 @@ public:
 protected:
     Port(ASTContext* ctx, Meta meta) : UnqualifiedType(ctx, {"port"}, std::move(meta)) {}
 
-    HILTI_NODE(Port)
+    HILTI_NODE(hilti, Port)
 };
 
 } // namespace hilti::type
